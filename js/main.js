@@ -8,30 +8,16 @@ catBtns.forEach(btn => {
     btn.classList.add('active');
     const cat = btn.dataset.cat;
     cards.forEach(card => {
-      if (cat === 'all' || card.dataset.cat === cat) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
     });
   });
 });
 
-// Mobile menu toggle (simple)
+// Mobile hamburger menu
 const toggle = document.querySelector('.menu-toggle');
-const nav = document.querySelector('.nav');
-if (toggle && nav) {
+const mobileNav = document.querySelector('.mobile-nav');
+if (toggle && mobileNav) {
   toggle.addEventListener('click', () => {
-    const open = nav.style.display === 'flex';
-    nav.style.display = open ? 'none' : 'flex';
-    nav.style.flexDirection = 'column';
-    nav.style.position = 'absolute';
-    nav.style.top = '60px';
-    nav.style.left = '0';
-    nav.style.right = '0';
-    nav.style.background = '#0d1117';
-    nav.style.padding = '16px 20px';
-    nav.style.borderBottom = '1px solid #30363d';
-    if (open) nav.style.display = 'none';
+    mobileNav.classList.toggle('open');
   });
 }
