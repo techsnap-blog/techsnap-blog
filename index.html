@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechSnap — ガジェット・テックレビュー</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">Tech<span>Snap</span></a>
+      <nav class="nav">
+        <a href="#reviews">レビュー</a>
+        <a href="#news">ニュース</a>
+        <a href="#ranking">ランキング</a>
+        <a href="about.html">About</a>
+      </nav>
+      <button class="menu-toggle" aria-label="メニュー">☰</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <p class="hero-eyebrow">最新ガジェットをわかりやすく解説</p>
+        <h1>買う前に知りたい<br>本音レビュー</h1>
+        <p class="hero-sub">実際に使ってわかったメリット・デメリットを、スペック表では伝わらない視点でお届けします。</p>
+        <a href="#reviews" class="btn-primary">レビューを読む</a>
+      </div>
+      <div class="hero-visual">
+        <div class="device-mockup">
+          <div class="screen">
+            <div class="screen-content">
+              <div class="spec-row"><span class="spec-label">CPU</span><span class="spec-bar"><span style="width:92%"></span></span><span class="spec-val">9.2</span></div>
+              <div class="spec-row"><span class="spec-label">バッテリー</span><span class="spec-bar"><span style="width:78%"></span></span><span class="spec-val">7.8</span></div>
+              <div class="spec-row"><span class="spec-label">カメラ</span><span class="spec-bar"><span style="width:85%"></span></span><span class="spec-val">8.5</span></div>
+              <div class="spec-row"><span class="spec-label">コスパ</span><span class="spec-bar"><span style="width:88%"></span></span><span class="spec-val">8.8</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Tabs -->
+  <section class="categories">
+    <div class="container">
+      <div class="cat-list">
+        <button class="cat-btn active" data-cat="all">すべて</button>
+        <button class="cat-btn" data-cat="smartphone">スマートフォン</button>
+        <button class="cat-btn" data-cat="pc">PC・タブレット</button>
+        <button class="cat-btn" data-cat="audio">オーディオ</button>
+        <button class="cat-btn" data-cat="wearable">ウェアラブル</button>
+        <button class="cat-btn" data-cat="accessories">アクセサリー</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Article -->
+  <section class="featured" id="reviews">
+    <div class="container">
+      <div class="featured-card">
+        <div class="featured-badge">今週のイチオシ</div>
+        <div class="featured-content">
+          <div class="featured-meta">
+            <span class="tag">スマートフォン</span>
+            <span class="date">2025年6月20日</span>
+          </div>
+          <h2><a href="articles/sample.html">Pixel 9a レビュー：5万円台で「このカメラ」は反則レベル。2週間使って見えた実力</a></h2>
+          <p>Googleのミドルレンジ最新作をメインスマホとして2週間使い続けた。結論から言うと、カメラ性能でこの価格帯の常識を完全に塗り替えている。ただしバッテリーには注意点あり。</p>
+          <div class="score-badge">総合 <strong>8.6</strong> / 10</div>
+        </div>
+        <div class="featured-img">
+          <div class="img-placeholder large">
+            <svg viewBox="0 0 120 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="5" width="100" height="190" rx="12" fill="#1a1a2e" stroke="#3d5a99" stroke-width="2"/>
+              <rect x="20" y="25" width="80" height="130" rx="4" fill="#16213e"/>
+              <circle cx="60" cy="175" r="8" fill="#3d5a99"/>
+              <circle cx="45" cy="15" r="3" fill="#3d5a99"/>
+              <rect x="55" y="13" width="20" height="4" rx="2" fill="#3d5a99"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Article Grid -->
+  <section class="articles">
+    <div class="container">
+      <h2 class="section-title">最新レビュー</h2>
+      <div class="article-grid">
+
+        <article class="article-card" data-cat="audio">
+          <div class="img-placeholder">
+            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="40" cy="40" r="35" fill="#1a1a2e" stroke="#3d5a99" stroke-width="1.5"/>
+              <circle cx="40" cy="40" r="18" fill="#16213e" stroke="#3d5a99" stroke-width="1.5"/>
+              <circle cx="40" cy="40" r="5" fill="#3d5a99"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="tag">オーディオ</span>
+              <span class="date">6月18日</span>
+            </div>
+            <h3><a href="articles/sample.html">Sony WH-1000XM6 実機レビュー：ノイキャン性能は本当に世界最高なのか</a></h3>
+            <div class="score-mini">8.9 / 10</div>
+          </div>
+        </article>
+
+        <article class="article-card" data-cat="pc">
+          <div class="img-placeholder">
+            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="15" width="60" height="38" rx="4" fill="#1a1a2e" stroke="#3d5a99" stroke-width="1.5"/>
+              <rect x="18" y="22" width="44" height="24" rx="2" fill="#16213e"/>
+              <rect x="5" y="53" width="70" height="6" rx="3" fill="#1a1a2e" stroke="#3d5a99" stroke-width="1.5"/>
+              <rect x="30" y="59" width="20" height="3" rx="1.5" fill="#3d5a99"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="tag">PC</span>
+              <span class="date">6月15日</span>
+            </div>
+            <h3><a href="articles/sample.html">MacBook Air M4 vs ThinkPad X1 Carbon：買うならどっち？徹底比較</a></h3>
+            <div class="score-mini">比較記事</div>
+          </div>
+        </article>
+
+        <article class="article-card" data-cat="wearable">
+          <div class="img-placeholder">
+            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="28" y="18" width="24" height="28" rx="6" fill="#1a1a2e" stroke="#3d5a99" stroke-width="1.5"/>
+              <rect x="32" y="22" width="16" height="20" rx="2" fill="#16213e"/>
+              <rect x="20" y="20" width="10" height="4" rx="2" fill="#3d5a99" opacity="0.6"/>
+              <rect x="50" y="20" width="10" height="4" rx="2" fill="#3d5a99" opacity="0.6"/>
+              <rect x="20" y="40" width="10" height="4" rx="2" fill="#3d5a99" opacity="0.6"/>
+              <rect x="50" y="40" width="10" height="4" rx="2" fill="#3d5a99" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="tag">ウェアラブル</span>
+              <span class="date">6月12日</span>
+            </div>
+            <h3><a href="articles/sample.html">Apple Watch Ultra 3：登山・マラソンで使い倒した3ヶ月間レポート</a></h3>
+            <div class="score-mini">9.1 / 10</div>
+          </div>
+        </article>
+
+        <article class="article-card" data-cat="accessories">
+          <div class="img-placeholder">
+            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="15" y="30" width="50" height="28" rx="4" fill="#1a1a2e" stroke="#3d5a99" stroke-width="1.5"/>
+              <circle cx="40" cy="44" r="8" fill="#16213e" stroke="#3d5a99" stroke-width="1.5"/>
+              <rect x="35" y="20" width="10" height="12" rx="3" fill="#1a1a2e" stroke="#3d5a99" stroke-width="1.5"/>
+              <circle cx="40" cy="44" r="3" fill="#3d5a99"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="tag">アクセサリー</span>
+              <span class="date">6月10日</span>
+            </div>
+            <h3><a href="articles/sample.html">Anker 140W充電器レビュー：MacBookもiPhoneも1台で完結する最強モバイル充電器</a></h3>
+            <div class="score-mini">8.4 / 10</div>
+          </div>
+        </article>
+
+        <article class="article-card" data-cat="smartphone">
+          <div class="img-placeholder">
+            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="22" y="8" width="36" height="64" rx="8" fill="#1a1a2e" stroke="#3d5a99" stroke-width="1.5"/>
+              <rect x="28" y="16" width="24" height="44" rx="3" fill="#16213e"/>
+              <circle cx="40" cy="66" r="4" fill="#3d5a99"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="tag">スマートフォン</span>
+              <span class="date">6月8日</span>
+            </div>
+            <h3><a href="articles/sample.html">Galaxy S25 Edge：薄さ5.8mmの超スリムボディは実用的か？1ヶ月使用レビュー</a></h3>
+            <div class="score-mini">7.9 / 10</div>
+          </div>
+        </article>
+
+        <article class="article-card" data-cat="pc">
+          <div class="img-placeholder">
+            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="12" width="64" height="44" rx="4" fill="#1a1a2e" stroke="#3d5a99" stroke-width="1.5"/>
+              <rect x="14" y="18" width="52" height="32" rx="2" fill="#16213e"/>
+              <rect x="28" y="56" width="24" height="6" rx="3" fill="#1a1a2e" stroke="#3d5a99" stroke-width="1.5"/>
+              <rect x="22" y="62" width="36" height="4" rx="2" fill="#3d5a99" opacity="0.4"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="tag">タブレット</span>
+              <span class="date">6月5日</span>
+            </div>
+            <h3><a href="articles/sample.html">iPad Air M3レビュー：「Pro不要論」が出るほどの仕上がり、その真相を検証</a></h3>
+            <div class="score-mini">8.7 / 10</div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Ranking Section -->
+  <section class="ranking" id="ranking">
+    <div class="container">
+      <h2 class="section-title">今月の人気ランキング</h2>
+      <ol class="rank-list">
+        <li class="rank-item">
+          <span class="rank-num">1</span>
+          <div class="rank-body">
+            <span class="tag sm">スマートフォン</span>
+            <a href="articles/sample.html">Pixel 9a レビュー：5万円台で「このカメラ」は反則レベル</a>
+          </div>
+          <span class="rank-score">8.6</span>
+        </li>
+        <li class="rank-item">
+          <span class="rank-num">2</span>
+          <div class="rank-body">
+            <span class="tag sm">ウェアラブル</span>
+            <a href="articles/sample.html">Apple Watch Ultra 3：登山・マラソンで使い倒した3ヶ月間</a>
+          </div>
+          <span class="rank-score">9.1</span>
+        </li>
+        <li class="rank-item">
+          <span class="rank-num">3</span>
+          <div class="rank-body">
+            <span class="tag sm">オーディオ</span>
+            <a href="articles/sample.html">Sony WH-1000XM6 実機レビュー：ノイキャン性能の真実</a>
+          </div>
+          <span class="rank-score">8.9</span>
+        </li>
+        <li class="rank-item">
+          <span class="rank-num">4</span>
+          <div class="rank-body">
+            <span class="tag sm">タブレット</span>
+            <a href="articles/sample.html">iPad Air M3レビュー：「Pro不要論」の真相を検証</a>
+          </div>
+          <span class="rank-score">8.7</span>
+        </li>
+        <li class="rank-item">
+          <span class="rank-num">5</span>
+          <div class="rank-body">
+            <span class="tag sm">PC</span>
+            <a href="articles/sample.html">MacBook Air M4 vs ThinkPad X1 Carbon：買うならどっち？</a>
+          </div>
+          <span class="rank-score">比較</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">Tech<span>Snap</span></div>
+      <p class="footer-desc">ガジェット・テックの本音レビューをお届けするブログです。<br>記事内にはアフィリエイトリンクが含まれます。</p>
+      <div class="footer-links">
+        <a href="about.html">このサイトについて</a>
+        <a href="#">プライバシーポリシー</a>
+        <a href="#">お問い合わせ</a>
+      </div>
+      <p class="footer-copy">© 2025 TechSnap</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
