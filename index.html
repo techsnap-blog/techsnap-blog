@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TechSnap — ガジェット・テックレビュー</title>
+  <title>TechSnap — ガジェット・カメラ・撮影機材レビュー</title>
+  <meta name="description" content="買う前に知りたい本音レビュー。カメラ・ガジェット・撮影機材をじっくり使い込んだ正直な評価をお届けします。">
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Header -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="logo">Tech<span>Snap</span></a>
       <nav class="nav">
         <a href="#reviews">レビュー</a>
-        <a href="#news">ニュース</a>
         <a href="#ranking">ランキング</a>
-        <a href="about.html">About</a>
+        <a href="#">About</a>
       </nav>
       <button class="menu-toggle" aria-label="メニュー">
         <span></span><span></span><span></span>
@@ -26,9 +25,8 @@
     </div>
     <nav class="mobile-nav">
       <a href="#reviews">レビュー</a>
-      <a href="#news">ニュース</a>
       <a href="#ranking">ランキング</a>
-      <a href="about.html">About</a>
+      <a href="#">About</a>
     </nav>
   </header>
 
@@ -36,166 +34,62 @@
   <section class="hero">
     <div class="container hero-inner">
       <div class="hero-text">
-        <p class="hero-eyebrow">最新ガジェットをわかりやすく解説</p>
-        <h1>買う前に知りたい<br>本音レビュー</h1>
-        <p class="hero-sub">実際に使ってわかったメリット・デメリットを、スペック表では伝わらない視点でお届けします。</p>
+        <p class="hero-eyebrow">本音のガジェットレビュー</p>
+        <h1>買う前に知りたいことを、正直に書く。</h1>
+        <p class="hero-sub">スペック表には書いていない使い心地、価格には表れない満足感。実際に使い込んだレビューだけをお届けします。</p>
         <a href="#reviews" class="btn-primary">レビューを読む</a>
       </div>
-      <div class="hero-visual">
-        <div class="device-mockup">
-          <div class="screen">
-            <div class="screen-content">
-              <div class="spec-row"><span class="spec-label">CPU</span><span class="spec-bar"><span style="width:92%"></span></span><span class="spec-val">9.2</span></div>
-              <div class="spec-row"><span class="spec-label">バッテリー</span><span class="spec-bar"><span style="width:78%"></span></span><span class="spec-val">7.8</span></div>
-              <div class="spec-row"><span class="spec-label">カメラ</span><span class="spec-bar"><span style="width:85%"></span></span><span class="spec-val">8.5</span></div>
-              <div class="spec-row"><span class="spec-label">コスパ</span><span class="spec-bar"><span style="width:88%"></span></span><span class="spec-val">8.8</span></div>
-            </div>
-          </div>
-        </div>
+      <div id="hero-card" class="hero-card">
+        <!-- JS で最新記事が入る -->
+        <div style="padding:40px;text-align:center;color:var(--bark);font-size:0.85rem;">読み込み中...</div>
       </div>
     </div>
   </section>
 
-  <!-- Category Tabs -->
+  <!-- Categories -->
   <section class="categories">
     <div class="container">
       <div class="cat-list">
         <button class="cat-btn active" data-cat="all">すべて</button>
-        <button class="cat-btn" data-cat="smartphone">スマートフォン</button>
-        <button class="cat-btn" data-cat="pc">PC・タブレット</button>
-        <button class="cat-btn" data-cat="audio">オーディオ</button>
-        <button class="cat-btn" data-cat="wearable">ウェアラブル</button>
-        <button class="cat-btn" data-cat="accessories">アクセサリー</button>
+        <button class="cat-btn" data-cat="カメラ">カメラ</button>
+        <button class="cat-btn" data-cat="撮影機材">撮影機材</button>
+        <button class="cat-btn" data-cat="スマートフォン">スマートフォン</button>
+        <button class="cat-btn" data-cat="オーディオ">オーディオ</button>
+        <button class="cat-btn" data-cat="PC・タブレット">PC・タブレット</button>
+        <button class="cat-btn" data-cat="ウェアラブル">ウェアラブル</button>
       </div>
     </div>
   </section>
 
-  <!-- Featured Article -->
-  <section class="featured" id="reviews">
-    <div class="container">
-      <div class="featured-card">
-        <div class="featured-badge">今週のイチオシ</div>
-        <div class="featured-content">
-          <div class="featured-meta">
-            <span class="tag">カメラ</span>
-            <span class="date">2026年6月25日</span>
-          </div>
-          <h2><a href="articles/canon-eos-6d-mark2-review.html">Canon EOS 6D Mark II レンズキット レビュー｜ミラーレス全盛の今、あえてこれを選ぶ人が正しい理由</a></h2>
-          <p>フルサイズ一眼レフへの先入観を、この軽さが一瞬で壊してくれる。2,620万画素が描く空気感、Lレンズの解像力——「これで十分」と気づいた日の話。</p>
-          <div class="score-badge">総合 <strong>8.7</strong> / 10</div>
-        </div>
-        <div class="featured-img">
-          <div class="img-placeholder large" style="background:#f8f9fa;">
-            <img src="images/canon-6d-mark2.jpg" alt="Canon EOS 6D Mark II" style="width:100%;height:100%;object-fit:contain;padding:16px;">
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Article Grid -->
-  <section class="articles">
+  <!-- Articles -->
+  <section class="articles" id="reviews">
     <div class="container">
       <h2 class="section-title">最新レビュー</h2>
-      <div class="article-grid">
-
-        <article class="article-card" data-cat="camera">
-          <div class="img-placeholder" style="background:#f8f9fa;">
-            <img src="images/canon-6d-mark2.jpg" alt="Canon EOS 6D Mark II" style="width:100%;height:100%;object-fit:contain;padding:8px;">
-          </div>
-          <div class="card-body">
-            <div class="card-meta">
-              <span class="tag">カメラ</span>
-              <span class="date">6月25日</span>
-            </div>
-            <h3><a href="articles/canon-eos-6d-mark2-review.html">Canon EOS 6D Mark II レンズキット｜ミラーレス全盛の今、あえてこれを選ぶ理由</a></h3>
-            <div class="score-mini">8.7 / 10</div>
-          </div>
-        </article>
-
-        <article class="article-card" data-cat="equipment">
-          <div class="img-placeholder" style="background:#f8f9fa;">
-            <img src="images/slik-tube-light.jpg" alt="SLIK チューブ型撮影用ライト" style="width:100%;height:100%;object-fit:contain;padding:8px;">
-          </div>
-          <div class="card-body">
-            <div class="card-meta">
-              <span class="tag">撮影機材</span>
-              <span class="date">6月25日</span>
-            </div>
-            <h3><a href="articles/slik-tube-light-review.html">SLIK チューブ型撮影用ライト｜これ1本で「映える写真」の光が手に入る理由</a></h3>
-            <div class="score-mini">8.9 / 10</div>
-          </div>
-        </article>
-
-        <article class="article-card" data-cat="camera">
-          <div class="img-placeholder">
-            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="28" y="18" width="24" height="28" rx="6" fill="#e8edf2" stroke="#c0c8d4" stroke-width="1.5"/>
-              <rect x="32" y="22" width="16" height="20" rx="2" fill="#d0d8e4"/>
-              <rect x="20" y="20" width="10" height="4" rx="2" fill="#c0c8d4" opacity="0.8"/>
-              <rect x="50" y="20" width="10" height="4" rx="2" fill="#c0c8d4" opacity="0.8"/>
-              <rect x="20" y="40" width="10" height="4" rx="2" fill="#c0c8d4" opacity="0.8"/>
-              <rect x="50" y="40" width="10" height="4" rx="2" fill="#c0c8d4" opacity="0.8"/>
-            </svg>
-          </div>
-          <div class="card-body">
-            <div class="card-meta">
-              <span class="tag">近日公開</span>
-              <span class="date">準備中</span>
-            </div>
-            <h3><a href="#">次のレビュー記事を準備中です</a></h3>
-            <div class="score-mini">近日公開</div>
-          </div>
-        </article>
-
+      <div id="article-grid" class="article-grid">
+        <div class="articles-loading">記事を読み込んでいます...</div>
       </div>
     </div>
   </section>
 
-  <!-- Ranking Section -->
+  <!-- Ranking -->
   <section class="ranking" id="ranking">
     <div class="container">
       <h2 class="section-title">人気ランキング</h2>
-      <ol class="rank-list">
-        <li class="rank-item">
-          <span class="rank-num">1</span>
-          <div class="rank-body">
-            <span class="tag sm">カメラ</span>
-            <a href="articles/canon-eos-6d-mark2-review.html">Canon EOS 6D Mark II レンズキット｜ミラーレス全盛の今、あえてこれを選ぶ理由</a>
-          </div>
-          <span class="rank-score">8.7</span>
-        </li>
-        <li class="rank-item">
-          <span class="rank-num">2</span>
-          <div class="rank-body">
-            <span class="tag sm">撮影機材</span>
-            <a href="articles/slik-tube-light-review.html">SLIK チューブ型撮影用ライト｜これ1本で「映える写真」の光が手に入る</a>
-          </div>
-          <span class="rank-score">8.9</span>
-        </li>
-        <li class="rank-item">
-          <span class="rank-num">3</span>
-          <div class="rank-body">
-            <span class="tag sm">近日公開</span>
-            <a href="#">次のレビュー記事を準備中</a>
-          </div>
-          <span class="rank-score">—</span>
-        </li>
+      <ol id="rank-list" class="rank-list">
+        <li style="padding:16px 20px;color:var(--bark);font-size:0.85rem;">読み込み中...</li>
       </ol>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="site-footer">
     <div class="container footer-inner">
       <div class="footer-logo">Tech<span>Snap</span></div>
-      <p class="footer-desc">ガジェット・テックの本音レビューをお届けするブログです。<br>記事内にはアフィリエイトリンクが含まれます。</p>
+      <p class="footer-desc">カメラ・ガジェット・撮影機材の本音レビューをお届けするブログです。<br>記事内にはアフィリエイトリンクが含まれます。</p>
       <div class="footer-links">
-        <a href="about.html">このサイトについて</a>
         <a href="#">プライバシーポリシー</a>
         <a href="#">お問い合わせ</a>
       </div>
-      <p class="footer-copy">© 2025 TechSnap</p>
+      <p class="footer-copy">© 2026 TechSnap</p>
     </div>
   </footer>
 
