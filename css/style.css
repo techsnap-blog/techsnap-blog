@@ -179,7 +179,7 @@ img { max-width: 100%; display: block; }
   /* 2列grid: テキスト50% / 人物50%
      テキスト列を広げて、テキストブロックをHero中央付近に置く */
   display: grid;
-  grid-template-columns: 50fr 50fr;
+  grid-template-columns: 44fr 56fr;
   grid-template-rows: 1fr;
   align-items: stretch;
 }
