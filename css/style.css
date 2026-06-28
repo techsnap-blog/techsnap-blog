@@ -111,7 +111,9 @@ img { max-width: 100%; display: block; }
    =================================================== */
 .hero-pin-wrap {
   position: relative;
-  height: 180vh;   /* pin duration: Hero stays for 80vh of scroll */
+  /* 200vh = Hero100vh固定 + content-sectionのスクロール空間100vh */
+  /* content-sectionがHeroの上をスクロールする間、Heroは背景に残る */
+  height: 200vh;
   z-index: 1;
 }
 
@@ -269,7 +271,8 @@ img { max-width: 100%; display: block; }
     linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
   border-radius: 28px 28px 0 0;
   padding-top: 72px;
-  margin-top: 0; /* GSAP translateY handles the overlay animation */
+  /* Hero上に初期配置。GSAPがtranslateYでせり上がりを制御する */
+  margin-top: -100vh;
   box-shadow: 0 -1px 0 rgba(220,210,195,0.1), 0 -60px 80px rgba(14,13,12,0.98);
 }
 .content-section::before {
