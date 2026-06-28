@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canon EOS R6 Mark III レビュー｜「買い替えを迷っている人」への正直な答え | TechSnap</title>
+  <meta name="description" content="有効3250万画素・電子シャッター40コマ/秒・手ブレ補正8.5段・CFexpressデュアルスロット。EOS R6 Mark IIIを実際に使い込んだ本音レビュー。">
+  <meta name="google-site-verification" content="7X0_YVXS04aDX2bkh_afWnmMrBp1xpfZvCPiF14igd8" />
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    .article-wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+    .article-wrap.has-sidebar { max-width: 1120px; display: grid; grid-template-columns: 1fr 300px; gap: 48px; align-items: start; }
+    @media(max-width:860px){ .article-wrap.has-sidebar { grid-template-columns: 1fr; } }
+
+    .article-header { margin-bottom: 32px; }
+    .article-header .tag { display: inline-block; background: var(--accent); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 12px; }
+    .article-header h1 { font-size: clamp(1.4rem, 4vw, 2rem); line-height: 1.4; margin-bottom: 12px; }
+    .article-header .meta { font-size: 0.8rem; color: var(--text-muted); }
+
+    .hero-img { width: 100%; border-radius: 12px; margin-bottom: 40px; aspect-ratio: 4/3; object-fit: cover; background: var(--bg2); }
+
+    .article-body { line-height: 1.9; font-size: 1rem; color: var(--text); }
+    .article-body h2 { font-size: 1.25rem; font-weight: 700; margin: 40px 0 16px; padding-left: 14px; border-left: 4px solid var(--accent); line-height: 1.4; }
+    .article-body h3 { font-size: 1.05rem; font-weight: 700; margin: 28px 0 10px; }
+    .article-body p { margin-bottom: 18px; }
+
+    /* スペック表 */
+    .spec-table { width: 100%; border-collapse: collapse; margin: 24px 0 32px; font-size: 0.88rem; }
+    .spec-table th, .spec-table td { padding: 10px 14px; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+    .spec-table th { background: var(--bg2); font-weight: 600; width: 36%; white-space: nowrap; }
+    .spec-table td { background: var(--bg); }
+
+    /* callout */
+    .callout { border-radius: 10px; padding: 18px 20px; margin: 24px 0; }
+    .callout.good { background: #f0faf4; border-left: 4px solid #2ecc71; }
+    .callout.warn { background: #fff8f0; border-left: 4px solid #f39c12; }
+    .callout-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .callout.good .callout-title { color: #27ae60; }
+    .callout.warn .callout-title { color: #e67e22; }
+    .callout ul { margin: 0; padding-left: 18px; }
+    .callout li { margin-bottom: 6px; font-size: 0.92rem; line-height: 1.7; }
+
+    /* Amazonボタン */
+    .amazon-btn-wrap { text-align: center; margin: 40px 0; }
+    .amazon-btn { display: inline-flex; align-items: center; gap: 10px; background: #FF9900; color: #111; font-weight: 700; font-size: 1rem; padding: 14px 32px; border-radius: 8px; transition: opacity 0.15s; }
+    .amazon-btn:hover { opacity: 0.85; color: #111; }
+    .amazon-btn svg { flex-shrink: 0; }
+
+    /* サイドバー */
+    .sidebar { position: sticky; top: 24px; }
+    .sidebar-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+    .sidebar-card h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 16px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .score-big { font-size: 3rem; font-weight: 800; color: var(--accent); line-height: 1; }
+    .score-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; margin-bottom: 20px; }
+    .score-bars { display: flex; flex-direction: column; gap: 10px; }
+    .score-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; }
+    .score-row span:first-child { width: 72px; flex-shrink: 0; color: var(--text-muted); }
+    .score-bar-bg { flex: 1; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .score-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; }
+    .score-row span:last-child { width: 24px; text-align: right; font-weight: 600; }
+    .fit-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .fit-list li { font-size: 0.87rem; display: flex; gap: 8px; line-height: 1.5; }
+    .fit-list li::before { content: "✓"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+    .related-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+    .related-list li a { font-size: 0.85rem; line-height: 1.5; color: var(--text); }
+    .related-list li a:hover { color: var(--accent); }
+    .related-list .tag.sm { font-size: 0.68rem; margin-right: 4px; }
+
+    .breadcrumb { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 20px; }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 6px; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo">Tech<span>Snap</span></a>
+      <nav class="nav">
+        <a href="../index.html#reviews">レビュー</a>
+        <a href="../index.html#ranking">買って良かった</a>
+        <a href="../index.html#x-feed">X投稿</a>
+      </nav>
+      <button class="menu-toggle" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="../index.html#reviews">レビュー</a>
+      <a href="../index.html#ranking">買って良かった</a>
+      <a href="../index.html#x-feed">X投稿</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="article-wrap has-sidebar">
+
+        <!-- 本文 -->
+        <article>
+          <div class="breadcrumb">
+            <a href="../index.html">TechSnap</a>
+            <span>›</span>
+            <a href="../index.html#reviews">撮影機材</a>
+            <span>›</span>
+            Canon EOS R6 Mark III レビュー
+          </div>
+
+          <header class="article-header">
+            <span class="tag">撮影機材</span>
+            <h1>Canon EOS R6 Mark III｜「買い替えを迷っている人」への正直な答え</h1>
+            <p class="meta">2026年6月28日</p>
+          </header>
+
+          <img src="../images/canon-eos-r6-mark3.jpg" alt="Canon EOS R6 Mark III" class="hero-img">
+
+          <div class="article-body">
+
+            <p>「R6 Mark IIで十分じゃないか」。そう思いながら発売日の朝を迎えた。ヨドバシの実機コーナーで触ってみるまでは。</p>
+
+            <p>手ブレ補正8.5段。3250万画素。CFexpress対応。スペックシートを眺めれば「順当な進化」で済ませられる。でも実際にシャッターを切った瞬間、何かが違うとわかった。ファインダーの中で被写体が、ピタッと止まる感覚。AFが"探している"ふりをしない。</p>
+
+            <p>40代になって「カメラに振り回される撮影」が嫌になった。ピント、手ブレ、バッファ詰まり——そういうカメラ側の都合に合わせる時間が、もったいなくなってきた。R6 Mark IIIは、その不満に対するひとつの回答だと思う。</p>
+
+            <h2>主要スペック</h2>
+            <table class="spec-table">
+              <tr><th>撮像素子</th><td>フルサイズ 35.9×23.9mm CMOSセンサー</td></tr>
+              <tr><th>有効画素数</th><td>約3250万画素</td></tr>
+              <tr><th>映像エンジン</th><td>DIGIC X</td></tr>
+              <tr><th>AF方式</th><td>デュアルピクセルCMOS AF II（最大100人の顔登録）</td></tr>
+              <tr><th>連写速度</th><td>電子シャッター：最高約40コマ/秒<br>メカ/電子先幕：最高約12コマ/秒</td></tr>
+              <tr><th>プリ連続撮影</th><td>最大20コマ（約0.5秒）さかのぼり</td></tr>
+              <tr><th>手ブレ補正</th><td>最大8.5段（レンズIS協調時）</td></tr>
+              <tr><th>常用ISO</th><td>100〜102400（拡張：50/204800）</td></tr>
+              <tr><th>動画</th><td>7Kオープンゲート RAW、4K120P、Canon Log-2/3対応</td></tr>
+              <tr><th>カードスロット</th><td>CFexpress Type B × 1、SD UHS-II × 1（デュアルスロット）</td></tr>
+              <tr><th>EVF</th><td>576万ドット OLED（0.76倍）</td></tr>
+              <tr><th>背面モニター</th><td>3.0型 バリアングル液晶</td></tr>
+              <tr><th>バッテリー</th><td>LP-E6P</td></tr>
+              <tr><th>本体サイズ</th><td>138.5×98.0×88.4mm</td></tr>
+              <tr><th>質量</th><td>約609g（バッテリー・カード含む）</td></tr>
+              <tr><th>防塵防滴</th><td>対応</td></tr>
+            </table>
+
+            <h2>使い込んでわかった「良かった点」</h2>
+
+            <div class="callout good">
+              <div class="callout-title">✓ 良かった点</div>
+              <ul>
+                <li><strong>AFの"迷いのなさ"が別次元。</strong>コントラストの低い薄暗いシーンでも、狙った場所でピタッと止まる。被写体の端に構図を寄せても、手前のノイズに引っ張られない安定感がある。</li>
+                <li><strong>3250万画素でも「扱いやすい」。</strong>高画素化するとブレが目立つ——その心配を8.5段手ブレ補正が消してくれる。解像感が上がったのに、手持ちの歩留まりは下がらなかった。</li>
+                <li><strong>プリ連続撮影は一度使うと戻れない。</strong>シャッターを押す0.5秒前からさかのぼって記録できる。「押した瞬間には終わっていた」という決定的瞬間を取り逃さない。</li>
+                <li><strong>CFexpressデュアルスロット採用。</strong>R6 Mark IIで唯一不満だったバッファ詰まりの問題が解消。40コマ/秒の連写もスムーズに書き出せる。</li>
+                <li><strong>Canon色は健在。</strong>高画素化しても、エッジが過剰に立つ描写にならない。肌色の階調、紅葉の赤——自然に、丁寧に描き分けてくれる。</li>
+              </ul>
+            </div>
+
+            <h2>正直に言う「注意点」</h2>
+
+            <div class="callout warn">
+              <div class="callout-title">⚠ 注意点</div>
+              <ul>
+                <li><strong>価格は40万円前後。</strong>R6 Mark IIから乗り換えると差額は20万円以上。スチルメインで使うなら、その差をどう評価するかは正直人による。</li>
+                <li><strong>モードダイヤルはR5系と異なる。</strong>R5 Mark IIを使っていた人は操作系の違いが気になるかもしれない。慣れの問題ではあるが、統一してほしかったという声も多い。</li>
+                <li><strong>バリアングルのまま。</strong>α7 IVのようなバリチルを期待していた人には肩透かし。下アングルでの縦位置撮影はちょっと不便。</li>
+                <li><strong>動画機能が充実しすぎて割高感を感じる人もいる。</strong>スチル専用なら7Kオープンゲート、Canon Log-3対応は宝の持ち腐れ。その分の価格を払う気になれるかどうか。</li>
+              </ul>
+            </div>
+
+            <h2>R6 Mark IIからの乗り換えは「あり」か</h2>
+
+            <p>正直に言う。R6 Mark IIで満足している人は、急いで乗り換える必要はない。</p>
+
+            <p>ただ、これに当てはまるなら話は別だ。子どもの運動会でピンボケを量産している。夜景や室内撮影で手ブレが悩みの種になっている。連写後のバッファ詰まりにイライラしている。</p>
+
+            <p>その全部を、R6 Mark IIIは片付けてくれる。「カメラの限界に当たって悔しい思いをする回数」が、明らかに減る。それが40万円の価値になるかどうか——それだけの話だ。</p>
+
+            <p>個人的には、フルサイズ機を長く使い続けるつもりなら「買い」だと思っている。中途半端なスペックで後悔するより、5年使える一台を選ぶ方が、結局は安い。</p>
+
+            <div class="amazon-btn-wrap">
+              <a href="https://www.amazon.co.jp/dp/B0FZVVLR9D/?tag=taijp-22" target="_blank" rel="noopener" class="amazon-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M13.12 2.06C9.07 1.65 5.36 3.69 3.35 6.98 1.18 10.54 1.62 15.07 4.22 18.1l.82-.63C3.02 15.04 2.61 11.1 4.55 7.9c1.83-3.06 5.19-4.86 8.8-4.48 3.25.34 6.04 2.36 7.45 5.28.13.27.25.55.36.83.11.29.2.58.28.88.07.29.12.59.16.88.03.29.05.59.05.88 0 .3-.02.6-.06.9-.04.31-.09.61-.16.91-.07.3-.16.59-.27.88-.11.29-.23.57-.36.84-1.42 2.9-4.21 4.88-7.46 5.19-.63.06-1.27.06-1.9 0-1.22-.13-2.39-.48-3.46-1.03-.3-.16-.59-.33-.87-.52-.06-.04-.12-.09-.18-.13l-.64.83c.06.05.13.09.19.14.29.21.59.4.9.57 1.15.6 2.41.98 3.72 1.12.72.08 1.44.08 2.16 0 3.63-.38 6.78-2.61 8.35-5.87.14-.3.28-.6.39-.91.12-.31.21-.63.29-.95.08-.32.14-.65.18-1.01.04-.33.06-.67.06-1.01 0-.34-.02-.68-.06-1.01-.04-.33-.1-.66-.18-.98-.08-.32-.18-.64-.3-.95-.12-.31-.25-.62-.4-.92-1.58-3.24-4.72-5.45-8.35-5.82zm3.91 13.54c-2.08 1.27-4.72 1.59-7.35.69l-.32 1c2.91 1 5.84.65 8.15-.77l-.48-.92zm1.26-1.39c-.14-.19-.36-.28-.59-.22-2.47.74-5.34.93-7.97.2l-.27 1.01c2.84.79 5.89.59 8.54-.2.34-.1.44-.58.29-.79z"/></svg>
+                Amazonで価格を確認する
+              </a>
+            </div>
+
+          </div>
+        </article>
+
+        <!-- サイドバー -->
+        <aside class="sidebar">
+
+          <div class="sidebar-card">
+            <h3>総合スコア</h3>
+            <div class="score-big">9.0</div>
+            <div class="score-label">/ 10</div>
+            <div class="score-bars">
+              <div class="score-row">
+                <span>AF性能</span>
+                <div class="score-bar-bg"><div class="score-bar-fill" style="width:96%"></div></div>
+                <span>9.6</span>
+              </div>
+              <div class="score-row">
+                <span>画質</span>
+                <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%"></div></div>
+                <span>9.0</span>
+              </div>
+              <div class="score-row">
+                <span>手ブレ補正</span>
+                <div class="score-bar-bg"><div class="score-bar-fill" style="width:93%"></div></div>
+                <span>9.3</span>
+              </div>
+              <div class="score-row">
+                <span>操作性</span>
+                <div class="score-bar-bg"><div class="score-bar-fill" style="width:82%"></div></div>
+                <span>8.2</span>
+              </div>
+              <div class="score-row">
+                <span>コスパ</span>
+                <div class="score-bar-bg"><div class="score-bar-fill" style="width:78%"></div></div>
+                <span>7.8</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>こんな人に向いている</h3>
+            <ul class="fit-list">
+              <li>EOS R6 Mark IIのAF・バッファに限界を感じている</li>
+              <li>子ども・スポーツ・野鳥など動体を撮ることが多い</li>
+              <li>夜間や室内撮影でISO感度耐性が欲しい</li>
+              <li>5年以上使えるフルサイズ機を一本選ぶ</li>
+              <li>スチルと動画の両方を本格的にこなしたい</li>
+            </ul>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>関連レビュー</h3>
+            <ul class="related-list">
+              <li>
+                <a href="canon-eos-6d-mark2-review.html"><span class="tag sm">撮影機材</span>Canon EOS 6D Mark II｜ミラーレス全盛の今、あえてこれを選ぶ理由</a>
+              </li>
+              <li>
+                <a href="canon-rf35mm-f18-macro-review.html"><span class="tag sm">撮影機材</span>Canon RF35mm F1.8 MACRO IS STM｜1本だけ持って行くならこれ</a>
+              </li>
+              <li>
+                <a href="canon-control-ring-adapter-review.html"><span class="tag sm">撮影機材</span>Canon コントロールリングアダプター EF-EOS R｜EFレンズ資産を捨てない選択</a>
+              </li>
+              <li>
+                <a href="diagnl-ninja-strap-review.html"><span class="tag sm">撮影機材</span>diagnl ニンジャストラップ｜純正ストラップのままという選択肢を捨てた日</a>
+              </li>
+            </ul>
+          </div>
+
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">Tech<span>Snap</span></div>
+      <p class="footer-desc">カメラ・ガジェット・撮影機材の本音レビューをお届けするブログです。<br>記事内にはアフィリエイトリンクが含まれます。</p>
+      <div class="footer-links">
+        <a href="#">プライバシーポリシー</a>
+        <a href="#">お問い合わせ</a>
+      </div>
+      <p class="footer-copy">© 2026 TechSnap</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
