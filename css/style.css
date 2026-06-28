@@ -214,13 +214,21 @@ img { max-width: 100%; display: block; }
 /* Hero text */
 .hero-text-overlay {
   /* grid左列 — テキスト専用コンテナ */
-  position: relative;           /* absolute独立から解放 */
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;    /* テキストを下寄せ — 人物のBottomと揃う */
-  padding: 0 2vw 10vh 8vw;     /* 上下左右: 下10vh左8vwでポスター的余白 */
+  /* padding-left 廃止 — align-items で列内右寄せ、右からオフセット */
+  padding: 0 2vw 10vh 0;
+  align-items: flex-end;        /* テキストブロックを列の右端に寄せる */
   pointer-events: none;
   will-change: opacity, transform;
+}
+
+/* テキストブロック幅を制限し、右端基準で中央寄りに収める */
+.hero-text-overlay > * {
+  width: min(320px, 80%);
+  text-align: left;
 }
 .hero-eyebrow {
   font-family: var(--font-sans); font-size: 0.65rem; font-weight: 600;
