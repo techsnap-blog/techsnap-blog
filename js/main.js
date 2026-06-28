@@ -86,51 +86,74 @@
     const contentSec = document.querySelector('.content-section');
 
     /* -------------------------------------------------------
-       Hero をGSAPでpin（position:fixed相当）
-       heroはCSSでposition:fixedなので、
-       GSAPのpinはcontent-sectionが通り過ぎるまでの間
-       Heroアニメーションを制御するためだけに使う
-       ------------------------------------------------------- */
+       Hero Pin Control（Blueprint v2.0）
+       
+       仕組み:
+         - heroはCSSでposition:relative（通常フロー）
+         - GSAPのpin:trueがスクロール中だけposition:fixedに変える
+         - pinSpacing:trueでpin期間分のスクロール空間を自動確保
+         - pin終了後はheroが通常フローに戻りフッターまで残らない
 
-    /* Hero画像: スクロールに合わせてごく静かに変化 */
-    if (heroImg && contentSec) {
+       pin期間:
+         - start: 'top top'  → heroがvpに入った瞬間からpin
+         - end: '+=900'      → 900px（約90vh相当）スクロール後にpin解除
+         - 合計 100vh(hero表示) + 900px ≒ 180〜200vh相当
+
+       pinが解除されるタイミング:
+         - content-sectionがほぼ全面を覆った状態
+         = Article Surfaceが完全に主役になった時点
+       ------------------------------------------------------- */
+    if (heroEl) {
+      ScrollTrigger.create({
+        trigger: heroEl,
+        start: 'top top',
+        end: '+=900',          /* 約180〜200vh分をpinで固定 */
+        pin: true,
+        pinSpacing: true,      /* pin期間分のスクロール空間を確保 */
+        anticipatePin: 1,      /* ちらつき防止 */
+      });
+    }
+
+    /* Hero画像: pin期間中にごく静かに変化
+       scale: 1→0.985 / opacity: 1→0.92 / blur: 0→2px */
+    if (heroImg && heroEl) {
       gsap.to(heroImg, {
-        scale: 0.98,
-        opacity: 0.9,
+        scale: 0.985,
+        opacity: 0.92,
         filter: 'blur(2px)',
         ease: 'none',
         scrollTrigger: {
-          trigger: contentSec,
-          start: 'top bottom',   /* content-sectionが画面下端に入り始めたとき */
-          end: 'top top',        /* content-sectionが画面上端に揃ったとき */
-          scrub: 1.4,
+          trigger: heroEl,
+          start: 'top top',
+          end: '+=900',
+          scrub: 2.0,          /* 非常に滑らかに */
         }
       });
     }
 
-    /* Hero タイトル: opacity 1→0.3 */
-    if (heroText && contentSec) {
+    /* Hero タイトル: pin期間の前半でopacity 1→0.3 */
+    if (heroText && heroEl) {
       gsap.to(heroText, {
         opacity: 0.3,
         ease: 'none',
         scrollTrigger: {
-          trigger: contentSec,
-          start: 'top bottom',
-          end: 'top 60%',
-          scrub: 1.0,
+          trigger: heroEl,
+          start: 'top top',
+          end: '+=450',        /* pin期間の前半で完了 */
+          scrub: 1.5,
         }
       });
     }
 
-    /* Scrollヒント: すぐに消える */
+    /* Scrollヒント: スクロール開始直後に消える */
     if (heroHint) {
       gsap.to(heroHint, {
         opacity: 0,
         ease: 'none',
         scrollTrigger: {
-          trigger: document.body,
-          start: '100px top',
-          end: '300px top',
+          trigger: heroEl,
+          start: 'top top',
+          end: '+=200',
           scrub: 0.5,
         }
       });
@@ -138,31 +161,21 @@
 
     /* -------------------------------------------------------
        Story Transition: Article SurfaceがHeroの上に浮かび上がる
-       構造:
-         - .hero          position:fixed  z-index:1  → 常に背景
-         - .content-section position:sticky top:0 z-index:10 → Hero上に重なる
-
-       動作:
-         - ページ読み込み時、content-sectionはHeroと同じ位置（top:0）に
-           既に重なっているが、translateY(10vh)で少し下に押し下げられている
-         - スクロール開始と同時に translateY(10vh → 0) で浮かび上がる
-         - Hero画像はscale:0.98 / opacity:0.9 / blur:2px へ静かに変化
-         - translateYが8〜12vh程度なので動きは極めて控えめ
-         - Heroは position:fixed のため背景として残り続ける
-
-       triggerをheroにすることで、スクロール開始の瞬間から連動する
+       - content-section: position:sticky top:0 z-index:10
+       - GSAPがtranslateY(10vh → 0)でせり上がりを演出
+       - pin期間の中盤から開始し、pin終了までに完了する
        ------------------------------------------------------- */
     if (contentSec && heroEl) {
       gsap.fromTo(contentSec,
-        { y: '10vh' },     /* 初期: 10vh下にずれた状態 */
+        { y: '10vh' },
         {
-          y: '0vh',        /* 終了: 自然な位置（top:0に吸着） */
+          y: '0vh',
           ease: 'none',
           scrollTrigger: {
-            trigger: heroEl,       /* Hero要素をtriggerに — スクロール開始と同時に動く */
-            start: 'top top',      /* ページ最上部から開始 */
-            end: '+=600',          /* 600pxスクロールで完了 — ゆっくり浮かび上がる */
-            scrub: 1.8,            /* 滑らかに追従 */
+            trigger: heroEl,
+            start: '+=300',    /* pin開始から300px後にせり上がり開始 */
+            end: '+=900',      /* pin終了と同時に完了 */
+            scrub: 1.8,
           }
         }
       );
