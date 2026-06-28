@@ -111,7 +111,7 @@ img { max-width: 100%; display: block; }
    =================================================== */
 .hero-pin-wrap {
   position: relative;
-  height: 200vh;   /* pin duration = 100vh of scrolling */
+  height: 180vh;   /* pin duration: Hero stays for 80vh of scroll */
   z-index: 1;
 }
 
@@ -153,15 +153,18 @@ img { max-width: 100%; display: block; }
 /* Hero image */
 .hero-image-wrap {
   position: absolute; inset: 0; z-index: 2;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: flex-end;        /* bottom align */
+  justify-content: flex-end;    /* right align */
+  padding-right: 6vw;
   will-change: transform, opacity, filter;
 }
 .hero-image-wrap img {
-  max-height: 90vh;
-  max-width: min(520px, 88vw);
+  max-height: 88vh;
+  max-width: min(460px, 50vw);
   width: auto; object-fit: contain;
   mix-blend-mode: multiply;
-  filter: invert(1) brightness(0.92) contrast(1.05);
+  filter: invert(1) brightness(0.9) contrast(1.05);
   pointer-events: none; user-select: none;
   display: block;
 }
@@ -169,10 +172,10 @@ img { max-width: 100%; display: block; }
 /* Hero text */
 .hero-text-overlay {
   position: absolute; z-index: 4;
-  bottom: 12vh; left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  width: 100%; padding: 0 24px;
+  bottom: 14vh; left: 0;
+  text-align: left;
+  width: 52%;
+  padding: 0 0 0 8vw;
   pointer-events: none;
   will-change: opacity, transform;
 }
@@ -194,7 +197,7 @@ img { max-width: 100%; display: block; }
 .hero-sub {
   font-size: 0.88rem; color: rgba(220,210,195,0.65);
   line-height: 1.85; margin-bottom: 28px;
-  max-width: 380px; margin-left: auto; margin-right: auto;
+  max-width: 340px;
   text-shadow: 0 1px 8px rgba(0,0,0,0.9), 0 3px 20px rgba(0,0,0,0.75);
 }
 .btn-primary {
@@ -238,15 +241,16 @@ img { max-width: 100%; display: block; }
   position: absolute;
   bottom: 0;
   left: 0; right: 0;
-  height: 40vh;
-  z-index: 5;
+  height: 55vh;
+  z-index: 6;
   pointer-events: none;
-  /* Bottom of hero-pin-wrap — fades Hero bottom into content bg */
+  /* Fades the pinned Hero smoothly into the content surface */
   background: linear-gradient(
     to top,
     var(--bg) 0%,
-    rgba(14,13,12,0.85) 35%,
-    rgba(14,13,12,0.4) 70%,
+    rgba(14,13,12,0.96) 18%,
+    rgba(14,13,12,0.75) 40%,
+    rgba(14,13,12,0.3) 68%,
     transparent 100%
   );
 }
@@ -265,8 +269,8 @@ img { max-width: 100%; display: block; }
     linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
   border-radius: 28px 28px 0 0;
   padding-top: 72px;
-  margin-top: -100vh; /* overlap: sits directly on top of Hero */
-  box-shadow: 0 -2px 0 rgba(220,210,195,0.06), 0 -40px 60px rgba(14,13,12,0.95);
+  margin-top: 0; /* GSAP translateY handles the overlay animation */
+  box-shadow: 0 -1px 0 rgba(220,210,195,0.1), 0 -60px 80px rgba(14,13,12,0.98);
 }
 .content-section::before {
   content: '';
@@ -476,9 +480,19 @@ img { max-width: 100%; display: block; }
   .nav { display: none; }
   .menu-toggle { display: flex; }
 
-  .hero-image-wrap img { max-height: 72vh; max-width: 88vw; }
-  .hero-text-overlay { bottom: 10vh; }
-  .hero-text-overlay h1 { font-size: 1.35rem; }
+  .hero-image-wrap {
+    justify-content: center;
+    align-items: flex-end;
+    padding-right: 0;
+  }
+  .hero-image-wrap img { max-height: 70vh; max-width: 80vw; }
+  .hero-text-overlay {
+    left: 50%; transform: translateX(-50%);
+    text-align: center; width: 92%; padding: 0 20px;
+    bottom: 8vh;
+  }
+  .hero-sub { margin-left: auto; margin-right: auto; }
+  .hero-text-overlay h1 { font-size: 1.3rem; }
 
   .content-section { border-radius: 18px 18px 0 0; padding-top: 44px; }
 
