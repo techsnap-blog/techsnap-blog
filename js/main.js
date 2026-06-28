@@ -127,18 +127,23 @@
       });
     }
 
-    /* Content section: rises from below, covering Hero from 55% of pin travel */
+    /* -------------------------------------------------------
+       Story Transition: Article Surfaceがせり上がる
+       - content-sectionはCSS margin-top:-100vhでHero上に初期配置
+       - GSAPがさらにtranslateY(60vh)→(0)でせり上がりを演出
+       - Hero上に10〜15%残るよう、終了時もHeroが完全に隠れない
+       ------------------------------------------------------- */
     if (pinWrap && contentSec) {
       gsap.fromTo(contentSec,
-        { y: '40vh' },
+        { y: '65vh' },   /* 初期位置: 画面下65%に隠れている */
         {
-          y: '0vh',
+          y: '0vh',       /* 終了位置: 自然な位置（margin-top:-100vhが基準） */
           ease: 'none',
           scrollTrigger: {
             trigger: pinWrap,
-            start: '50% top',   /* starts rising at 50% of pin */
-            end: 'bottom top',  /* fully in place at end of pin */
-            scrub: 1.0,
+            start: 'top top',      /* ページ最上部からスクロール開始と同時 */
+            end: 'bottom top',     /* pin-wrap底部＝200vh地点で完了 */
+            scrub: 1.2,            /* スクロールに滑らかに追従 */
           }
         }
       );
