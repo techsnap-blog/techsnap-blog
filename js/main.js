@@ -1,35 +1,26 @@
 /* ============================================================
-   TechSnap — main.js  v2.0
-   Lenis smooth scroll + GSAP ScrollTrigger + UI interactions
+   TechSnap — main.js  v3.0
+   Pinned Hero + Scroll Overlay via GSAP ScrollTrigger + Lenis
    ============================================================ */
-
 (function () {
   'use strict';
 
-  /* ----------------------------------------------------------
-     1. Mobile menu
-  ---------------------------------------------------------- */
+  /* ------ Mobile menu ------ */
   const toggle    = document.querySelector('.menu-toggle');
   const mobileNav = document.querySelector('.mobile-nav');
   if (toggle && mobileNav) {
     toggle.addEventListener('click', () => mobileNav.classList.toggle('open'));
   }
 
-  /* ----------------------------------------------------------
-     2. Header: transparent → frosted on scroll
-  ---------------------------------------------------------- */
+  /* ------ Header frosted on scroll ------ */
   const header = document.querySelector('.site-header');
   if (header) {
-    const onScroll = () => {
-      header.classList.toggle('scrolled', window.scrollY > 40);
-    };
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 60);
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
 
-  /* ----------------------------------------------------------
-     3. Category filter
-  ---------------------------------------------------------- */
+  /* ------ Category filter ------ */
   const catBtns = document.querySelectorAll('.cat-btn');
   catBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -39,7 +30,6 @@
       document.querySelectorAll('.article-card').forEach(card => {
         const show = cat === 'all' || card.dataset.cat === cat;
         card.style.display = show ? '' : 'none';
-        /* Re-trigger visibility for filtered-in cards */
         if (show && !card.classList.contains('visible')) {
           requestAnimationFrame(() => card.classList.add('visible'));
         }
@@ -47,133 +37,125 @@
     });
   });
 
-  /* ----------------------------------------------------------
-     4. Article card scroll fade-in (IntersectionObserver)
-        — fallback when GSAP is unavailable
-  ---------------------------------------------------------- */
+  /* ------ IntersectionObserver fallback for cards ------ */
   function initCardFadeIn() {
     const cards = document.querySelectorAll('.article-card');
     if (!cards.length) return;
-
     const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
-          /* Stagger per row of 3 */
           const idx = Array.from(cards).indexOf(entry.target);
-          const delay = (idx % 3) * 80;
-          setTimeout(() => entry.target.classList.add('visible'), delay);
+          setTimeout(() => entry.target.classList.add('visible'), (idx % 3) * 90);
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-    cards.forEach(card => io.observe(card));
+    }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+    cards.forEach(c => io.observe(c));
   }
 
-  /* ----------------------------------------------------------
-     5. GSAP + Lenis (loaded from CDN in index.html)
-  ---------------------------------------------------------- */
-  function initGSAP() {
+  /* ------ Main GSAP init ------ */
+  function initScrollAnimations() {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-      /* GSAP not loaded — use IntersectionObserver fallback */
       initCardFadeIn();
       return;
     }
 
     gsap.registerPlugin(ScrollTrigger);
 
-    /* ---- Lenis smooth scroll ---- */
+    /* === Lenis === */
     let lenis = null;
     if (typeof Lenis !== 'undefined') {
       lenis = new Lenis({
-        duration: 1.1,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        duration: 1.2,
+        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
       });
-
       lenis.on('scroll', ScrollTrigger.update);
-
-      gsap.ticker.add((time) => {
-        lenis.raf(time * 1000);
-      });
+      gsap.ticker.add(time => lenis.raf(time * 1000));
       gsap.ticker.lagSmoothing(0);
     }
 
-    /* ---- Hero parallax / scale / blur ---- */
-    const heroImageWrap = document.querySelector('.hero-image-wrap');
-    const heroTextOverlay = document.querySelector('.hero-text-overlay');
-    const heroScrollHint  = document.querySelector('.hero-scroll-hint');
+    /* ===================================================
+       HERO PIN — image fades/scales as content rises
+       trigger: hero-pin-wrap (200vh)
+       =================================================== */
+    const pinWrap      = document.querySelector('.hero-pin-wrap');
+    const heroImg      = document.querySelector('.hero-image-wrap');
+    const heroText     = document.querySelector('.hero-text-overlay');
+    const heroHint     = document.querySelector('.hero-scroll-hint');
+    const contentSec   = document.querySelector('.content-section');
 
-    if (heroImageWrap) {
-      gsap.to(heroImageWrap, {
-        scale: 0.92,
-        opacity: 0.85,
-        filter: 'blur(4px)',
+    if (pinWrap && heroImg) {
+      /* Image: scale + opacity + blur as content rises */
+      gsap.to(heroImg, {
+        scale: 0.88,
+        opacity: 0.6,
+        filter: 'blur(6px) brightness(0.85)',
         ease: 'none',
         scrollTrigger: {
-          trigger: '.content-section',
-          start: 'top bottom',
-          end: 'top 30%',
-          scrub: true,
+          trigger: pinWrap,
+          start: 'top top',
+          end: 'bottom top',   /* 200vh total / end at bottom of pin wrap */
+          scrub: 1.2,
         }
       });
     }
 
-    if (heroTextOverlay) {
-      gsap.to(heroTextOverlay, {
+    if (pinWrap && heroText) {
+      /* Text: fades out in first 40% of pin travel */
+      gsap.to(heroText, {
         opacity: 0,
-        y: -24,
+        y: -32,
         ease: 'none',
         scrollTrigger: {
-          trigger: '.content-section',
-          start: 'top 90%',
-          end: 'top 50%',
-          scrub: true,
+          trigger: pinWrap,
+          start: 'top top',
+          end: '40% top',
+          scrub: 0.8,
         }
       });
     }
 
-    if (heroScrollHint) {
-      gsap.to(heroScrollHint, {
-        opacity: 0,
-        ease: 'none',
+    if (pinWrap && heroHint) {
+      gsap.to(heroHint, {
+        opacity: 0, ease: 'none',
         scrollTrigger: {
-          trigger: '.content-section',
-          start: 'top 95%',
-          end: 'top 80%',
-          scrub: true,
+          trigger: pinWrap,
+          start: 'top top',
+          end: '20% top',
+          scrub: 0.6,
         }
       });
     }
 
-    /* ---- Content section: slide up from behind ---- */
-    const contentSection = document.querySelector('.content-section');
-    if (contentSection) {
-      gsap.from(contentSection, {
-        y: 60,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: contentSection,
-          start: 'top bottom',
-          end: 'top 60%',
-          scrub: true,
+    /* Content section slides up — starts rising at 60% of pin */
+    if (pinWrap && contentSec) {
+      gsap.fromTo(contentSec,
+        { y: 80 },
+        {
+          y: 0, ease: 'none',
+          scrollTrigger: {
+            trigger: pinWrap,
+            start: '55% top',
+            end: 'bottom top',
+            scrub: 1.0,
+          }
         }
-      });
+      );
     }
 
-    /* ---- Article cards stagger fade-in ---- */
+    /* === Article cards stagger === */
     const cards = gsap.utils.toArray('.article-card');
     cards.forEach((card, i) => {
       gsap.fromTo(card,
-        { opacity: 0, y: 28 },
+        { opacity: 0, y: 32 },
         {
           opacity: 1, y: 0,
-          duration: 0.6,
-          ease: 'power2.out',
-          delay: (i % 3) * 0.07,
+          duration: 0.65, ease: 'power2.out',
+          delay: (i % 3) * 0.08,
           scrollTrigger: {
             trigger: card,
-            start: 'top 90%',
+            start: 'top 91%',
             toggleActions: 'play none none none',
             once: true,
           },
@@ -182,48 +164,37 @@
       );
     });
 
-    /* ---- Section titles fade-in ---- */
-    gsap.utils.toArray('.section-title, .ranking .section-title').forEach(el => {
+    /* === Section titles === */
+    gsap.utils.toArray('.section-title').forEach(el => {
       gsap.fromTo(el,
-        { opacity: 0, y: 16 },
+        { opacity: 0, y: 18 },
         {
-          opacity: 1, y: 0,
-          duration: 0.7, ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el, start: 'top 88%',
-            toggleActions: 'play none none none',
-            once: true,
-          }
+          opacity: 1, y: 0, duration: 0.7, ease: 'power2.out',
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true }
         }
       );
     });
 
-    /* ---- Ranking items stagger ---- */
+    /* === Ranking items === */
     gsap.utils.toArray('.rank-item').forEach((item, i) => {
       gsap.fromTo(item,
-        { opacity: 0, x: -16 },
+        { opacity: 0, x: -18 },
         {
-          opacity: 1, x: 0,
-          duration: 0.5, ease: 'power2.out',
-          delay: i * 0.06,
-          scrollTrigger: {
-            trigger: item, start: 'top 90%',
-            toggleActions: 'play none none none',
-            once: true,
-          }
+          opacity: 1, x: 0, duration: 0.5, ease: 'power2.out',
+          delay: i * 0.07,
+          scrollTrigger: { trigger: item, start: 'top 90%', once: true }
         }
       );
     });
   }
 
-  /* ----------------------------------------------------------
-     6. Init after DOM + scripts ready
-  ---------------------------------------------------------- */
+  /* ------ Init ------ */
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initGSAP);
+    document.addEventListener('DOMContentLoaded', () => {
+      window.addEventListener('load', initScrollAnimations);
+    });
   } else {
-    /* CDN scripts may still be loading */
-    window.addEventListener('load', initGSAP);
+    window.addEventListener('load', initScrollAnimations);
   }
 
 })();
