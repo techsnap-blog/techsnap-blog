@@ -105,25 +105,19 @@ img { max-width: 100%; display: block; }
 .mobile-nav a:last-child { border-bottom: none; }
 
 /* ===================================================
-   HERO SYSTEM
-   .hero-pin-wrap  — height:200vh, creates scroll space
-   .hero           — sticky, 100vh, stays pinned
+   HERO
+   GSAPのpinForce:trueでHeroを固定。
+   高さを持つラッパーは使わない。
    =================================================== */
-.hero-pin-wrap {
-  position: relative;
-  /* 200vh = Hero100vh固定 + content-sectionのスクロール空間100vh */
-  /* content-sectionがHeroの上をスクロールする間、Heroは背景に残る */
-  height: 200vh;
-  z-index: 1;
-}
-
 .hero {
-  position: sticky;
-  top: 0;
+  /* GSAPがpin時にfixedを付与するが、初期もfixedで背景に固定 */
+  position: fixed;
+  top: 0; left: 0;
   height: 100vh;
   width: 100%;
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
+  z-index: 1;
 }
 
 /* Warm noise + glow background */
@@ -236,43 +230,22 @@ img { max-width: 100%; display: block; }
 }
 
 /* ===================================================
-   OVERLAY BRIDGE
-   Gradient mask that blends Hero into Content
-   =================================================== */
-.hero-overlay-bridge {
-  position: absolute;
-  bottom: 0;
-  left: 0; right: 0;
-  height: 55vh;
-  z-index: 6;
-  pointer-events: none;
-  /* Fades the pinned Hero smoothly into the content surface */
-  background: linear-gradient(
-    to top,
-    var(--bg) 0%,
-    rgba(14,13,12,0.96) 18%,
-    rgba(14,13,12,0.75) 40%,
-    rgba(14,13,12,0.3) 68%,
-    transparent 100%
-  );
-}
-
-/* ===================================================
    CONTENT SECTION
-   Slides over hero; starts with transparent top
+   Heroはposition:fixedで背景に固定されている。
+   content-sectionはHeroの高さ分だけmargin-topを設けて
+   通常フローでHeroの下から始まる。
+   GSAPがtranslateYでHero上にせり上がる演出をする。
    =================================================== */
 .content-section {
   position: relative;
-  z-index: 10;
+  z-index: 10;               /* Heroのz-index:1より上 */
   background: var(--bg);
-  /* Warm noise on content bg too */
   background-image:
     radial-gradient(ellipse 80% 30% at 50% 0%, rgba(200,184,150,0.04) 0%, transparent 55%),
     linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
   border-radius: 28px 28px 0 0;
   padding-top: 72px;
-  /* Hero上に初期配置。GSAPがtranslateYでせり上がりを制御する */
-  margin-top: -100vh;
+  margin-top: 100vh;         /* Heroの高さ分だけ下に — Heroが見える空間を作る */
   box-shadow: 0 -1px 0 rgba(220,210,195,0.1), 0 -60px 80px rgba(14,13,12,0.98);
 }
 .content-section::before {
