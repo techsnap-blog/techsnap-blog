@@ -256,27 +256,50 @@ img { max-width: 100%; display: block; }
    GSAPがtranslateYでHero上にせり上がる演出をする。
    =================================================== */
 .content-section {
-  position: sticky;          /* スクロールに追従しつつHero上に重なる */
-  top: 0;                    /* 画面上端に張り付く */
-  z-index: 10;               /* Hero z-index:1 より上 */
-  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  /* Surface背景 — Warm White＋極薄グラデーション */
+  background-color: #F8F6F2;
   background-image:
-    radial-gradient(ellipse 80% 30% at 50% 0%, rgba(200,184,150,0.04) 0%, transparent 55%),
-    linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
-  border-radius: 28px 28px 0 0;
+    /* 上部の自然光 — Heroから空気がそのまま流れ込む */
+    radial-gradient(ellipse 100% 28% at 50% 0%, rgba(255,251,244,0.85) 0%, transparent 100%),
+    /* 全体の暖かさ */
+    radial-gradient(ellipse 70% 50% at 30% 40%, rgba(250,246,238,0.4) 0%, transparent 70%);
+
+  /* 上辺のみ大きめの角丸（展示パネル） */
+  border-radius: 44px 44px 0 0;
   padding-top: 72px;
-  /* margin-top 廃止 — 重なりはGSAP transformで制御 */
-  /* 上辺のshadowでHeroとの境界を消す */
+
+  /* 展示パネルのShadow — 極めて自然 */
   box-shadow:
-    0 -1px 0 rgba(60,50,40,0.08),
-    0 -48px 64px rgba(247,245,241,0.98);
+    0 -1px 0 rgba(180,160,130,0.12),          /* 上辺の細線 */
+    0 -24px 48px rgba(200,185,160,0.14),       /* 柔らかい浮遊感 */
+    0 -80px 100px rgba(248,246,242,0.96);      /* Heroとの境界を消す広域グラデーション */
+
+  /* Backdrop blur — Surfaceが一枚のパネルとして浮かぶ */
+  backdrop-filter: blur(2px) saturate(105%);
+  -webkit-backdrop-filter: blur(2px) saturate(105%);
+
   will-change: transform;
 }
 .content-section::before {
   content: '';
-  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: 60%; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212,201,184,0.18), transparent);
+  position: absolute;
+  top: -120px;           /* Surfaceの上辺より120px上まで伸ばす */
+  left: 0; right: 0;
+  height: 180px;         /* 十分な高さでHeroとSurfaceを溶け込ませる */
+  pointer-events: none;
+  z-index: -1;
+  /* 下から上へ: Surface背景色 → 透明 */
+  background: linear-gradient(
+    to top,
+    #F8F6F2 0%,
+    rgba(248,246,242,0.85) 30%,
+    rgba(248,246,242,0.4) 65%,
+    transparent 100%
+  );
 }
 /* Warm noise on content */
 .content-section::after {
@@ -284,7 +307,7 @@ img { max-width: 100%; display: block; }
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.018'/%3E%3C/svg%3E");
   background-size: 280px 280px;
-  border-radius: 28px 28px 0 0;
+  border-radius: 44px 44px 0 0;
 }
 .content-section > * { position: relative; z-index: 1; }
 
