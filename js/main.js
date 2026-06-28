@@ -167,15 +167,15 @@
        ------------------------------------------------------- */
     if (contentSec && heroEl) {
       gsap.fromTo(contentSec,
-        { y: '10vh' },
+        { y: '10vh' },         /* 8〜12vh範囲内 — Blueprintに従い控えめな移動量 */
         {
           y: '0vh',
           ease: 'none',
           scrollTrigger: {
             trigger: heroEl,
-            start: '+=300',    /* pin開始から300px後にせり上がり開始 */
+            start: '+=200',    /* pin開始から200px後 — Heroの余韻を残しつつ早めに見え始める */
             end: '+=900',      /* pin終了と同時に完了 */
-            scrub: 1.8,
+            scrub: 2.2,        /* Hero→空気→Surface の流れを滑らかに */
           }
         }
       );
