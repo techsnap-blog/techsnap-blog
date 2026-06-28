@@ -166,23 +166,46 @@ img { max-width: 100%; display: block; }
   );
   pointer-events: none;
 }
+/* ===================================================
+   HERO POSTER — grid layout container
+   左列: テキスト / 右列: 人物
+   二者を一つのレイアウトシステムで管理し
+   ポスター的な構図を実現する
+   =================================================== */
+.hero-poster {
+  /* heroの全面を覆う */
+  position: absolute; inset: 0; z-index: 2;
+
+  /* 2列grid: テキスト44% / 人物56% */
+  display: grid;
+  grid-template-columns: 44fr 56fr;
+  grid-template-rows: 1fr;
+
+  /* gridアイテムの高さをheroに合わせる */
+  align-items: stretch;
+}
+
+
 
 /* Hero image */
 .hero-image-wrap {
-  position: absolute; inset: 0; z-index: 2;
+  /* grid右列 — 画像専用コンテナ */
+  position: relative;           /* absolute独立から解放 */
   display: flex;
-  align-items: flex-end;        /* bottom align 維持 */
-  justify-content: flex-end;    /* right align 維持 */
-  padding-right: 2vw;           /* 6vw → 2vw: 人物を左へ寄せ中央空白を埋める */
+  align-items: flex-end;        /* 人物をBottomに揃える */
+  justify-content: center;
   will-change: transform, opacity, filter;
+  overflow: hidden;
 }
 .hero-image-wrap img {
-  max-height: 94vh;
-  max-width: min(520px, 58vw);   /* 54vw → 58vw: 人物を広げて中央空白を埋める */
-  width: auto; object-fit: contain;
-  /* multiply: 白(#fff)×背景色=背景色 → 白が消えて人物だけ浮かぶ */
-  mix-blend-mode: multiply;
-  /* オリジナル画像のまま使用 — invert削除 */
+  /* hero-posterのgridが幅を決めるのでmax-widthは100% */
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  object-fit: contain;
+  object-position: bottom center;
+  mix-blend-mode: multiply;     /* 白背景を透過させ人物だけ浮かぶ */
   filter: none;
   pointer-events: none; user-select: none;
   display: block;
@@ -190,14 +213,12 @@ img { max-width: 100%; display: block; }
 
 /* Hero text */
 .hero-text-overlay {
-  position: absolute; z-index: 4;
-  /* bottomからtopへ: 視覚的重心を上げ、人物と同じ帯域に収める */
-  top: 50%;
-  transform: translateY(-30%);   /* 中央から少し上 — 人物の胸〜顔と揃う */
-  left: 0;
-  text-align: left;
-  width: 42%;              /* 50% → 42%: テキスト右端が画像左端に近づく */
-  padding: 0 0 0 11vw;    /* 14vw → 11vw: 左の空白を詰める */
+  /* grid左列 — テキスト専用コンテナ */
+  position: relative;           /* absolute独立から解放 */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;    /* テキストを下寄せ — 人物のBottomと揃う */
+  padding: 0 2vw 10vh 8vw;     /* 上下左右: 下10vh左8vwでポスター的余白 */
   pointer-events: none;
   will-change: opacity, transform;
 }
@@ -506,19 +527,24 @@ img { max-width: 100%; display: block; }
   .nav { display: none; }
   .menu-toggle { display: flex; }
 
+  /* モバイル: gridを縦積みに変更 */
+  .hero-poster {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .hero-text-overlay {
+    position: relative;
+    justify-content: flex-end;
+    padding: 12vh 20px 4vh;
+    text-align: center;
+    align-items: center;
+  }
   .hero-image-wrap {
     justify-content: center;
     align-items: flex-end;
-    padding-right: 0;
   }
-  .hero-image-wrap img { max-height: 70vh; max-width: 80vw; }
-  .hero-text-overlay {
-    top: auto; bottom: 8vh;      /* mobile: bottomに戻す */
-    left: 50%;
-    transform: translateX(-50%); /* topのtranslateYを打ち消す */
-    text-align: center; width: 92%; padding: 0 20px;
-  }
-  .hero-sub { margin-left: auto; margin-right: auto; }
+  .hero-image-wrap img { max-height: 55vh; }
+  .hero-sub { text-align: center; }
   .hero-text-overlay h1 { font-size: 1.3rem; }
 
   .content-section { border-radius: 18px 18px 0 0; padding-top: 44px; }
