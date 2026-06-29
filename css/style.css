@@ -255,6 +255,9 @@ img { max-width: 100%; display: block; }
   max-width: 340px;
 }
 .btn-primary {
+  /* .hero-text-overlay > * の width:min(280px,88%)を打ち消し、
+     ピル型ボタンは常にテキストに合わせた幅にする */
+  width: auto;
   display: inline-block;
   background: transparent;
   color: var(--accent);
@@ -540,15 +543,15 @@ img { max-width: 100%; display: block; }
     position: relative;
     justify-content: flex-end;
     padding: 12vh 20px 4vh;
-    text-align: center;
-    align-items: center;
+    text-align: left;
+    align-items: flex-start;
   }
   .hero-image-wrap {
     justify-content: center;
     align-items: flex-end;
   }
   .hero-image-wrap img { max-height: 55vh; }
-  .hero-sub { text-align: center; }
+  .hero-sub { text-align: left; }
   .hero-text-overlay h1 { font-size: 1.3rem; }
 
   .content-section { border-radius: 18px 18px 0 0; padding-top: 44px; }
