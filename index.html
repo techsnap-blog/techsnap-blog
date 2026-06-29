@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechSnap — ガジェット・カメラ・撮影機材レビュー</title>
+  <meta name="description" content="買う前に知りたい本音レビュー。カメラ・ガジェット・撮影機材をじっくり使い込んだ正直な評価をお届けします。">
+  <meta name="google-site-verification" content="7X0_YVXS04aDX2bkh_afWnmMrBp1xpfZvCPiF14igd8" />
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- GSAP + ScrollTrigger + Lenis -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.9/lenis.min.js" defer></script>
+</head>
+<body>
+
+  <!-- ======================================================
+       HEADER
+  ====================================================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">Tech<span>Snap</span></a>
+      <nav class="nav">
+        <a href="#reviews">レビュー</a>
+        <a href="#ranking">買って良かった</a>
+        <a href="#x-feed">X投稿</a>
+      </nav>
+      <button class="menu-toggle" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="#reviews">レビュー</a>
+      <a href="#ranking">買って良かった</a>
+      <a href="#x-feed">X投稿</a>
+    </nav>
+  </header>
+
+  <!-- ======================================================
+       HERO PIN WRAP — 200vh = pin duration
+  ====================================================== -->
+  <section class="hero">
+
+    <!-- Background layer -->
+    <div class="hero-bg" aria-hidden="true"></div>
+
+    <!-- Poster layout container
+         grid: [text-col] [image-col]
+         テキストと人物を一つのレイアウトシステムで管理 -->
+    <div class="hero-poster">
+
+      <!-- Left: Text column -->
+      <div class="hero-text-overlay">
+        <p class="hero-eyebrow">本音のガジェットレビュー</p>
+        <h1>買う前に<br>知りたいことを、<br>正直に書く。</h1>
+        <p class="hero-sub">スペック表には書いていない使い心地、<br>価格には表れない満足感。</p>
+        <a href="articles/shure-sm7b-review.html" class="btn-primary">最新レビューを読む</a>
+      </div>
+
+      <!-- Right: Image column
+           .hero-image-wrap クラスはGSAP参照のため維持 -->
+      <div class="hero-image-wrap">
+        <img
+          src="images/hero-main.png"
+          alt="TechSnap — 本音のガジェットレビュー"
+          width="560"
+          height="700"
+          fetchpriority="high"
+        >
+      </div>
+
+    </div><!-- /hero-poster -->
+
+    <!-- Scroll hint -->
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+        <rect x="6.5" y="2" width="3" height="6" rx="1.5" fill="currentColor"/>
+        <rect x="0.5" y="0.5" width="15" height="23" rx="7.5" stroke="currentColor" stroke-opacity="0.3"/>
+      </svg>
+      <span>scroll</span>
+    </div>
+
+  </section>
+  <!-- ======================================================
+       CONTENT SECTION — Heroの上にposition:fixedで重なる
+  ====================================================== -->
+  <div class="content-section">
+
+    <!-- Categories -->
+    <section class="categories">
+      <div class="container">
+        <div class="cat-list">
+          <button class="cat-btn active" data-cat="all">すべて</button>
+          <button class="cat-btn" data-cat="撮影機材">撮影機材</button>
+          <button class="cat-btn" data-cat="PC・周辺パーツ">PC・周辺パーツ</button>
+          <button class="cat-btn" data-cat="スマホ・アクセサリー">スマホ・アクセサリー</button>
+          <button class="cat-btn" data-cat="オーディオ">オーディオ</button>
+          <button class="cat-btn" data-cat="白物家電">白物家電</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Articles -->
+    <section class="articles" id="reviews">
+      <div class="container">
+        <div class="article-grid">
+
+          <article class="article-card" data-cat="オーディオ">
+            <div class="card-img">
+              <img src="images/shure.jpg" alt="Shure SM7B ダイナミックマイク" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">オーディオ</span>
+                <span class="date">2026年6月29日</span>
+              </div>
+              <h3><a href="articles/shure-sm7b-review.html">Shure SM7B｜「マイク沼の終着点」に辿り着いた話</a></h3>
+              <p class="card-excerpt">5万円超の出費を「高い」と思うか「解放」と思うか。HIKAKINも愛用するダイナミックマイクの最終回答を正直にレビュー。</p>
+              <p class="card-score">9.5 / 10</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="オーディオ">
+            <div class="card-img">
+              <img src="images/dji-mic-mini.jpg" alt="DJI Mic Mini" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">オーディオ</span>
+                <span class="date">2026年6月29日</span>
+              </div>
+              <h3><a href="articles/dji-mic-mini-review.html">DJI Mic Mini｜「音の問題」をスマートに片付ける、10gのワイヤレスマイク</a></h3>
+              <p class="card-excerpt">重さ10g・伝送300m・11.5時間駆動。Osmo Pocket 4との直結で機材がシンプルになった話。</p>
+              <p class="card-score">8.9 / 10</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="撮影機材">
+            <div class="card-img">
+              <img src="images/lexarsd.jpg" alt="SDカード比較 Lexar Gigastone SanDisk ELECOM" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">撮影機材</span>
+                <span class="date">2026年6月29日</span>
+              </div>
+              <h3><a href="articles/sd-card-comparison-review.html">SDカード比較2026｜Gigastone・SanDisk・Lexar・ELECOM、4枚を正直に比べた</a></h3>
+              <p class="card-excerpt">UHS-IとUHS-IIの違いから選び方まで初心者にも分かりやすく解説。個人的に実際に使い続けているカードも公開。</p>
+              <p class="card-score">9.4 / 10（Lexar推し）</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="撮影機材">
+            <div class="card-img">
+              <img src="images/canon-eos-r6-mark3.jpg" alt="Canon EOS R6 Mark III" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">撮影機材</span>
+                <span class="date">2026年6月29日</span>
+              </div>
+              <h3><a href="articles/canon-eos-r6-mark3-review.html">Canon EOS R6 Mark III｜「買い替えを迷っている人」への正直な答え</a></h3>
+              <p class="card-excerpt">3250万画素・電子シャッター40コマ/秒・手ブレ補正8.5段・CFexpressデュアルスロット。「カメラに振り回される撮影」を終わりにする一台の本音評価。</p>
+              <p class="card-score">9.0 / 10</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="オーディオ">
+            <div class="card-img">
+              <img src="images/audio-technica-at-umx3.jpg" alt="audio-technica AT-UMX3" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">オーディオ</span>
+                <span class="date">2026年6月28日</span>
+              </div>
+              <h3><a href="articles/audio-technica-at-umx3-review.html">audio-technica AT-UMX3｜「声の質」が変わった日、配信が変わった</a></h3>
+              <p class="card-excerpt">192kHz/24bit・ループバック搭載・ドライバ不要・334g。マイクメーカーが作った配信特化ミキサーの実力。</p>
+              <p class="card-score">9.4 / 10</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="撮影機材">
+            <div class="card-img">
+              <img src="images/dji-osmo-pocket-4.jpg" alt="DJI Osmo Pocket 4" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">撮影機材</span>
+                <span class="date">2026年6月27日</span>
+              </div>
+              <h3><a href="articles/dji-osmo-pocket-4-review.html">DJI Osmo Pocket 4｜「重い一眼を置いてきた日」の映像が、一番良かった</a></h3>
+              <p class="card-excerpt">1インチCMOS・4K240fps・3軸ジンバル・107GB内蔵。ポケットから出してすぐ撮れる。持ち歩けるカメラが最高のカメラだという話。</p>
+              <p class="card-score">9.4 / 10</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="PC・周辺パーツ">
+            <div class="card-img">
+              <img src="images/eizo-coloredge-cs2400s.jpg" alt="EIZO ColorEdge CS2400S" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">PC・周辺パーツ</span>
+                <span class="date">2026年6月27日</span>
+              </div>
+              <h3><a href="articles/eizo-coloredge-cs2400s-review.html">EIZO ColorEdge CS2400S｜モニターを変えたら、写真への向き合い方が変わった話</a></h3>
+              <p class="card-excerpt">AdobeRGBカバー率99%、ハードウェアキャリブレーション対応、USB-C 70W給電。RAW現像を本気でやる人間が最終的に辿り着く答え。</p>
+              <p class="card-score">9.2 / 10</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="撮影機材">
+            <div class="card-img">
+              <img src="images/diagnl-ninja-strap.jpg" alt="diagnl ニンジャストラップ" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">撮影機材</span>
+                <span class="date">2026年6月26日</span>
+              </div>
+              <h3><a href="articles/diagnl-ninja-strap-review.html">diagnl ニンジャストラップ｜「純正ストラップのまま」という選択肢を捨てた日</a></h3>
+              <p class="card-excerpt">ワンアクションで伸縮する速写性、体への密着感。プロから報道カメラマンまで愛用される理由が、使えばすぐわかる。</p>
+              <p class="card-score">9.4 / 10</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="スマホ・アクセサリー">
+            <div class="card-img">
+              <img src="images/jetech-magsafe-slim-case.jpg" alt="JETech MagSafe ケース" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">スマホ・アクセサリー</span>
+                <span class="date">2026年6月25日</span>
+              </div>
+              <h3><a href="articles/jetech-magsafe-slim-case-review.html">JETech マグネットスリムケース MagSafe対応｜「ケースはシンプルでいい」という大人の結論</a></h3>
+              <p class="card-excerpt">余計な機能も過剰な厚みもいらない。iPhoneのデザインを殺さず、MagSafeを完全に使える。大人の引き算美学が行き着くケース。</p>
+              <p class="card-score">9.1 / 10</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="撮影機材">
+            <div class="card-img">
+              <img src="images/canon-control-ring-adapter.jpg" alt="Canon コントロールリングアダプター" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">撮影機材</span>
+                <span class="date">2026年6月25日</span>
+              </div>
+              <h3><a href="articles/canon-control-ring-adapter-review.html">Canon コントロールリングマウントアダプター EF-EOS R｜EFレンズ資産を「捨てない」という選択</a></h3>
+              <p class="card-excerpt">長年積み上げたEFレンズをミラーレスでそのまま使う。AF・IS・EXIF完全対応、防塵防滴、コントロールリング付き純正アダプターの全貌。</p>
+              <p class="card-score">9.1 / 10</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="撮影機材">
+            <div class="card-img">
+              <img src="images/manfrotto-410-gear-head.jpg" alt="Manfrotto 410 雲台" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">撮影機材</span>
+                <span class="date">2026年6月25日</span>
+              </div>
+              <h3><a href="articles/manfrotto-410-review.html">Manfrotto 410 ギア付き雲台｜「構図で妥協する」のをやめた日</a></h3>
+              <p class="card-excerpt">ロックした瞬間に構図がズレる——そのストレスを完全に消してくれる道具がある。20年使い続けるユーザーが世界中にいる理由を語る。</p>
+              <p class="card-score">9.2 / 10</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="撮影機材">
+            <div class="card-img">
+              <img src="images/lowepro-pro-trekker-bp450.jpg" alt="Lowepro BP450 AW II" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">撮影機材</span>
+                <span class="date">2026年6月25日</span>
+              </div>
+              <h3><a href="articles/lowepro-pro-trekker-bp450-review.html">Lowepro プロトレッカー BP450 AW II｜「もう妥協しない」と決めた40代が選ぶべき一択</a></h3>
+              <p class="card-excerpt">32L・機内持ち込みOK・全天候対応。カメラバッグで妥協を繰り返してきた大人が、最終的にたどり着く答え。</p>
+              <p class="card-score">9.1 / 10</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="撮影機材">
+            <div class="card-img">
+              <img src="images/slik-tube-light.jpg" alt="SLIK チューブ型ライト" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">撮影機材</span>
+                <span class="date">2026年6月25日</span>
+              </div>
+              <h3><a href="articles/slik-tube-light-review.html">SLIK チューブ型撮影用ライト｜これ1本で「映える写真」の光が手に入る理由</a></h3>
+              <p class="card-excerpt">光の質を変えるだけで、同じカメラ・同じ被写体が別物のように写る。2500K〜6500K・8種エフェクト搭載のSLIKチューブライトを徹底レビュー。</p>
+              <p class="card-score">8.9 / 10</p>
+            </div>
+          </article>
+
+          <article class="article-card" data-cat="撮影機材">
+            <div class="card-img">
+              <img src="images/canon-6d-mark2.jpg" alt="Canon EOS 6D Mark II" loading="lazy">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">撮影機材</span>
+                <span class="date">2026年6月25日</span>
+              </div>
+              <h3><a href="articles/canon-eos-6d-mark2-review.html">Canon EOS 6D Mark II レンズキット｜ミラーレス全盛の今、あえてこれを選ぶ理由</a></h3>
+              <p class="card-excerpt">フルサイズ一眼レフへの先入観を、この軽さが一瞬で壊してくれる。2,620万画素が描く空気感とLレンズの解像力——「これで十分」と気づいた日の話。</p>
+              <p class="card-score">8.7 / 10</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Ranking -->
+    <section class="ranking" id="ranking">
+      <div class="container">
+        <h2 class="section-title">買って良かったランキング</h2>
+        <ol class="rank-list">
+          <li class="rank-item">
+            <span class="rank-num">1</span>
+            <div class="rank-body">
+              <span class="tag sm">オーディオ</span>
+              <a href="articles/shure-sm7b-review.html">Shure SM7B｜「マイク沼の終着点」に辿り着いた話</a>
+            </div>
+            <span class="rank-score">9.5</span>
+          </li>
+          <li class="rank-item">
+            <span class="rank-num">2</span>
+            <div class="rank-body">
+              <span class="tag sm">撮影機材</span>
+              <a href="articles/diagnl-ninja-strap-review.html">diagnl ニンジャストラップ｜「純正ストラップのまま」を捨てた日</a>
+            </div>
+            <span class="rank-score">9.4</span>
+          </li>
+          <li class="rank-item">
+            <span class="rank-num">3</span>
+            <div class="rank-body">
+              <span class="tag sm">撮影機材</span>
+              <a href="articles/dji-osmo-pocket-4-review.html">DJI Osmo Pocket 4｜「重い一眼を置いてきた日」の映像が一番良かった</a>
+            </div>
+            <span class="rank-score">9.4</span>
+          </li>
+          <li class="rank-item">
+            <span class="rank-num">4</span>
+            <div class="rank-body">
+              <span class="tag sm">オーディオ</span>
+              <a href="articles/audio-technica-at-umx3-review.html">audio-technica AT-UMX3｜「声の質」が変わった日、配信が変わった</a>
+            </div>
+            <span class="rank-score">9.4</span>
+          </li>
+          <li class="rank-item">
+            <span class="rank-num">5</span>
+            <div class="rank-body">
+              <span class="tag sm">撮影機材</span>
+              <a href="articles/canon-rf35mm-f18-macro-review.html">Canon RF35mm F1.8 MACRO IS STM｜1本だけ持って行くならこれ</a>
+            </div>
+            <span class="rank-score">9.3</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- X Timeline -->
+    <section class="x-section" id="x-feed">
+      <div class="x-inner">
+        <p class="x-eyebrow">X（Twitter）最新投稿</p>
+        <p class="x-sub">レビュー更新・おすすめ情報をXでも発信中</p>
+        <a href="https://x.com/techsnapblog" target="_blank" rel="noopener" class="x-follow-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.26 5.632 5.904-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          @techsnapblog をフォロー
+        </a>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-logo">Tech<span>Snap</span></div>
+        <p class="footer-desc">カメラ・ガジェット・撮影機材の本音レビューをお届けするブログです。<br>記事内にはアフィリエイトリンクが含まれます。</p>
+        <p class="footer-copy">© 2026 TechSnap</p>
+      </div>
+    </footer>
+
+  </div><!-- /content-section -->
+
+  <script src="js/main.js"></script>
+</body>
+</html>
