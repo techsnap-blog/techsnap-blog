@@ -468,16 +468,17 @@ img { max-width: 100%; display: block; }
   padding: 72px 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  background:
-    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,248,235,0.5) 0%, transparent 60%),
-    var(--bg2);
+  /* 記事一覧(Article Surface)と同じ半透明にし、Heroが透けて見えるよう統一 */
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,248,235,0.25) 0%, transparent 60%);
 }
 .rank-list {
   list-style: none;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--surface);
+  background: rgba(248,246,242, 0.55);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
 }
 .rank-item {
   display: flex; align-items: center; gap: 18px;
