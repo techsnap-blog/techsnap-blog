@@ -550,8 +550,9 @@ img { max-width: 100%; display: block; }
   .hero-image-wrap {
     justify-content: center;
     align-items: flex-end;
+    transform: translateY(-4vh);  /* 全体を少し上に持ち上げる */
   }
-  .hero-image-wrap img { max-height: 55vh; }
+  .hero-image-wrap img { max-height: 65vh; }  /* サイズを少し大きく */
   .hero-sub { text-align: left; }
   .hero-text-overlay h1 { font-size: 1.3rem; }
 
