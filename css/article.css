@@ -55,15 +55,27 @@
 }
 .score-item strong.green { color: var(--green); }
 
-/* Product image */
-.product-img-wrap {
+/* Product image
+   記事ページには画像マークアップが3パターン混在
+   （.product-img-wrap / .article-hero-img / .hero-img）しているため、
+   全て同じ比率・サイズ規則に統一する。 */
+.product-img-wrap,
+.article-hero-img {
   width: 100%; border-radius: var(--radius);
   border: 1px solid var(--sand); margin-bottom: 32px;
   background: var(--paper); overflow: hidden;
 }
-.product-img-wrap img {
+.product-img-wrap img,
+.article-hero-img img,
+.hero-img {
   width: 100%; max-height: 360px;
   object-fit: contain; padding: 24px; display: block;
+  box-sizing: border-box;
+}
+.hero-img {
+  border-radius: var(--radius);
+  border: 1px solid var(--sand); margin-bottom: 32px;
+  background: var(--paper);
 }
 
 /* Content */
@@ -170,6 +182,9 @@
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
+  /* 記事ページではfixedヘッダー(TechSnapロゴ)が本文と重なるため非表示にする。
+     style.cssはindex.htmlとも共有のためhideはここ(article.css)のみに限定。 */
+  .site-header { display: none; }
   .article-main { padding: 24px 0 48px; }
   .article-layout { grid-template-columns: 1fr; }
   .sidebar { position: static; display: none; }
@@ -177,7 +192,9 @@
   .score-item { min-width: calc(33.333% - 1px); }
   .affiliate-btns { flex-direction: column; }
   .aff-btn { width: 100%; text-align: center; }
-  .product-img-wrap img { padding: 16px; }
+  .product-img-wrap img,
+  .article-hero-img img,
+  .hero-img { padding: 16px; }
 }
 @media (max-width: 1024px) and (min-width: 769px) {
   .article-layout { grid-template-columns: 1fr 220px; }
