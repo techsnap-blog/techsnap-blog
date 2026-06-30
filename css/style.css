@@ -415,7 +415,7 @@ img { max-width: 100%; display: block; }
 }
 
 /* ===== ARTICLES ===== */
-.articles { padding: 0 0 88px; scroll-margin-top: 80px; /* 固定ヘッダーに隠れないよう余白を確保 */ }
+.articles { padding: 0 0 88px; scroll-margin-top: 190px; /* 固定ヘッダー＋固定カテゴリバー分の余白を確保 */ }
 
 .article-grid {
   display: grid;

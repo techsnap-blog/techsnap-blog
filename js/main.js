@@ -68,9 +68,10 @@
 
   function updateArticleVisibility(opts) {
     const forceReveal = !!(opts && opts.forceReveal);
-    /* 検索中はカテゴリ・15件制限を無視して全件から検索する */
+    /* カテゴリと検索キーワードの両方を満たす記事だけを表示する。
+       検索中は15件制限のみ無視して該当記事を全件表示する。 */
     const matches = allCards.filter(card =>
-      (searchQuery || currentCat === 'all' || card.dataset.cat === currentCat) && cardMatchesSearch(card)
+      (currentCat === 'all' || card.dataset.cat === currentCat) && cardMatchesSearch(card)
     );
     const limitActive = !searchQuery;
 
