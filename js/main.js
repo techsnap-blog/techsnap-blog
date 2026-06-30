@@ -12,6 +12,25 @@
     toggle.addEventListener('click', () => mobileNav.classList.toggle('open'));
   }
 
+  /* ------ 「カテゴリ」リンク: ボタンが画面中央に来るよう滑らかにスクロール ------
+     html{scroll-behavior:auto}（Lenisとの競合回避のため）なので、
+     通常のアンカージャンプは一瞬で上端に飛んでしまう。ここだけは
+     window.scrollTo({behavior:'smooth'})で明示的に滑らかに動かし、
+     かつtopではなくセクションの中央が画面中央に来る位置を計算する。 */
+  function smoothScrollToCenter(target) {
+    const rect = target.getBoundingClientRect();
+    const destination = window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2;
+    window.scrollTo({ top: Math.max(0, destination), behavior: 'smooth' });
+  }
+  document.querySelectorAll('a[href="#categories"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (mobileNav) mobileNav.classList.remove('open');
+      const target = document.getElementById('categories');
+      if (target) smoothScrollToCenter(target);
+    });
+  });
+
   /* ------ Header frosted on scroll ------ */
   const header = document.querySelector('.site-header');
   if (header) {
