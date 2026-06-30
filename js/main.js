@@ -156,6 +156,16 @@
     });
   }
 
+  /* ------ 記事カード全体をクリック可能にする（画像タップでも遷移） ------ */
+  allCards.forEach(card => {
+    const link = card.querySelector('h3 a');
+    if (!link) return;
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return; /* タイトルリンク自身のクリックはそのまま任せる */
+      window.location.href = link.href;
+    });
+  });
+
   /* ------ IntersectionObserver fallback for cards ------ */
   function initCardFadeIn() {
     const cards = document.querySelectorAll('.article-card');
