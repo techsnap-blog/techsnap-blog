@@ -651,6 +651,32 @@ img { max-width: 100%; display: block; }
   .article-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* スマホ横向き（高さが低い）では、縦積みレイアウトのままだと
+   Heroの人物画像が極端に小さくなってしまうため、デスクトップに
+   近い左右分割レイアウトに戻してバランスを保つ */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+  .hero-poster {
+    grid-template-columns: 36fr 64fr;
+    grid-template-rows: 1fr;
+  }
+  .hero-text-overlay {
+    position: relative;
+    justify-content: flex-end;
+    padding: 0 3vw 8vh 0;
+    text-align: right;
+    align-items: flex-end;
+    transform: none;
+  }
+  .hero-text-overlay h1 { font-size: 1.4rem; }
+  .hero-sub { text-align: right; font-size: 0.78rem; }
+  .hero-image-wrap {
+    justify-content: center;
+    align-items: flex-end;
+    transform: none;
+  }
+  .hero-image-wrap img { max-height: 92vh; }
+}
+
 /* ===== ARTICLE PROMO CTA (article-promo.jsが自動挿入) ===== */
 .amazon-music-cta {
   background: #0a0a0a; border-radius: 12px; padding: 1.5rem;
