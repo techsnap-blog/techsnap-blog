@@ -1,0 +1,110 @@
+/* ============================================================
+   TechSnap Hero 2.5D — Layer styles
+   ------------------------------------------------------------
+   ステージは .hero-image-wrap の内側に JS が注入する。
+   GSAPは親(.hero-image-wrap)のtransformを所有し、
+   本CSSとJSは子レイヤーのtransformのみを所有する（競合なし）。
+
+   セレクタは必ず「.hero25d-stage .hero25d-layer…」の形にする。
+   レイヤーは<img>要素のため、style.cssの「.hero-image-wrap img」
+   （詳細度0-1-1）に勝つ詳細度0-2-0以上が必要。
+
+   z-index 定数表（HERO25D_LAYERS と対応 / 競合禁止）
+     [stage内 = .hero-image-wrap基準]
+       back-glow      2
+       person        10
+       glitch-main   20
+       glitch-detail 21
+       front-glow    40
+     [.hero直下 = hero-bg(0)とhero-poster(2)の間]
+       particles-a/b/c  1  … Hero全面に点在。テキストの下に敷く
+                            （3枚同値。相互の描画順はDOM順で決まり、
+                             粒同士は重ならないため問題ない）
+     (Hero Text は既存 .hero-text-overlay がDOM兄弟として上位)
+
+   ブレークポイントは style.css に合わせる:
+     モバイル   <= 768px（静止Hero）
+     タブレット 769px〜1279px
+     デスクトップ >= 1280px
+   ============================================================ */
+
+.hero25d-stage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* 各レイヤー共通 — 元<img>と同じ contain / bottom center 配置。
+   全アセットは同一アスペクト比(2:3)で作成しているため完全に重なる。
+   mix-blend-modeは「.hero-image-wrap img」のmultiplyを打ち消す
+   （multiply等価の見た目はアルファに焼き込み済みのため不要） */
+.hero25d-stage .hero25d-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  object-fit: contain;
+  object-position: bottom center;
+  mix-blend-mode: normal;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Glow層 — 温白背景に光を足す（Screen合成） */
+.hero25d-stage .hero25d-layer--back-glow  { z-index: 2;  mix-blend-mode: screen; opacity: 0.55; }
+.hero25d-stage .hero25d-layer--front-glow { z-index: 40; mix-blend-mode: screen; opacity: 0.35; }
+
+/* 人物・グリッチ — 透過黒レイヤー（multiply等価をアルファで再現済み）。
+   グリッチ複製は下の原画と重なって二重に濃くなるため、
+   基礎透明度0.6で周囲の墨色に馴染ませる（JSのbaseOpacityと一致） */
+.hero25d-stage .hero25d-layer--person        { z-index: 10; }
+.hero25d-stage .hero25d-layer--glitch-main   { z-index: 20; opacity: 0.6; }
+.hero25d-stage .hero25d-layer--glitch-detail { z-index: 21; opacity: 0.6; }
+
+/* Particles — 画像カラム(overflow:hidden)の外、.hero直下に置き
+   Hero全面へ点在させる（見出しの左側まで届く）。テキストの下(z1)。
+   a/b/cの3枚が別速度で漂うため共通クラス .hero25d-wide でまとめて指定 */
+.hero .hero25d-wide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  mix-blend-mode: normal;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+  backface-visibility: hidden;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+/* ステージ有効時のみ元画像を隠す（レイヤー全読込後にJSが付与）。
+   display:none にせず visibility で切替え、レイアウト計算を変えない */
+.hero-image-wrap.hero25d-on > img {
+  visibility: hidden;
+}
+
+/* ---------- Responsive ----------
+   JS側もモバイル/Reduced Motionでは初期化自体を行わないが、
+   CSSでも二重に保護する */
+@media (max-width: 768px) {
+  .hero25d-stage,
+  .hero .hero25d-wide { display: none; }
+  .hero-image-wrap.hero25d-on > img { visibility: visible; }
+}
+
+/* Tablet: パーティクルは停止（表示自体を消す） */
+@media (min-width: 769px) and (max-width: 1279px) {
+  .hero .hero25d-wide { display: none; }
+}
+
+/* ---------- Reduced Motion ----------
+   動きを全停止し、静的な合成のみ残す */
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero25d-layer { transform: none !important; }
+}

@@ -1,0 +1,877 @@
+/* ============================================================
+   TechSnap — style.css  v3.0
+   Concept: Warm Monochrome / Pinned Hero / Scroll Overlay
+   Palette: Leica / Apple — warm white, soft grey, gentle black
+   ============================================================ */
+
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: auto; }
+
+/* ===== DESIGN TOKENS ===== */
+:root {
+  /* Blueprint v2.0 — Warm White Light Theme */
+  --bg:           #F7F5F1;   /* Warm White base */
+  --bg2:          #F2F0EC;   /* slightly deeper warm */
+  --bg3:          #EDEAE4;
+  --surface:      #FAFAF8;   /* Article Surface — near white */
+  --surface2:     #F4F2EE;
+
+  --border:       rgba(60,50,40,0.09);
+  --border-light: rgba(60,50,40,0.15);
+
+  --text:         #1C1A18;   /* warm near-black — NOT pure #000 */
+  --text-muted:   #6B6560;   /* warm mid grey */
+  --text-sub:     #A09890;   /* warm light grey */
+
+  --accent:       #4A3F32;   /* warm dark brown — primary action */
+  --accent-warm:  #7A6A58;   /* muted warm brown */
+  --gold:         #9A7A4A;
+  --green:        #4A7A58;   /* desaturated warm green */
+
+  --font-sans: 'Inter', 'Noto Sans JP', sans-serif;
+  --font-body: 'Noto Sans JP', 'Inter', sans-serif;
+
+  --radius:     8px;
+  --radius-lg:  16px;
+  --shadow-card:  0 1px 3px rgba(60,50,40,0.07), 0 4px 16px rgba(60,50,40,0.06);
+  --shadow-hover: 0 4px 24px rgba(60,50,40,0.13), 0 0 0 1px rgba(60,50,40,0.06);
+
+  /* Legacy compat */
+  --cream: #F7F5F1; --paper: #F2F0EC; --sand: rgba(60,50,40,0.08);
+  --stone: #A09890; --bark: #6B6560; --ink: #1C1A18; --ink-soft: #4A3F32;
+  --accent-lt: #F0EDE8;
+}
+
+/* ===== BASE ===== */
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  /* Warm White背景：ラジアルグラデーション＋ノイズ＋自然光 */
+  background-color: #F7F5F1;
+  background-image:
+    /* ぼんやりした自然光 — 中央上部から */
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,248,235,0.7) 0%, transparent 65%),
+    /* 左下の柔らかい光 */
+    radial-gradient(ellipse 50% 40% at 10% 90%, rgba(245,238,220,0.4) 0%, transparent 60%),
+    /* 微細ノイズテクスチャ */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+  background-size: 100% 100%, 100% 100%, 200px 200px;
+  background-repeat: no-repeat, no-repeat, repeat;
+}
+/* Lenis公式推奨CSS — ネイティブスクロールとLenis仮想スクロールの
+   位置ズレ（Hero pin中のカクつき/流れ）を防ぐ */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+/* ===== HEADER ===== */
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: transparent;
+  transition: background 0.5s, border-color 0.5s;
+}
+.site-header.scrolled {
+  background: rgba(247,245,241,0.88);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner { display: flex; align-items: center; height: 60px; gap: 32px; }
+.logo {
+  font-family: var(--font-sans); font-size: 1rem; font-weight: 700;
+  letter-spacing: 0.08em; color: var(--text); flex-shrink: 0;
+}
+.logo span { color: var(--accent-warm); }
+.nav { display: flex; gap: 28px; margin-left: auto; }
+.nav a {
+  font-family: var(--font-sans); font-size: 0.75rem; font-weight: 500;
+  color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav a:hover { color: var(--text); }
+.menu-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  padding: 8px; margin-left: auto; flex-direction: column; gap: 5px;
+}
+.menu-toggle span {
+  display: block; width: 20px; height: 1px;
+  background: var(--text); border-radius: 1px; transition: all 0.2s;
+}
+.mobile-nav {
+  display: none; flex-direction: column;
+  background: rgba(247,245,241,0.97);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid var(--border); padding: 12px 24px 20px;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  font-family: var(--font-sans); font-size: 0.9rem;
+  color: var(--text); padding: 14px 0;
+  border-bottom: 1px solid var(--border); letter-spacing: 0.05em;
+}
+.mobile-nav a:last-child { border-bottom: none; }
+
+/* ===================================================
+   HERO
+   常時position:fixedで背景に固定する（JS不要・常に確実）。
+   GSAPのpin/pin-spacer方式は「pin解除後に一緒にスクロールし
+   始める」不具合が再発したため廃止。Heroはページの最後まで
+   背景として残り続ける。
+   =================================================== */
+.hero {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1;
+}
+
+/* Warm noise + glow background */
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  /* Warm White背景 — Hero画像の白を自然に溶け込ませる */
+  background:
+    /* 右上の柔らかい自然光 — 人物が浮かび上がる空間を作る */
+    radial-gradient(ellipse 60% 50% at 72% 20%, rgba(255,250,240,0.9) 0%, transparent 65%),
+    /* 中央の暖かい光 */
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(252,248,240,0.6) 0%, transparent 70%),
+    /* 左下の影 — 奥行きを作る */
+    radial-gradient(ellipse 40% 40% at 10% 85%, rgba(235,228,215,0.5) 0%, transparent 60%),
+    /* ベース */
+    linear-gradient(165deg, #FDFAF5 0%, #F7F5F1 50%, #F2EFE9 100%);
+}
+.hero-bg::before {
+  content: '';
+  position: absolute; inset: 0;
+  /* 紙のような微細テクスチャ */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  pointer-events: none;
+}
+/* 旧::after（下部の不透明グラデーション）は削除。
+   content-sectionが半透明になった今は、このグラデーションが
+   そのまま帯として透けて見えてしまうため。 */
+
+/* ---------------------------------------------------
+   HERO LIGHT FLOW — 右上から左下へゆっくり流れる暖色光。
+   CSSのみで動作（JS無効・GSAP読込失敗時も表示に影響なし）。
+   transform/opacityのみをアニメーションし、レイアウトに影響しない。
+   親の.hero-bgがaria-hidden="true"のため装飾として扱われる。 */
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  /* 移動してもHero外周が露出しないよう外側へ大きく張り出す */
+  top: -30%; left: -20%;
+  width: 140%; height: 160%;
+  background:
+    radial-gradient(ellipse 32% 26% at 74% 22%, rgba(255,244,224,0.55) 0%, transparent 70%),
+    radial-gradient(ellipse 24% 20% at 60% 42%, rgba(255,238,214,0.30) 0%, transparent 70%);
+  mix-blend-mode: soft-light;
+  opacity: 0.85;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: heroLightFlow 14s ease-in-out infinite alternate;
+}
+@keyframes heroLightFlow {
+  0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0.85; }
+  100% { transform: translate3d(-6%, 7%, 0) scale(1.06); opacity: 0.65; }
+}
+/* モバイル: 移動量と透明度を削減（負荷とチラつき防止） */
+@media (max-width: 768px) {
+  .hero-bg::after {
+    opacity: 0.5;
+    animation-duration: 18s;
+  }
+  @keyframes heroLightFlow {
+    0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0.5; }
+    100% { transform: translate3d(-3%, 3.5%, 0) scale(1.02); opacity: 0.38; }
+  }
+}
+/* Reduced Motion: 光の流れを完全停止（静的な光として残す） */
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg::after { animation: none; }
+}
+/* ===================================================
+   HERO SEARCH — 「最新レビューを読む」ボタンがあった位置に配置。
+   余計な見出し文言は置かず、入力欄のみ
+   =================================================== */
+.hero-search {
+  position: relative;
+  /* hero-text-overlay > * の width:min(280px,88%) をそのまま使う */
+}
+.hero-search svg {
+  position: absolute; left: 16px; top: 50%;
+  transform: translateY(-50%);
+  color: rgba(60,50,40,0.45);
+  pointer-events: none;
+}
+.hero-search input {
+  width: 100%;
+  padding: 12px 18px 12px 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(60,50,40,0.18);
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text);
+  outline: none;
+  pointer-events: all;
+  transition: border-color 0.2s, background 0.2s;
+}
+.hero-search input::placeholder { color: rgba(60,50,40,0.45); }
+.hero-search input:focus {
+  border-color: var(--accent-warm);
+  background: rgba(255,255,255,0.78);
+}
+/* ホバー時にわずかに浮かせる上品なインタラクション（PC=hover環境のみ）。
+   タッチ端末にhover残留させないよう(hover:hover)で限定する */
+@media (hover: hover) {
+  .hero-search input:hover {
+    border-color: rgba(60,50,40,0.32);
+    background: rgba(255,255,255,0.68);
+    box-shadow: 0 4px 18px rgba(60,50,40,0.07);
+  }
+}
+/* キーボード操作時は明確なフォーカスリングを表示する */
+.hero-search input:focus-visible {
+  outline: 2px solid var(--accent-warm);
+  outline-offset: 2px;
+}
+
+/* ===================================================
+   HERO POSTER — grid layout container
+   左列: テキスト / 右列: 人物
+   二者を一つのレイアウトシステムで管理し
+   ポスター的な構図を実現する
+   =================================================== */
+.hero-poster {
+  /* heroの全面を覆う */
+  position: absolute; inset: 0; z-index: 2;
+
+  /* 2列grid: テキスト50% / 人物50%
+     テキスト列を広げて、テキストブロックをHero中央付近に置く */
+  display: grid;
+  grid-template-columns: 32fr 68fr;
+  grid-template-rows: 1fr;
+  align-items: stretch;
+}
+
+
+
+/* Hero image */
+.hero-image-wrap {
+  /* grid右列 — 画像専用コンテナ */
+  position: relative;           /* absolute独立から解放 */
+  display: flex;
+  align-items: flex-end;        /* 人物をBottomに揃える */
+  justify-content: center;
+  will-change: transform, opacity, filter;
+  overflow: hidden;
+}
+.hero-image-wrap img {
+  /* hero-posterのgridが幅を決めるのでmax-widthは100% */
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  object-fit: contain;
+  object-position: bottom center;
+  mix-blend-mode: multiply;     /* 白背景を透過させ人物だけ浮かぶ */
+  filter: none;
+  pointer-events: none; user-select: none;
+  display: block;
+}
+
+/* Hero text */
+.hero-text-overlay {
+  /* grid左列 — テキスト専用コンテナ */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* 右端基準で配置 — padding-leftは使わない */
+  /* padding-bottomを増やしてテキストブロックを上に持ち上げる
+     （「本音のガジェットレビュー」がHeroの鼻あたりに来るバランス） */
+  padding: 0 0 32vh 0;
+  /* --heroTextY: スクロール前進演出用（GSAPがCSS変数のみを更新する。
+     8vwの基準位置はCSS側に残るためresize時も位置がずれない） */
+  transform: translateX(8vw) translateY(var(--heroTextY, 0px));  /* グリッド列の右端を超えてさらに右へ */
+  align-items: flex-end;        /* テキストを列の右端（=Hero中央）に寄せる */
+  pointer-events: none;
+  will-change: opacity, transform;
+  opacity: 1;
+  /* visibility:hiddenはopacityのtransitionと同時に即時切り替わり、
+     フェードする前に消えて見える原因になるため使用しない。
+     opacityのtransitionのみで滑らかにフェードアウトさせる。 */
+  transition: opacity 0.6s ease;
+}
+.hero-text-overlay.is-hidden {
+  opacity: 0;
+}
+
+/* テキストブロック幅 — 右端基準で自然に収まる幅 */
+.hero-text-overlay > * {
+  width: min(280px, 88%);
+  text-align: left;
+}
+.hero-eyebrow {
+  font-family: var(--font-sans); font-size: 0.65rem; font-weight: 600;
+  color: rgba(60,50,40,0.45); letter-spacing: 0.22em;
+  text-transform: uppercase; margin-bottom: 16px;
+}
+.hero-text-overlay h1 {
+  font-family: var(--font-sans);
+  font-size: clamp(1.45rem, 3.2vw, 2.5rem);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1.18;
+  color: var(--text); margin-bottom: 11px;  /* 18px → 11px: 39%縮小 */
+  /* 明背景なのでtext-shadowは不要 */
+}
+.hero-sub {
+  font-size: 0.88rem; color: rgba(60,50,40,0.6);
+  line-height: 1.85; margin-bottom: 28px;
+  max-width: 340px;
+}
+.btn-primary {
+  /* .hero-text-overlay > * の width:min(280px,88%)を打ち消し、
+     ピル型ボタンは常にテキストに合わせた幅にする */
+  width: auto;
+  display: inline-block;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-sans); font-weight: 600; font-size: 0.78rem;
+  padding: 11px 28px; border-radius: 999px; letter-spacing: 0.1em;
+  text-transform: uppercase; pointer-events: all;
+  border: 1px solid rgba(212,201,184,0.35);
+  transition: all 0.25s;
+  backdrop-filter: blur(8px);
+}
+.btn-primary:hover {
+  background: rgba(212,201,184,0.12);
+  border-color: rgba(212,201,184,0.6);
+  color: #fff; transform: translateY(-1px);
+}
+
+/* Scroll hint */
+.hero-scroll-hint {
+  position: absolute; z-index: 4; bottom: 32px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--text-sub); font-family: var(--font-sans);
+  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  animation: scrollBounce 2.6s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+.hero-scroll-hint svg { opacity: 0.3; }
+@keyframes scrollBounce {
+  0%,100% { transform: translateX(-50%) translateY(0); opacity: 0.4; }
+  50%      { transform: translateX(-50%) translateY(7px); opacity: 0.8; }
+}
+
+/* ===================================================
+   CONTENT SECTION
+   Heroはposition:fixedで背景に固定されている。
+   content-sectionはHeroの高さ分だけmargin-topを設けて
+   通常フローでHeroの下から始まる。
+   GSAPがtranslateYでHero上にせり上がる演出をする。
+   =================================================== */
+.content-section {
+  /* Heroはfixedで背景に固定済みなので、通常フロー(relative)に
+     margin-topでHeroの高さ分の間隔を空けるだけでよい。
+     pin-spacerやstickyは不要（不具合の原因になるため使用禁止）。 */
+  position: relative;
+  z-index: 10;
+  margin-top: 100vh;
+
+  /* Surface背景 — 半透明グラスパネル。Heroが背後に薄く透けて見える。
+     カテゴリ上部の自然光グラデーションは削除（ユーザー指定）。 */
+  background-color: rgba(248,246,242, 0.98);
+  background-image:
+    /* 全体の暖かさのみ残す */
+    radial-gradient(ellipse 70% 50% at 30% 40%, rgba(250,246,238,0.25) 0%, transparent 70%);
+
+  /* 上辺のみ大きめの角丸（展示パネル） */
+  border-radius: 44px 44px 0 0;
+  padding-top: 72px;
+
+  /* 展示パネルのShadow — 極めて自然
+     注意: 以前あった「0 -80px 100px」の広域グラデーション層は、
+     半透明パネルの上では帯として透けて見えるため削除済み。 */
+  box-shadow:
+    0 -1px 0 rgba(180,160,130,0.12),          /* 上辺の細線 */
+    0 -24px 48px rgba(200,185,160,0.14);       /* 柔らかい浮遊感 */
+
+  /* Backdrop blur強め — 半透明でも文字の可読性を保つガラス効果 */
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+
+  will-change: transform;
+}
+/* 旧::before（境界ぼかし用グラデーション）は削除。
+   Surface自体が半透明になったことで不要となり、むしろ
+   カード上に余分な濃淡の帯として見えてしまうため。 */
+/* Warm noise on content */
+.content-section::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.018'/%3E%3C/svg%3E");
+  background-size: 280px 280px;
+  border-radius: 44px 44px 0 0;
+}
+.content-section > * { position: relative; z-index: 1; }
+
+/* ===== CATEGORIES ===== */
+.categories {
+  padding: 14px 0 36px;
+  scroll-margin-top: 80px; /* 固定ヘッダーに隠れないよう余白を確保 */
+  /* 検索・スクロール中もカテゴリボタンが隠れないよう上部に固定 */
+  position: sticky;
+  top: 60px; /* 固定ヘッダーの高さ分 */
+  z-index: 20;
+  background: rgba(247,245,241, 0.92);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+.cat-list { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+.cat-list::-webkit-scrollbar { display: none; }
+.cat-btn {
+  flex-shrink: 0;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-sans); font-size: 0.72rem; font-weight: 600;
+  padding: 7px 18px; border-radius: 999px; cursor: pointer;
+  letter-spacing: 0.07em; transition: all 0.18s;
+}
+.cat-btn:hover { border-color: var(--border-light); color: var(--text); }
+.cat-btn.active { background: var(--accent); border-color: var(--accent); color: #F7F5F1; }
+
+/* ===== SECTION TITLE ===== */
+.section-title {
+  font-family: var(--font-sans); font-size: 0.65rem; font-weight: 700;
+  color: var(--text-sub); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 36px;
+  display: flex; align-items: center; gap: 14px;
+}
+.section-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* ===== ARTICLES ===== */
+.articles { padding: 0 0 88px; scroll-margin-top: 190px; /* 固定ヘッダー＋固定カテゴリバー分の余白を確保 */ }
+
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.article-card.more-hidden { display: none; }
+
+.show-more-wrap { display: flex; justify-content: center; margin-top: 40px; }
+.btn-show-more {
+  display: inline-block;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-sans); font-weight: 600; font-size: 0.78rem;
+  padding: 11px 32px; border-radius: 999px; letter-spacing: 0.1em;
+  text-transform: uppercase; cursor: pointer;
+  border: 1px solid var(--border-light);
+  transition: all 0.25s;
+}
+.btn-show-more:hover {
+  background: rgba(60,50,40,0.05);
+  border-color: var(--accent-warm);
+}
+
+/* Card — initially invisible, JS adds .visible */
+.article-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition:
+    transform 0.35s cubic-bezier(0.22,1,0.36,1),
+    box-shadow 0.35s,
+    border-color 0.35s;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(28px);
+  will-change: transform, opacity;
+}
+.article-card.visible {
+  opacity: 1; transform: translateY(0);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s cubic-bezier(0.22,1,0.36,1),
+    box-shadow 0.35s,
+    border-color 0.35s;
+}
+.article-card:hover {
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-5px) !important;
+}
+.article-card:hover .card-img img { transform: scale(1.035); }
+
+.card-img {
+  position: relative;
+  width: 100%; aspect-ratio: 4/3;
+  background: var(--surface2); overflow: hidden;
+}
+/* カード画像背景に極薄グラデーション+ノイズを追加し、Heroと同じ質感で繋げる */
+.card-img::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 30%, rgba(255,255,255,0.5) 0%, transparent 70%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  background-size: cover, 240px 240px;
+}
+.card-img img {
+  position: relative; z-index: 1;
+  width: 100%; height: 100%; object-fit: contain; padding: 14px;
+  transition: transform 0.45s cubic-bezier(0.22,1,0.36,1);
+}
+.card-body { padding: 16px 18px 20px; display: flex; flex-direction: column; }
+.card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+.card-body h3 {
+  font-size: 0.84rem; font-weight: 700; line-height: 1.55;
+  margin-bottom: 8px; color: var(--text);
+  /* タイトル行数を2行に固定し、カードの縦位置を揃える */
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.card-body h3 a:hover { color: var(--accent); }
+.card-excerpt {
+  font-size: 0.775rem; color: var(--text-muted); line-height: 1.7;
+  margin-bottom: 10px;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+  /* 通常時は控えめに隠し、ホバー時のみ静かに現れる（高さは常に確保） */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.article-card:hover .card-excerpt,
+.article-card:focus-within .card-excerpt {
+  opacity: 1;
+}
+.card-score {
+  font-family: var(--font-sans); font-size: 0.72rem;
+  font-weight: 700; color: var(--green);
+  margin-top: auto;
+}
+/* スコアの数値を1本の極細ラインで静かに可視化（背景トラックなし） */
+.card-score-bar {
+  height: 1px; margin-top: 7px;
+  background: var(--green);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+.article-card.visible .card-score-bar { transform: scaleX(1); }
+
+/* ===== TAG & DATE ===== */
+.tag {
+  display: inline-block;
+  background: rgba(60,50,40,0.08); color: var(--text);
+  font-family: var(--font-sans); font-size: 0.65rem; font-weight: 700;
+  padding: 3px 9px; border-radius: 999px; letter-spacing: 0.06em;
+  border: 1px solid rgba(60,50,40,0.18);
+}
+.tag.sm { font-size: 0.6rem; padding: 2px 7px; }
+.date { font-family: var(--font-sans); font-size: 0.68rem; color: var(--text-sub); }
+
+/* ===== RANKING ===== */
+.ranking {
+  padding: 72px 0;
+  scroll-margin-top: 80px; /* 固定ヘッダーに隠れないよう余白を確保 */
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  /* 記事一覧(Article Surface)と同じ半透明にし、Heroが透けて見えるよう統一 */
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,248,235,0.25) 0%, transparent 60%);
+}
+.rank-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(248,246,242, 0.55);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+}
+.rank-item {
+  display: flex; align-items: center; gap: 18px;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.18s;
+}
+.rank-item:last-child { border-bottom: none; }
+.rank-item:hover { background: var(--surface2); }
+.rank-num {
+  font-family: var(--font-sans); font-size: 0.95rem; font-weight: 800;
+  color: var(--text-sub); width: 22px; text-align: center; flex-shrink: 0;
+}
+.rank-item:nth-child(1) .rank-num { color: var(--gold); }
+.rank-item:nth-child(2) .rank-num { color: #9a9490; }
+.rank-item:nth-child(3) .rank-num { color: #8a7060; }
+.rank-body { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.rank-body a { font-size: 0.87rem; font-weight: 500; color: var(--text); }
+.rank-body a:hover { color: var(--accent); }
+.rank-score {
+  /* 2026-07-14: ランキングの数字表示は非表示に（ユーザー指示）。
+     HTML側の値は残し、validate-site.mjsのスコア整合性チェックに使う。 */
+  display: none;
+}
+
+/* ===== X SECTION ===== */
+.x-section {
+  padding: 72px 0;
+  border-top: 1px solid var(--border);
+  /* 記事一覧・ランキングと同じ半透明にし、Heroが透けて見えるよう統一 */
+  background: rgba(247,245,241, 0.55);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+}
+.x-inner { max-width: 540px; margin: 0 auto; padding: 0 20px; text-align: center; }
+.x-eyebrow {
+  font-size: 0.65rem; font-weight: 700; color: var(--text-sub);
+  letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px;
+  font-family: var(--font-sans);
+}
+.x-sub { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 28px; line-height: 1.75; }
+.x-embed {
+  border: 1px solid var(--border); border-radius: 16px;
+  overflow: hidden; background: var(--surface); margin-bottom: 20px;
+}
+.x-follow-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--text); color: var(--bg);
+  font-family: var(--font-sans); font-size: 0.8rem; font-weight: 700;
+  padding: 11px 22px; border-radius: 999px; transition: opacity 0.18s;
+}
+.x-follow-btn:hover { opacity: 0.82; color: var(--bg); }
+
+/* ===== FOOTER ===== */
+.site-footer {
+  padding: 60px 0 36px;
+  /* 記事一覧・ランキング・Xセクションと同じ半透明にし、Heroが透けて見えるよう統一 */
+  background: rgba(237,233,227, 0.55);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.footer-inner {
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center; gap: 14px;
+}
+.footer-logo { font-family: var(--font-sans); font-size: 1rem; font-weight: 700; color: var(--text); }
+.footer-logo span { color: var(--accent-warm); }
+.footer-desc { font-size: 0.78rem; color: var(--text-sub); line-height: 1.75; }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.footer-links a { font-family: var(--font-sans); font-size: 0.72rem; color: var(--text-sub); transition: color 0.18s; }
+.footer-links a:hover { color: var(--text); }
+.footer-copy { font-family: var(--font-sans); font-size: 0.68rem; color: #B0A898; margin-top: 8px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav { display: none; }
+  .menu-toggle { display: flex; }
+
+  .hero-search input { font-size: 0.8rem; padding: 10px 16px 10px 38px; }
+
+  /* モバイル: gridを縦積みに変更 */
+  .hero-poster {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .hero-text-overlay {
+    position: relative;
+    justify-content: flex-end;
+    padding: 12vh 20px 4vh;
+    text-align: left;
+    align-items: flex-start;
+    transform: none;  /* デスクトップ用のtranslateX(8vw)をモバイルでは無効化 */
+  }
+  .hero-image-wrap {
+    justify-content: center;
+    align-items: flex-end;
+    transform: translateY(-4vh);  /* 全体を少し上に持ち上げる */
+  }
+  .hero-image-wrap img { max-height: 65vh; }  /* サイズを少し大きく */
+  .hero-sub { text-align: left; }
+  .hero-text-overlay h1 { font-size: 1.3rem; }
+
+  /* カテゴリボタン: 横スクロールではなく折り返して
+     1画面に全て収まるようにする */
+  .cat-list {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 6px;
+  }
+  .cat-btn {
+    padding: 6px 12px;
+    font-size: 0.66rem;
+  }
+
+  .content-section { border-radius: 18px 18px 0 0; padding-top: 44px; }
+
+  .article-grid { grid-template-columns: 1fr; gap: 12px; }
+  .article-card { display: grid; grid-template-columns: 96px 1fr; }
+  /* 縦長の商品写真だと img の自然な縦横比が .card-img の高さを押し上げ、
+     カード全体（card-bodyの空白）まで引きずられて崩れるため、img を絶対配置にして
+     .card-img 自身の高さ計算から画像の縦横比を切り離す */
+  .card-img { aspect-ratio: unset; min-height: 96px; height: auto; }
+  .card-img img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+  .card-excerpt { display: none; }
+}
+@media (max-width: 1024px) and (min-width: 769px) {
+  .article-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* スマホ横向き（高さが低い）では、縦積みレイアウトのままだと
+   Heroの人物画像が極端に小さくなってしまうため、デスクトップに
+   近い左右分割レイアウトに戻してバランスを保つ */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+  .hero-poster {
+    grid-template-columns: 36fr 64fr;
+    grid-template-rows: 1fr;
+  }
+  .hero-text-overlay {
+    position: relative;
+    justify-content: flex-end;
+    padding: 0 3vw 8vh 0;
+    text-align: right;
+    align-items: flex-end;
+    transform: none;
+  }
+  .hero-text-overlay h1 { font-size: 1.4rem; }
+  .hero-sub { text-align: right; font-size: 0.78rem; }
+  .hero-image-wrap {
+    justify-content: center;
+    align-items: flex-end;
+    transform: none;
+  }
+  .hero-image-wrap img { max-height: 92vh; }
+}
+
+/* ===== ARTICLE PROMO CTA (article-promo.jsが自動挿入) ===== */
+.amazon-music-cta {
+  background: #0a0a0a; border-radius: 12px; padding: 1.5rem;
+  margin: 0 0 2rem; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 0.75rem; text-align: center;
+}
+.amazon-music-eyebrow { font-size: 0.75rem; color: #999; margin: 0 0 0.25rem; }
+.amazon-music-title { font-weight: 700; font-size: 1rem; margin: 0; color: #fff; }
+.amazon-music-btn {
+  background: #fff; color: #111; font-weight: 700;
+  padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;
+  white-space: nowrap; font-size: 0.9rem; display: inline-block;
+}
+
+/* ============================================================
+   記事ページのモバイル対応（2026-07-23追加）
+   記事HTMLは各ファイルのインライン<style>で表・サイドバーを
+   定義しており、そのインライン定義は本ファイルより後に読まれる。
+   そのため上書きが必要な指定は article を含む高い詳細度で書く。
+   ============================================================ */
+
+/* --- 長い英数字（製品名・型番）が親要素を押し広げるのを防ぐ ---
+   サイドバーの関連レビュー一覧で "SodaStream TERRA" 等の
+   欧文製品名が折り返せず、grid列ごとページ幅を超えていた。
+   日本語が不自然に切れる break-all は使わない。 */
+article, .sidebar { min-width: 0; }
+.article-wrap.has-sidebar > * { min-width: 0; }
+.sidebar a, .sidebar li, .sidebar h3,
+article h1, article h2, article h3, article p, article li, article td, article th {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+@media (max-width: 768px) {
+  /* スペック表(2列)の見出しセルは nowrap を解除して折り返させる。
+     nowrap のままだと長い項目名が表を画面幅より広げてしまう。 */
+  article .spec-table th {
+    white-space: normal;
+    width: 34%;
+  }
+}
+
+/* --- 比較表: 600px以下では横スクロールをやめ「1行＝1カード」に組み替える ---
+   3〜5列の比較表は横スクロールだと全体を見渡せないため、
+   比較項目ごとのカードに分解する。1行目のth（比較項目）が
+   カード見出し、各値には data-label（製品名）をラベルとして付ける。
+   data-label は scripts/add-compare-labels.mjs が thead から機械転記。 */
+@media (max-width: 600px) {
+  article .compare-table-wrap {
+    overflow-x: visible;
+    border: none;
+    background: none;
+    border-radius: 0;
+  }
+  article .compare-table {
+    display: block;
+    min-width: 0;
+    font-size: 0.85rem;
+  }
+  article .compare-table thead { display: none; }   /* 見出しはラベルへ移動済み */
+  article .compare-table tbody { display: block; }
+  article .compare-table tbody tr {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    background: var(--surface);
+  }
+  article .compare-table tbody tr:last-child { margin-bottom: 0; }
+  article .compare-table tbody th,
+  article .compare-table tbody td {
+    display: block;
+    position: static;              /* 先頭列の sticky を解除 */
+    white-space: normal;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+  }
+  article .compare-table tbody tr > *:last-child { border-bottom: none; }
+  /* 1列目＝カード見出し（比較項目名） */
+  article .compare-table tbody tr > th:first-child {
+    background: var(--bg2);
+    font-weight: 700;
+    font-size: 0.86rem;
+    color: var(--text);
+  }
+  /* BEST製品の列ティントは、カード表示では該当セルのみに残す */
+  article .compare-table tbody td:nth-child(2) { background: rgba(154,122,74,0.05); }
+  /* 2列目以降＝製品名をラベルとして値の上に置く */
+  article .compare-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 3px;
+  }
+  /* 短い値はラベルと同じ行に並べて縦の間延びを防ぐ */
+  article .compare-table td.is-compact {
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  article .compare-table td.is-compact::before {
+    flex: 0 0 auto; min-width: 6.5em; margin-bottom: 0;
+  }
+}
