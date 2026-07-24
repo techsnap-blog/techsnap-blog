@@ -61,15 +61,27 @@
   </script>
   <link rel="stylesheet" href="css/style.css?v=2">
   <link rel="stylesheet" href="css/hero-2_5d.css">
-  <!-- Hero見出し登場アニメーションのFOUC防止。
-       JS無効時はクラス自体が付かないため、h1は完成状態で表示される。
-       万一intro用JSが失敗しても2.5秒後に必ず解除され、見出しが
-       永久に非表示になることはない（安全側フォールバック）。 -->
+  <!-- Hero登場制御（描画前に実行）。
+       - hero-intro-pending: 見出しのFOUC防止（JS無効時は付かず、h1は完成表示）
+       - hero-booting: 到着・リロード時に hero 全体を opacity:0→1 でフェードイン。
+         最初の描画を opacity:0 で行い、2フレーム後に解除して transition を発火。
+         これにより「空の温白 hero が出てから中身が一斉に出る」白点滅を、
+         hero ごとのやわらかいフェードインで置き換える。
+       いずれも JS 失敗・背景タブ対策として安全網タイマーで必ず解除する
+       （見出し・hero が永久に非表示のまま残らない）。 -->
   <script>
     (function () {
       var d = document.documentElement;
       d.classList.add('hero-intro-pending');
-      setTimeout(function () { d.classList.remove('hero-intro-pending'); }, 2500);
+      d.classList.add('hero-booting');
+      var lift = function () { d.classList.remove('hero-booting'); };
+      // 最初の opacity:0 を確実に1フレーム描画してから解除しフェードさせる
+      if (window.requestAnimationFrame) {
+        requestAnimationFrame(function () { requestAnimationFrame(lift); });
+      } else { lift(); }
+      // 安全網: rAFが来ない/JSが途中で失敗しても hero と見出しを必ず表示
+      setTimeout(lift, 1000);
+      setTimeout(function () { d.classList.remove('hero-intro-pending'); }, 1000);
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">

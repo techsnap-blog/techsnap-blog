@@ -909,8 +909,17 @@ article h1, article h2, article h3, article p, article li, article td, article t
   user-select: none;
 }
 
+/* Hero全体のフェードイン（到着・リロード時）。
+   .hero-booting が付いている最初の描画だけ opacity:0 とし、head内JSが
+   2フレーム後に外すと transition で 0→1 へフェードする。
+   opacity は .hero-image-wrap(GSAP) や子レイヤー(2.5D)のtransformと
+   競合しない親コンテナ側のプロパティなので、既存演出に影響しない。
+   フェード（動きを伴わない）はreduced-motionでも許可（必要最小限のFade）。 */
+.hero { transition: opacity 2.2s ease; }
+.hero-booting .hero { opacity: 0; }
+
 /* FOUC防止 — JS実行前に完成位置で一瞬見えるのを防ぐ。
-   クラスはhead内インラインJSが付け、intro開始時／2.5秒の安全網で外れる。 */
+   クラスはhead内インラインJSが付け、intro開始時／安全網タイマーで外れる。 */
 .hero-intro-pending .hero-title-line--first,
 .hero-intro-pending .hero-title-line--second-front,
 .hero-intro-pending .hero-eyebrow,

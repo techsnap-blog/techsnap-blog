@@ -36,7 +36,6 @@
     DELAY_LINE2: 0.14,       // 1行目から遅らせて開始
     DELAY_EYEBROW: 0.05,
     DUR_FADE: 0.8,
-    FONT_WAIT_MS: 600,       // フォント確定待ちの上限（長時間の非表示を防ぐ）
     EASE_MAIN: 'power3.out'  // バウンド系(bounce/elastic/大きなback)は使わない
   };
 
@@ -162,6 +161,12 @@
     function onResize() { if (useBehind) syncBehind(); }
     window.addEventListener('resize', onResize, { passive: true });
 
+    /* フォント確定を待たずに開始しているため、Webフォント差し替えで
+       前面2行目の幅が変わったら背面複製の座標を取り直す（位置ズレ防止）。 */
+    if (useBehind && document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { if (!swapped) syncBehind(); });
+    }
+
     /* 背面→前面の差し替え。同一フレーム内で
        「前面を出す」「複製を消す」を同時に行うため、
        二重表示・1フレーム消失・点滅は発生しない。
@@ -240,16 +245,16 @@
 
   /* 初回表示時に1回だけ実行する（スクロール・リサイズ・bfcache復帰では
      再生しない。同タブのリロードでは通常どおり再生される）。
-     フォント確定後に座標を取るが、待ちは上限付きで打ち切る。 */
+     ------------------------------------------------------------
+     以前は document.fonts.ready を待ってから start していたが、それだと
+     見出しが最大600ms前後 opacity:0 のまま残り、ロード直後の hero が
+     「中身の無い温白背景だけ」に見えて白く点滅する原因になっていた。
+     そこで DOMContentLoaded で即 start し、フォント確定は待たない。
+     フォント差し替えによる幅変化は、start 内で fonts.ready 後に
+     背面複製の座標を再同期して吸収する（前面/背面とも最終位置は
+     レイアウト由来の x:0 なので、確定後に中央へ収まる）。 */
   function boot() {
-    var done = false;
-    function run() { if (done) return; done = true; try { start(); } catch (e) { settle(); } }
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(run);
-      setTimeout(run, CONFIG.FONT_WAIT_MS);
-    } else {
-      run();
-    }
+    try { start(); } catch (e) { settle(); }
   }
 
   if (document.readyState === 'loading') {
