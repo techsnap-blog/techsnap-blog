@@ -112,7 +112,15 @@
       if (failed) { stage.remove(); return; }  // 1枚でも失敗→静止Heroのまま
       wrap.appendChild(stage);
       wideNodes.forEach(function (n) { hero.appendChild(n); });
-      wrap.classList.add('hero25d-on');
+      /* 演出なし（即差し替え）。hero25d-on を付けると静止画が即
+         visibility:hidden になり、常に opacity 1 のステージへ切り替わる。
+         二重rAFでステージのレイヤーが描画されてから静止画を隠すため、
+         人物が一瞬消える隙間は生じない（フェード等の登場演出は無し）。 */
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () {
+          wrap.classList.add('hero25d-on');
+        });
+      });
       onReady(elements);
     }
   }

@@ -978,26 +978,16 @@ article h1, article h2, article h3, article p, article li, article td, article t
   user-select: none;
 }
 
-/* Hero全体のフェードイン（到着・リロード時）。
-   .hero-booting が付いている最初の描画だけ opacity:0 とし、head内JSが
-   2フレーム後に外すと transition で 0→1 へフェードする。
-   opacity は .hero-image-wrap(GSAP) や子レイヤー(2.5D)のtransformと
-   競合しない親コンテナ側のプロパティなので、既存演出に影響しない。
-   フェード（動きを伴わない）はreduced-motionでも許可（必要最小限のFade）。 */
-/* 到着・リロード時のhero登場演出。
-   heroは最初から表示されているが、ぼけた状態(blur)から普段のシャープな
-   状態へ戻る「ピントが合う」演出にする。opacityで消してしまうと、下の
-   明るい温白背景が露出して眩しく感じるため、opacityは下げず blur のみ動かす。
-   filter は .hero(親)に掛けるため、テキスト・背景・人物すべてが同時に
-   ピントインする。GSAPは .hero-image-wrap(子)、2.5Dは孫レイヤーを触るので
-   別要素であり競合しない。演出後は blur:0 で通常表示に戻り影響を残さない。 */
-.hero { transition: filter 1.2s ease; }
-.hero-booting .hero { filter: blur(12px); }
-
-/* Reduced Motion: ピント送り（動き）を避け、最初からシャープ表示。 */
-@media (prefers-reduced-motion: reduce) {
-  .hero, .hero-booting .hero { filter: none; transition: none; }
-}
+/* Hero登場フェードは廃止した（2026-07-24）。
+   経緯: 起動時の演出は blur→opacity と試したが、
+   (1) 全画面blurは起動直後の混雑と競合して「ボケたままフリーズ」、
+   (2) opacityフェードは静止画(hero-main.png=multiplyで黒)から
+       2.5D人物(person.webp=グレー)への切替時に明るさ段差が出て「明滅」、
+   と、どの登場演出も副作用が残った。
+   最終的に「登場演出なし（Heroは最初から実体表示）＝A案」と
+   「静止画→2.5Dの切替演出をやめ、2.5Dだけを温白背景からフェードイン＝B案」
+   を採用し、切替そのものを無くして段差・明滅・フリーズを原理的に断った。
+   head内JSが付ける .hero-booting は現在CSS上の効果を持たない（無害）。 */
 
 /* FOUC防止 — JS実行前に完成位置で一瞬見えるのを防ぐ。
    クラスはhead内インラインJSが付け、intro開始時／安全網タイマーで外れる。 */

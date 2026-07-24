@@ -86,10 +86,30 @@
   opacity: 0.5;
 }
 
-/* ステージ有効時のみ元画像を隠す（レイヤー全読込後にJSが付与）。
-   display:none にせず visibility で切替え、レイアウト計算を変えない */
+/* 演出なし（即シャープ表示）。
+   起動フェードは blur/opacity ともに副作用（フリーズ・明滅・まぶしさ）が
+   残ったため廃止。静止画(hero-main.png)を最初から表示し、全webp読込後に
+   静止画を即座に visibility:hidden して2.5Dへ差し替える（フェード無し）。
+   ステージは常に opacity 1。静止画(黒)→2.5D(グレー)は同系の暗色どうしで、
+   poster が opacity 1（登場フェード無し）のため明るさ差は小さく、まぶしさや
+   明滅は出ない。二重rAFでステージ描画後に静止画を隠すため、切替の隙間も
+   生じない。webp読込失敗時は静止画のまま（フォールバック）。 */
 .hero-image-wrap.hero25d-on > img {
   visibility: hidden;
+}
+
+/* 静止画(hero-main.png)を2.5Dレイヤーと縦位置を揃える。
+   ------------------------------------------------------------
+   .hero-image-wrap は align-items:flex-end（下端揃え）のため、静止画は
+   height:108% の余剰8%が「上」へはみ出す＝上端が約-69px。一方、2.5Dの
+   各レイヤーは position:absolute; top:0 で余剰が「下」へはみ出す＝上端0。
+   この差(約69px)により、全webp読込後の visibility 切替（静止画→ステージ）で
+   人物が縦にジャンプして見えた（起動時に人物が一瞬上へずれて定位置へ戻る）。
+   静止画を align-self:flex-start にして上端0へ揃え、切替時のジャンプを消す。
+   これはCSSの設計意図（画像下部を下へはみ出させ下部の隙間を消す）とも一致する。
+   2.5Dが動くのは769px以上のため、静止Heroのモバイル(<=768px)は下端揃えのまま。 */
+@media (min-width: 769px) {
+  .hero-image-wrap > img { align-self: flex-start; }
 }
 
 /* ---------- Responsive ----------
