@@ -92,6 +92,25 @@
   visibility: hidden;
 }
 
+/* 「最初から2.5D」— 対応環境では静止画を初回描画から見せない。
+   ------------------------------------------------------------
+   静止画(暗いシルエット)→2.5D(グレー＋グロー＋グリッチ)は絵そのものが異なるため、
+   差し替えの隙間・明滅を消しても切替時に色味/ブラーのモーフが一瞬見えていた。
+   そこで対応環境(hero25d-boot: head側でデスクトップ幅・非タッチ・非reduced-motionを
+   判定)では静止画を最初から visibility:hidden にし、2.5Dの登場のみを見せる。
+   webp失敗・JS未実行・低速時は hero25d-fallback で静止画を復帰させる（フォールバック）。 */
+.hero25d-boot .hero-image-wrap > img { visibility: hidden; }
+.hero25d-boot.hero25d-fallback .hero-image-wrap > img { visibility: visible; }
+
+/* 2.5Dの登場は温白背景からのやわらかいフェードインのみ。
+   人物は背景より暗いため領域の輝度は単調に沈み、明滅（輝度の往復）は生じない。
+   decode完了後に hero25d-on が付き、opacity 0→1 で滑らかに現れる。 */
+.hero25d-stage { opacity: 0; transition: opacity 0.45s ease; }
+.hero-image-wrap.hero25d-on .hero25d-stage { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .hero25d-stage { transition: none; }
+}
+
 /* 静止画(hero-main.png)を2.5Dレイヤーと縦位置を揃える。
    ------------------------------------------------------------
    .hero-image-wrap は align-items:flex-end（下端揃え）のため、静止画は

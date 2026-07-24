@@ -60,7 +60,7 @@
   }
   </script>
   <link rel="stylesheet" href="css/style.css?v=11">
-  <link rel="stylesheet" href="css/hero-2_5d.css?v=10">
+  <link rel="stylesheet" href="css/hero-2_5d.css?v=11">
   <!-- Hero見出し登場アニメーションのFOUC防止。
        JS無効時はクラス自体が付かないため、h1は完成状態で表示される。
        万一intro用JSが失敗しても2.5秒後に必ず解除され、見出しが
@@ -70,6 +70,28 @@
       var d = document.documentElement;
       d.classList.add('hero-intro-pending');
       setTimeout(function () { d.classList.remove('hero-intro-pending'); }, 2500);
+
+      /* 2.5D対応環境（デスクトップ幅・非タッチ・非reduced-motion）では、
+         静止画→2.5Dの差し替えで生じる色味/ブラーのモーフを無くすため、
+         静止画を最初から見せず 2.5D の登場だけを見せる（＝最初から2.5D）。
+         判定条件は hero-2_5d.js の起動ガードと一致させること。
+         安全網: 2.5Dが有効化されない（webp失敗・JS未実行・低速回線）場合は、
+         hero25d-fallback を付けて静止画へ復帰させ、Heroが空のまま残らないようにする。
+         hero-2_5d.js 側も読込失敗時に hero25d-fallback を付ける（二重の保険）。 */
+      try {
+        var mq = window.matchMedia;
+        var capable = window.innerWidth > 768 &&
+          !mq('(hover: none), (pointer: coarse)').matches &&
+          !mq('(prefers-reduced-motion: reduce)').matches;
+        if (capable) {
+          d.classList.add('hero25d-boot');
+          setTimeout(function () {
+            if (!document.querySelector('.hero-image-wrap.hero25d-on')) {
+              d.classList.add('hero25d-fallback');
+            }
+          }, 3000);
+        }
+      } catch (e) {}
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1731,7 +1753,7 @@
   </div><!-- /content-section -->
 
   <script src="js/main.js?v=12"></script>
-  <script src="js/hero-2_5d.js?v=11"></script>
+  <script src="js/hero-2_5d.js?v=12"></script>
   <script src="js/hero-title-intro.js?v=3"></script>
 </body>
 </html>

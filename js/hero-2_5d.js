@@ -109,7 +109,13 @@
     function done() {
       pending -= 1;
       if (pending > 0) return;
-      if (failed) { stage.remove(); return; }  // 1枚でも失敗→静止Heroのまま
+      if (failed) {
+        stage.remove();
+        /* 1枚でも失敗→静止Heroへ復帰。head側で静止画を隠している(hero25d-boot)ため、
+           fallbackクラスを付けて静止画を必ず見せる（Heroが空のまま残らない）。 */
+        document.documentElement.classList.add('hero25d-fallback');
+        return;
+      }
       wrap.appendChild(stage);
       wideNodes.forEach(function (n) { hero.appendChild(n); });
       onReady(elements);
