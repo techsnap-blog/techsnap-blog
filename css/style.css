@@ -6,7 +6,11 @@
 
 /* ===== RESET ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: auto; }
+/* ルート要素にもWarm White背景を敷く。リロード時、ブラウザが前ページを
+   消して新ページの初回描画を出すまでの「空白フレーム」は根要素の背景色で
+   塗られる。既定(透明→白)だと一瞬まぶしい白が挟まりheroが消えて見えるため、
+   heroのベースと同じ温白にして空白を目立たなくする。 */
+html { scroll-behavior: auto; background-color: #F7F5F1; }
 
 /* ===== DESIGN TOKENS ===== */
 :root {
@@ -915,8 +919,20 @@ article h1, article h2, article h3, article p, article li, article td, article t
    opacity は .hero-image-wrap(GSAP) や子レイヤー(2.5D)のtransformと
    競合しない親コンテナ側のプロパティなので、既存演出に影響しない。
    フェード（動きを伴わない）はreduced-motionでも許可（必要最小限のFade）。 */
-.hero { transition: opacity 2.2s ease; }
-.hero-booting .hero { opacity: 0; }
+/* 到着・リロード時のhero登場演出。
+   heroは最初から表示されているが、ぼけた状態(blur)から普段のシャープな
+   状態へ戻る「ピントが合う」演出にする。opacityで消してしまうと、下の
+   明るい温白背景が露出して眩しく感じるため、opacityは下げず blur のみ動かす。
+   filter は .hero(親)に掛けるため、テキスト・背景・人物すべてが同時に
+   ピントインする。GSAPは .hero-image-wrap(子)、2.5Dは孫レイヤーを触るので
+   別要素であり競合しない。演出後は blur:0 で通常表示に戻り影響を残さない。 */
+.hero { transition: filter 1.2s ease; }
+.hero-booting .hero { filter: blur(12px); }
+
+/* Reduced Motion: ピント送り（動き）を避け、最初からシャープ表示。 */
+@media (prefers-reduced-motion: reduce) {
+  .hero, .hero-booting .hero { filter: none; transition: none; }
+}
 
 /* FOUC防止 — JS実行前に完成位置で一瞬見えるのを防ぐ。
    クラスはhead内インラインJSが付け、intro開始時／安全網タイマーで外れる。 */

@@ -491,9 +491,18 @@
       );
     }
 
-    /* === Article cards stagger === */
-    const cards = gsap.utils.toArray('.article-card');
-    cards.forEach((card, i) => {
+    /* === 記事カードの出現 ===
+       以前はカード全98枚に個別ScrollTriggerを生成しており、その生成だけで
+       起動時に約270msメインスレッドを占有し、プチフリーズの主因になっていた。
+       初期表示されるのは先頭の最大15枚だけで、残り83枚は .more-hidden
+       (display:none) のためScrollTriggerを作っても発火せず無駄。さらに
+       「もっと見る」やカテゴリ切替で表示されるカードは updateArticleVisibility が
+       inlineフェードで別途出しているため、そちらにも不要。
+       そこで ScrollTrigger は「今表示されているカードだけ」に限定して生成する。
+       見た目・挙動は同じで、生成コスト(≒トリガー数)が98→約15に減る。 */
+    const visibleCards = gsap.utils.toArray('.article-card')
+      .filter(c => c.style.display !== 'none' && !c.classList.contains('more-hidden'));
+    visibleCards.forEach((card, i) => {
       gsap.fromTo(card,
         { opacity: 0, y: 32 },
         {
@@ -511,7 +520,8 @@
       );
     });
 
-    /* === Section titles === */
+    /* === セクション見出し / ランキング ===
+       こちらは要素数が少なくコストは小さいのでGSAPのまま残す。 */
     gsap.utils.toArray('.section-title').forEach(el => {
       gsap.fromTo(el,
         { opacity: 0, y: 18 },
@@ -522,7 +532,6 @@
       );
     });
 
-    /* === Ranking items === */
     gsap.utils.toArray('.rank-item').forEach((item, i) => {
       gsap.fromTo(item,
         { opacity: 0, x: -18 },

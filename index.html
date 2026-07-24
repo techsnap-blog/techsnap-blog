@@ -1742,9 +1742,11 @@
 
   </div><!-- /content-section -->
 
-  <script src="js/main.js?v=9"></script>
-  <script src="js/hero-2_5d.js?v=2"></script>
-  <script src="js/hero-title-intro.js?v=1"></script>
+  <!-- defer: 初回描画をブロックせず、パース完了後（gsap等のhead defer実行後）に
+       順序どおり実行する。起動時のメインスレッド占有を初回ペイントの後ろへ回す。 -->
+  <script src="js/main.js?v=10" defer></script>
+  <script src="js/hero-2_5d.js?v=3" defer></script>
+  <script src="js/hero-title-intro.js?v=2" defer></script>
 </body>
 </html>
 <!-- deploy refresh 2026-07-06 -->
