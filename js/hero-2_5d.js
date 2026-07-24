@@ -112,22 +112,35 @@
       if (failed) { stage.remove(); return; }  // 1枚でも失敗→静止Heroのまま
       wrap.appendChild(stage);
       wideNodes.forEach(function (n) { hero.appendChild(n); });
+      onReady(elements);
+
       /* 静止画→2.5Dの差し替えは「隙間なし」で行う。
          ------------------------------------------------------------
-         hero25d-on を付けると静止画が即 visibility:hidden になる。
-         これをステージ append と同じフレームで行うと、2.5Dレイヤーが
-         まだ合成描画されていないうちに静止画だけが消え、1フレームだけ
-         人物が消えて背景の温白が露出する（＝白い明滅）。縦位置を揃えて
-         ジャンプを消したことで、この1フレームの隙間が動きに紛れなくなり
-         白フラッシュとして見えるようになった。
-         二重rAFでステージのレイヤーが確実に描画されてから静止画を隠し、
-         差し替えの隙間（明滅）を無くす。フェード等の登場演出は足さない。 */
-      window.requestAnimationFrame(function () {
+         hero25d-on を付けると静止画が即 visibility:hidden になる。これを
+         2.5Dレイヤーが実際に画面へ描画され切る前に行うと、静止画だけが消えて
+         1フレーム人物が消え、背景の温白が露出する（＝白い明滅）。縦位置を
+         揃えてジャンプを消したことで、この隙間が動きに紛れず白フラッシュとして
+         露見した。レイヤー<img>は decoding:async のため、load 発火後も rAF
+         2回程度ではデコード（描画準備）が終わっておらず、二重rAFでは塞げない。
+         そこで img.decode() で全レイヤーの描画準備完了を待ってから静止画を隠す。
+         ステージは静止画の“上”に重なって描画されるため、隠す前に既に2.5Dが
+         見えており、静止画を消しても人物が欠ける瞬間は生じない。
+         decode 未対応・失敗時や、万一 decode が解決しない場合の保険として
+         短いタイマーでも必ず差し替える（静止画が残り続けない安全網）。 */
+      var swapDone = false;
+      function swapToStage() {
+        if (swapDone) return;
+        swapDone = true;
         window.requestAnimationFrame(function () {
           wrap.classList.add('hero25d-on');
         });
+      }
+      var decodes = elements.map(function (it) {
+        return (it.el.decode ? it.el.decode() : Promise.reject())
+          .catch(function () {});
       });
-      onReady(elements);
+      Promise.all(decodes).then(swapToStage);
+      setTimeout(swapToStage, 800);  // 安全網（decodeが返らない環境でも必ず切替）
     }
   }
 
