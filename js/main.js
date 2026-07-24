@@ -176,19 +176,10 @@
     onCatScroll();
   }
 
-  /* ------ Heroタイトルを確実に隠す ------
-     GSAPのscrubフェードだけでは「opacityが0になりきらず薄く残る」
-     ケースがあったため、一定スクロール後はvisibility:hiddenで
-     完全に非表示にする（CSS側のtransitionで滑らかさは維持）。 */
-  const heroTextEl = document.querySelector('.hero-text-overlay');
-  if (heroTextEl) {
-    /* しきい値は、せり上がる記事パネル上端のフェード帯(--surface-fade≈132px)を
-       抜けたあたり。Heroテキストを少しだけ長く残し、Heroから記事への
-       「余韻」を作る（急に消えない）。CSS側のopacity transitionで滑らかにフェード。 */
-    const onHeroScroll = () => heroTextEl.classList.toggle('is-hidden', window.scrollY > 430);
-    window.addEventListener('scroll', onHeroScroll, { passive: true });
-    onHeroScroll();
-  }
+  /* Heroタイトルのフェードは、GSAPのscrubトゥイーン（下部のHero演出内）で
+     Hero画像と同じスクロール量・同じカーブで薄めていく。以前はしきい値での
+     is-hiddenトグル（0.6sで急に消える）だったが、Hero画像のじわ〜っとした
+     薄まり方と揃えるため廃止した（see: heroText opacity scrub）。 */
 
   /* ------ 記事の表示件数制限（カテゴリごとに最大15件 + もっと見る） ------ */
   const MAX_VISIBLE_ARTICLES = 15;
@@ -453,6 +444,19 @@
       if (heroText && isDesktop && !reduce) {
         gsap.to(heroText, {
           '--heroTextY': '-10px',        /* わずかに手前（上）へ */
+          ease: 'none',
+          scrollTrigger: Object.assign({}, heroScrollST),
+        });
+      }
+      /* Hero大見出しのフェード — Hero画像(heroImg)と同じ heroScrollST
+         （start top top / end +=innerHeight / scrub 2.0）で、同じスクロール量・
+         同じ「じわ〜っと薄まる」カーブに揃える。せり上がる記事すりガラスの
+         向こうで、Heroと大見出しが一緒にボケながら霞んでいく。
+         opacityは全ブレークポイントで、blurは動きを避けるためreduce時のみ無効。 */
+      if (heroText) {
+        gsap.to(heroText, {
+          opacity: 0,
+          filter: reduce ? 'blur(0px)' : 'blur(3px)',
           ease: 'none',
           scrollTrigger: Object.assign({}, heroScrollST),
         });
