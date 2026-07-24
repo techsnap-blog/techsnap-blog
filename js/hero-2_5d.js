@@ -112,7 +112,21 @@
       if (failed) { stage.remove(); return; }  // 1枚でも失敗→静止Heroのまま
       wrap.appendChild(stage);
       wideNodes.forEach(function (n) { hero.appendChild(n); });
-      wrap.classList.add('hero25d-on');
+      /* 静止画→2.5Dの差し替えは「隙間なし」で行う。
+         ------------------------------------------------------------
+         hero25d-on を付けると静止画が即 visibility:hidden になる。
+         これをステージ append と同じフレームで行うと、2.5Dレイヤーが
+         まだ合成描画されていないうちに静止画だけが消え、1フレームだけ
+         人物が消えて背景の温白が露出する（＝白い明滅）。縦位置を揃えて
+         ジャンプを消したことで、この1フレームの隙間が動きに紛れなくなり
+         白フラッシュとして見えるようになった。
+         二重rAFでステージのレイヤーが確実に描画されてから静止画を隠し、
+         差し替えの隙間（明滅）を無くす。フェード等の登場演出は足さない。 */
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () {
+          wrap.classList.add('hero25d-on');
+        });
+      });
       onReady(elements);
     }
   }
