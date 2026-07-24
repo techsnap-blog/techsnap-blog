@@ -61,6 +61,17 @@
   </script>
   <link rel="stylesheet" href="css/style.css?v=2">
   <link rel="stylesheet" href="css/hero-2_5d.css">
+  <!-- Hero見出し登場アニメーションのFOUC防止。
+       JS無効時はクラス自体が付かないため、h1は完成状態で表示される。
+       万一intro用JSが失敗しても2.5秒後に必ず解除され、見出しが
+       永久に非表示になることはない（安全側フォールバック）。 -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('hero-intro-pending');
+      setTimeout(function () { d.classList.remove('hero-intro-pending'); }, 2500);
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
@@ -106,10 +117,17 @@
          テキストと人物を一つのレイアウトシステムで管理 -->
     <div class="hero-poster">
 
+      <!-- 2行目の「背面通過用」複製テキスト。
+           z-index:-1 で .hero-poster の子より背面へ回り、人物レイヤーの
+           アルファに正しく遮蔽される。位置はJSが前面用2行目の実測値へ
+           同期するため、固定値でのズレは起きない。
+           既定は display:none（JS無効時は表示しない）。 -->
+      <div class="hero-title-behind" aria-hidden="true"><span class="hero-title-line hero-title-line--second-behind">いい道具から。</span></div>
+
       <!-- Left: Text column -->
       <div class="hero-text-overlay">
         <p class="hero-eyebrow">本音のガジェットレビュー</p>
-        <h1>いい暮らしは、<br>いい道具から。</h1>
+        <h1 class="hero-title"><span class="hero-title-line hero-title-line--first">いい暮らしは、</span><span class="hero-title-line hero-title-line--second-front">いい道具から。</span></h1>
         <p class="hero-sub">スペック表には書いていない使い心地、<br>価格には表れない満足感。</p>
         <!-- Site search -->
         <div class="hero-search">
@@ -1714,6 +1732,7 @@
 
   <script src="js/main.js?v=9"></script>
   <script src="js/hero-2_5d.js?v=2"></script>
+  <script src="js/hero-title-intro.js?v=1"></script>
 </body>
 </html>
 <!-- deploy refresh 2026-07-06 -->

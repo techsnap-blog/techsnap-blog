@@ -333,7 +333,10 @@ img { max-width: 100%; display: block; }
   color: rgba(60,50,40,0.45); letter-spacing: 0.22em;
   text-transform: uppercase; margin-bottom: 16px;
 }
-.hero-text-overlay h1 {
+/* .hero-title-behind（背面通過用の複製2行目）は、フォント・サイズ・
+   ウェイト・字間・行間を必ずこのルールで共有する（二重管理禁止） */
+.hero-text-overlay h1,
+.hero-title-behind {
   font-family: var(--font-sans);
   font-size: clamp(1.45rem, 3.2vw, 2.5rem);
   font-weight: 700; letter-spacing: -0.03em; line-height: 1.18;
@@ -714,7 +717,8 @@ img { max-width: 100%; display: block; }
   }
   .hero-image-wrap img { max-height: 65vh; }  /* サイズを少し大きく */
   .hero-sub { text-align: left; }
-  .hero-text-overlay h1 { font-size: 1.3rem; }
+  .hero-text-overlay h1,
+  .hero-title-behind { font-size: 1.3rem; }
 
   /* カテゴリボタン: 横スクロールではなく折り返して
      1画面に全て収まるようにする */
@@ -759,7 +763,8 @@ img { max-width: 100%; display: block; }
     align-items: flex-end;
     transform: none;
   }
-  .hero-text-overlay h1 { font-size: 1.4rem; }
+  .hero-text-overlay h1,
+  .hero-title-behind { font-size: 1.4rem; }
   .hero-sub { text-align: right; font-size: 0.78rem; }
   .hero-image-wrap {
     justify-content: center;
@@ -874,4 +879,56 @@ article h1, article h2, article h3, article p, article li, article td, article t
   article .compare-table td.is-compact::before {
     flex: 0 0 auto; min-width: 6.5em; margin-bottom: 0;
   }
+}
+
+/* ===================================================
+   HERO TITLE INTRO — 見出しの横方向スライドイン
+   （2026-07-24追加 / js/hero-title-intro.js と対）
+   ---------------------------------------------------
+   1行目「いい暮らしは、」… 左から前面を通って着地
+   2行目「いい道具から。」… 右から人物の“背面”を通って着地
+   背面通過は複製要素 .hero-title-behind が担当する。
+   .hero-poster（stacking context）の子として z-index:-1 に置くことで、
+   兄弟である .hero-image-wrap（人物レイヤー）より背面へ回る。
+   既存の .hero-text-overlay / .hero-image-wrap の重なり順は変更しない。
+   =================================================== */
+
+/* h1内の各行をブロック化（従来の<br>と同じ改行位置・行間を維持） */
+.hero-title-line { display: block; }
+
+/* 背面通過用の複製。既定は非表示 = JS無効時は出さない。
+   表示・座標同期・アニメーションはすべてJSが行う。 */
+.hero-title-behind {
+  display: none;
+  position: absolute;
+  left: 0; top: 0;
+  z-index: -1;                 /* .hero-poster内で人物より背面 */
+  margin: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* FOUC防止 — JS実行前に完成位置で一瞬見えるのを防ぐ。
+   クラスはhead内インラインJSが付け、intro開始時／2.5秒の安全網で外れる。 */
+.hero-intro-pending .hero-title-line--first,
+.hero-intro-pending .hero-title-line--second-front,
+.hero-intro-pending .hero-eyebrow,
+.hero-intro-pending .hero-sub,
+.hero-intro-pending .hero-search { opacity: 0; }
+
+/* Reduced Motion: 横移動は一切行わず即時表示。複製は使わない。 */
+@media (prefers-reduced-motion: reduce) {
+  .hero-intro-pending .hero-title-line--first,
+  .hero-intro-pending .hero-title-line--second-front,
+  .hero-intro-pending .hero-eyebrow,
+  .hero-intro-pending .hero-sub,
+  .hero-intro-pending .hero-search { opacity: 1; }
+  .hero-title-behind { display: none !important; }
+}
+
+/* モバイルは2.5D人物レイヤー自体が無効（元画像はmix-blend-mode:multiplyで
+   遮蔽できない）ため、背面通過は行わず通常の右スライドへフォールバックする */
+@media (max-width: 768px) {
+  .hero-title-behind { display: none; }
 }
