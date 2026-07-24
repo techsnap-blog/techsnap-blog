@@ -42,8 +42,11 @@
   position: absolute;
   top: 0; left: 0;
   width: 100%;
-  height: 100%;
-  max-height: 100vh;
+  /* 画像下部（人物が光へ溶ける裾）を画面下端より下へはみ出させ、
+     .hero-image-wrapのoverflow:hiddenでクリップして下部の隙間を消す。
+     全レイヤー共通の指定なので相互のアライメントは崩れない。 */
+  height: 108%;
+  max-height: 108vh;
   object-fit: contain;
   object-position: bottom center;
   mix-blend-mode: normal;

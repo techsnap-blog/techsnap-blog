@@ -290,8 +290,11 @@ img { max-width: 100%; display: block; }
   /* hero-posterのgridが幅を決めるのでmax-widthは100% */
   width: 100%;
   max-width: 100%;
-  height: 100%;
-  max-height: 100vh;
+  /* 画像下部（人物が光へ溶けるアート的な裾）を画面下端より少し下へ
+     はみ出させ、.hero-image-wrapのoverflow:hiddenでクリップする。
+     これにより人物の実体が画面下端まで届き、下部の白い隙間が消える。 */
+  height: 108%;
+  max-height: 108vh;
   object-fit: contain;
   object-position: bottom center;
   mix-blend-mode: multiply;     /* 白背景を透過させ人物だけ浮かぶ */
@@ -755,9 +758,14 @@ img { max-width: 100%; display: block; }
   .hero-image-wrap {
     justify-content: center;
     align-items: flex-end;
-    transform: translateY(-4vh);  /* 全体を少し上に持ち上げる */
+    /* 以前の translateY(-4vh) は下端に隙間を生むため解除。人物を画面下端まで
+       届かせる。 */
+    transform: none;
   }
-  .hero-image-wrap img { max-height: 65vh; }  /* サイズを少し大きく */
+  /* 人物を少し大きくし、さらに下へずらして裾（光へ溶ける部分）を画面下端の
+     下へ逃がす。.hero-image-wrapのoverflow:hiddenでクリップされ、下部の
+     白い隙間が消える。 */
+  .hero-image-wrap img { max-height: 74vh; transform: translateY(3vh); }
   .hero-sub { text-align: left; }
   .hero-text-overlay h1,
   .hero-title-behind { font-size: 1.3rem; }
