@@ -59,19 +59,17 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="css/style.css?v=10">
-  <link rel="stylesheet" href="css/hero-2_5d.css?v=8">
-  <!-- Hero登場制御（描画前に実行）。
-       - hero-intro-pending: 見出しのFOUC防止（JS無効時は付かず、h1は完成表示）
-       起動時の登場フェード演出は廃止した（2026-07-24）。blur/opacityフェード等は
-       いずれも起動時のフリーズ・明滅・まぶしさの副作用が残ったため、Heroは
-       最初から実体表示（即シャープ表示）とする。見出しのスライドインのみ維持。 -->
+  <link rel="stylesheet" href="css/style.css?v=11">
+  <link rel="stylesheet" href="css/hero-2_5d.css?v=9">
+  <!-- Hero見出し登場アニメーションのFOUC防止。
+       JS無効時はクラス自体が付かないため、h1は完成状態で表示される。
+       万一intro用JSが失敗しても2.5秒後に必ず解除され、見出しが
+       永久に非表示になることはない（安全側フォールバック）。 -->
   <script>
     (function () {
       var d = document.documentElement;
       d.classList.add('hero-intro-pending');
-      // 安全網: JSが途中で失敗しても見出しを必ず表示
-      setTimeout(function () { d.classList.remove('hero-intro-pending'); }, 1000);
+      setTimeout(function () { d.classList.remove('hero-intro-pending'); }, 2500);
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1732,11 +1730,9 @@
 
   </div><!-- /content-section -->
 
-  <!-- defer: 初回描画をブロックせず、パース完了後（gsap等のhead defer実行後）に
-       順序どおり実行する。起動時のメインスレッド占有を初回ペイントの後ろへ回す。 -->
-  <script src="js/main.js?v=11" defer></script>
-  <script src="js/hero-2_5d.js?v=8" defer></script>
-  <script src="js/hero-title-intro.js?v=2" defer></script>
+  <script src="js/main.js?v=12"></script>
+  <script src="js/hero-2_5d.js?v=9"></script>
+  <script src="js/hero-title-intro.js?v=3"></script>
 </body>
 </html>
 <!-- deploy refresh 2026-07-06 -->

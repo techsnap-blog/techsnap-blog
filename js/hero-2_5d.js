@@ -112,15 +112,7 @@
       if (failed) { stage.remove(); return; }  // 1枚でも失敗→静止Heroのまま
       wrap.appendChild(stage);
       wideNodes.forEach(function (n) { hero.appendChild(n); });
-      /* 演出なし（即差し替え）。hero25d-on を付けると静止画が即
-         visibility:hidden になり、常に opacity 1 のステージへ切り替わる。
-         二重rAFでステージのレイヤーが描画されてから静止画を隠すため、
-         人物が一瞬消える隙間は生じない（フェード等の登場演出は無し）。 */
-      window.requestAnimationFrame(function () {
-        window.requestAnimationFrame(function () {
-          wrap.classList.add('hero25d-on');
-        });
-      });
+      wrap.classList.add('hero25d-on');
       onReady(elements);
     }
   }
@@ -186,15 +178,6 @@
   var rafId = 0;
   var layerEls = null;
 
-  /* 起動直後、heroは blur→シャープの「ピント送り」演出中。全画面にかかる
-     blurは重く、その最中にパララックス（呼吸ドリフト含む）で子の transform を
-     毎フレーム書き換えると、ぼかし対象が毎フレーム再描画されて起動時に
-     カクつく。演出が終わるまで2.5Dの動作を止めておく（人物はぼけていて
-     パララックスは元々見えないため体感上の損失はない）。
-     BLUR_HOLD_MS は style.css の .hero blur transition(1.2s)より少し長め。 */
-  var BLUR_HOLD_MS = 1400;
-  var blurHoldDone = false;
-
   function computeStrength() {
     var w = window.innerWidth;
     if (w <= HERO25D_CONFIG.MOBILE_MAX) return 0;
@@ -203,8 +186,7 @@
   }
 
   function heroIsActive() {
-    return blurHoldDone &&
-      !document.hidden &&
+    return !document.hidden &&
       window.scrollY < window.innerHeight * HERO25D_CONFIG.ACTIVE_SCROLL_LIMIT &&
       strength > 0;
   }
@@ -277,20 +259,11 @@
 
   /* ---------------- 初期化 ---------------- */
   strength = computeStrength();
-
-  /* ピント送り演出の終了後にパララックスを解禁する。
-     reduced-motion時はblur演出自体が無いため待たずに解禁。 */
-  var reduceForBlur = reducedMotion.matches && !forceEnable;
-  window.setTimeout(function () {
-    blurHoldDone = true;
-    ensureRunning();
-  }, reduceForBlur ? 0 : BLUR_HOLD_MS);
-
   buildStage(function (elements) {
     elements.forEach(function (item) {
       item.lagX = 0; item.lagY = 0;
     });
     layerEls = elements;
-    ensureRunning();   // blurHoldDoneがtrueになるまでは内部で待機
+    ensureRunning();
   });
 })();

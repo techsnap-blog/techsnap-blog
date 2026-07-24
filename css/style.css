@@ -6,11 +6,7 @@
 
 /* ===== RESET ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-/* ルート要素にもWarm White背景を敷く。リロード時、ブラウザが前ページを
-   消して新ページの初回描画を出すまでの「空白フレーム」は根要素の背景色で
-   塗られる。既定(透明→白)だと一瞬まぶしい白が挟まりheroが消えて見えるため、
-   heroのベースと同じ温白にして空白を目立たなくする。 */
-html { scroll-behavior: auto; background-color: #F7F5F1; }
+html { scroll-behavior: auto; }
 
 /* ===== DESIGN TOKENS ===== */
 :root {
@@ -978,19 +974,8 @@ article h1, article h2, article h3, article p, article li, article td, article t
   user-select: none;
 }
 
-/* Hero登場フェードは廃止した（2026-07-24）。
-   経緯: 起動時の演出は blur→opacity と試したが、
-   (1) 全画面blurは起動直後の混雑と競合して「ボケたままフリーズ」、
-   (2) opacityフェードは静止画(hero-main.png=multiplyで黒)から
-       2.5D人物(person.webp=グレー)への切替時に明るさ段差が出て「明滅」、
-   と、どの登場演出も副作用が残った。
-   最終的に「登場演出なし（Heroは最初から実体表示）＝A案」と
-   「静止画→2.5Dの切替演出をやめ、2.5Dだけを温白背景からフェードイン＝B案」
-   を採用し、切替そのものを無くして段差・明滅・フリーズを原理的に断った。
-   head内JSが付ける .hero-booting は現在CSS上の効果を持たない（無害）。 */
-
 /* FOUC防止 — JS実行前に完成位置で一瞬見えるのを防ぐ。
-   クラスはhead内インラインJSが付け、intro開始時／安全網タイマーで外れる。 */
+   クラスはhead内インラインJSが付け、intro開始時／2.5秒の安全網で外れる。 */
 .hero-intro-pending .hero-title-line--first,
 .hero-intro-pending .hero-title-line--second-front,
 .hero-intro-pending .hero-eyebrow,
