@@ -403,25 +403,51 @@ img { max-width: 100%; display: block; }
   z-index: 10;
   margin-top: 100vh;
 
+  /* --surface-fade: パネル上辺のフェード帯の高さ。
+     この帯の分だけ、せり上がるパネルの上端が「透明→Surface色」へ
+     ゆっくり変化する。パネル自身のbackdrop-filterはこの帯にも効くため、
+     帯の内側ではHeroがフロスト越しに透けて見え、Hero → 記事一覧の境界が
+     溶ける（＝Heroの余韻）。境界線を1本も引かないための仕組み。 */
+  --surface-fade: 130px;
+
   /* Surface背景 — 半透明グラスパネル。Heroが背後に薄く透けて見える。
-     カテゴリ上部の自然光グラデーションは削除（ユーザー指定）。 */
-  background-color: rgba(248,246,242, 0.98);
+     カテゴリ上部の自然光グラデーションは削除（ユーザー指定）。
+     background-colorは使わず、linear-gradientで上端だけ透明にし、
+     --surface-fade以降を本来のSurface色(rgba0.98)で塗る。 */
+  background-color: transparent;
   background-image:
     /* 全体の暖かさのみ残す */
-    radial-gradient(ellipse 70% 50% at 30% 40%, rgba(250,246,238,0.25) 0%, transparent 70%);
+    radial-gradient(ellipse 70% 50% at 30% 40%, rgba(250,246,238,0.25) 0%, transparent 70%),
+    /* 上辺フェード帯: 透明 → Surface色。上側ほど透明を長く保つ緩やかな
+       カーブ（多段ストップ）にし、Heroが長い距離をかけてゆっくり溶ける。
+       直線ランプだと帯が短く見え安っぽくなるため、序盤をほぼ透明に寝かせる。 */
+    linear-gradient(to bottom,
+      rgba(248,246,242, 0)    0,
+      rgba(248,246,242, 0.05) calc(var(--surface-fade) * 0.32),
+      rgba(248,246,242, 0.28) calc(var(--surface-fade) * 0.60),
+      rgba(248,246,242, 0.70) calc(var(--surface-fade) * 0.84),
+      rgba(248,246,242, 0.98) var(--surface-fade));
 
-  /* 上辺のみ大きめの角丸（展示パネル） */
+  /* 上辺のみ大きめの角丸（展示パネル）。上端は透明フェードのため
+     角丸のエッジ自体は視認されず、境界として立たない。 */
   border-radius: 44px 44px 0 0;
-  padding-top: 72px;
+  /* padding-topを詰めて、記事コンテンツ（カテゴリ・カード）をHeroの直下まで
+     引き上げる。これがないとHeroが溶けた後に光の空白帯（＝Hero下部の隙間）が
+     残るため。グラデーション終点(--surface-fade)は最初のカード上ラインに一致
+     させ、空白の裾を作らない（padding + カテゴリ高さ ≒ --surface-fade）。 */
+  padding-top: 48px;
 
-  /* 展示パネルのShadow — 極めて自然
-     注意: 以前あった「0 -80px 100px」の広域グラデーション層は、
-     半透明パネルの上では帯として透けて見えるため削除済み。 */
-  box-shadow:
-    0 -1px 0 rgba(180,160,130,0.12),          /* 上辺の細線 */
-    0 -24px 48px rgba(200,185,160,0.14);       /* 柔らかい浮遊感 */
+  /* Shadowは撤去。上辺の細線も、上方向へ広がる柔らかいglowも、
+     Heroの上に「浮いた帯」として見えてしまうため使わない。
+     境界はグラデーションのフェードだけで自然に溶かす。 */
+  box-shadow: none;
 
-  /* Backdrop blur強め — 半透明でも文字の可読性を保つガラス効果 */
+  /* Backdrop blur — 半透明パネル越しにHeroを霞ませるガラス質感。
+     これがないと、固定Heroの僅かな透け（不透明度0.98の残り2%）が
+     カード背後でくっきり見えてしまうため必要。上端の硬いblurエッジは
+     Heroの溶け込み帯の中（カテゴリより上）に位置し、色は透明なので
+     境界としてはほぼ立たない。カテゴリバー側のパキッはバー自身の
+     背景で解消する（下記 .categories 参照）。 */
   backdrop-filter: blur(16px) saturate(120%);
   -webkit-backdrop-filter: blur(16px) saturate(120%);
 
@@ -448,6 +474,18 @@ img { max-width: 100%; display: block; }
   position: sticky;
   top: 60px; /* 固定ヘッダーの高さ分 */
   z-index: 20;
+  /* バー自身の背景はデフォルトで持たない（transparent）。
+     記事上部（Heroの溶け込み帯）ではボタンがcontent-sectionの透明
+     グラデーションの上に直接乗るため、バー由来の硬い横線が一切出ない。
+     背景が必要になるのは「スクロールでヘッダー直下に固定された時」だけ
+     （カードがバー背後を通過するのを隠すマスク役）。その時だけJSが
+     .stuck を付与して背景を出す。固定時はバー上端がヘッダーに接し、
+     背後にHeroは無いので backdrop-filter の上端エッジも露出しない。 */
+  background: transparent;
+  transition: background 0.25s ease;
+}
+/* 固定（ヘッダー直下に貼り付いた）時だけ背景を出す */
+.categories.stuck {
   background: rgba(247,245,241, 0.92);
   backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
@@ -736,7 +774,12 @@ img { max-width: 100%; display: block; }
     font-size: 0.66rem;
   }
 
-  .content-section { border-radius: 18px 18px 0 0; padding-top: 44px; }
+  /* モバイルはフェード帯を控えめにして上部余白の増加を最小限に抑える
+     （padding-topは--surface-fadeに追従。溶け込みは残しつつ従来の
+     詰まったレイアウトを大きく崩さない）。 */
+  /* モバイルも同様にコンテンツをHero直下まで引き上げ、光の空白帯を消す。
+     終点は最初のカード上ライン（padding 40 + カテゴリ2段 ≒ 190px）。 */
+  .content-section { border-radius: 18px 18px 0 0; --surface-fade: 190px; padding-top: 40px; }
 
   .article-grid { grid-template-columns: 1fr; gap: 12px; }
   .article-card { display: grid; grid-template-columns: 96px 1fr; }

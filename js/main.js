@@ -162,13 +162,30 @@
     onScroll();
   }
 
+  /* ------ カテゴリバーは固定時だけ背景を出す ------
+     .categoriesはデフォルトで背景透明（記事上部のHero溶け込み帯に
+     ボタンだけが乗り、硬い横線が出ない）。sticky(top:60px)でヘッダー
+     直下に貼り付いた時だけ.stuckを付与し、カードがバー背後を通過するのを
+     隠す背景を出す。判定はrect.top<=61（＝貼り付き位置に到達したか）で、
+     Lenis等のスクロール実装に依存しない。 */
+  const categoriesEl = document.querySelector('.categories');
+  if (categoriesEl) {
+    const onCatScroll = () =>
+      categoriesEl.classList.toggle('stuck', categoriesEl.getBoundingClientRect().top <= 61);
+    window.addEventListener('scroll', onCatScroll, { passive: true });
+    onCatScroll();
+  }
+
   /* ------ Heroタイトルを確実に隠す ------
      GSAPのscrubフェードだけでは「opacityが0になりきらず薄く残る」
      ケースがあったため、一定スクロール後はvisibility:hiddenで
      完全に非表示にする（CSS側のtransitionで滑らかさは維持）。 */
   const heroTextEl = document.querySelector('.hero-text-overlay');
   if (heroTextEl) {
-    const onHeroScroll = () => heroTextEl.classList.toggle('is-hidden', window.scrollY > 260);
+    /* しきい値は、せり上がる記事パネル上端のフェード帯(--surface-fade≈132px)を
+       抜けたあたり。Heroテキストを少しだけ長く残し、Heroから記事への
+       「余韻」を作る（急に消えない）。CSS側のopacity transitionで滑らかにフェード。 */
+    const onHeroScroll = () => heroTextEl.classList.toggle('is-hidden', window.scrollY > 430);
     window.addEventListener('scroll', onHeroScroll, { passive: true });
     onHeroScroll();
   }
