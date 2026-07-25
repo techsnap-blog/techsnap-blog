@@ -6,7 +6,18 @@
 
 /* ===== RESET ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: auto; }
+html {
+  scroll-behavior: auto;
+  /* 終端でのフリック（ラバーバンド/オーバースクロール）対策（2026-07-25）。
+     1. overscroll-behavior-y: none — 対応ブラウザ（Android Chrome等）では
+        バウンス自体が起きなくなる。iOS Safariのドキュメントバウンスは
+        この指定では止まらない場合がある。
+     2. html自身の背景をフッター色にする — バウンスで露出する領域は
+        htmlの背景が描かれるため、固定Heroが覗く代わりにフッターと
+        同じ色の面が続いて見える（bodyは不透明で上に乗るため通常表示は不変）。 */
+  overscroll-behavior-y: none;
+  background-color: #EDEAE4; /* = var(--bg3)。:root定義より前のため実値で指定 */
+}
 
 /* ===== DESIGN TOKENS ===== */
 :root {
