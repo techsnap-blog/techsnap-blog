@@ -427,41 +427,74 @@
          記事パネルを上端の透明度で全面統一した結果、パネル越しに人物の
          シルエットが下まで濃く残り、ランキング等の可読性を落としていた。
          そこで「スクロールが深くなるほどHeroのブラーを上げ、色味を拡散
-         させる」演出へ変更する。第1段（0〜1画面）は従来どおりの
-         カメラ前進＋blur2pxで挙動を変えず、第2段でblurを深めながら
-         彩度とコントラストを落とし、人物を光の面へ溶かしていく。
-         Transform所有権: filterを書くScrollTriggerは引き続きこの1本だけ
-         （keyframesで1トゥイーンに統合し、二重更新を作らない）。
-         負荷を考慮し、深いブラー段はデスクトップかつ非reduced-motionのみ。 */
+         させる」演出にする。
+
+         2段のkeyframes（0〜1画面でblur2px → そこから一気に深くする）で
+         組むと、段の境目でblurの増加レートが跳ね、ユーザーの画面録画で
+         「ブラーがいきなりかかる瞬間」として視認された（2026-07-25 指摘）。
+         またfilterの関数リストが段ごとに違うと（blur+saturate →
+         blur+saturate+brightness+contrast）、GSAPの補間が境目で不連続に
+         なり同じ症状を招く。恒久対策として次の2点を守る:
+           1. blurは段を作らず、0からの1本の連続カーブで増やす。
+              序盤を寝かせて深部で伸びるease(power2.in)にすることで、
+              「いつ始まったか分からないまま濃くなる」挙動にする。
+           2. filterの関数リストは開始値と終了値で完全に一致させる
+              （使わない関数もbrightness(1)/contrast(1)として明示する）。
+
+         Transform所有権: scale＝この下のトゥイーン、filter/opacity＝
+         blurトゥイーンと、プロパティ単位で所有者を1つに分けている。
+         負荷を考慮し、深いブラーはデスクトップかつ非reduced-motionのみ。 */
+      const deepBlur = isDesktop && !reduce;
+      /* 深いブラーの射程。長く取るほど1pxあたりのスクロール量が増え、
+         変化が知覚されにくくなる。 */
+      const blurST = Object.assign({}, heroScrollST, {
+        end: () => '+=' + window.innerHeight * 3.5,
+      });
+
       if (heroImg) {
         gsap.set(heroImg, { transformOrigin: '50% 100%' }); /* 足元基準で拡大し人物の見切れを防ぐ */
-        const deepBlur = isDesktop && !reduce;
         gsap.to(heroImg, {
-          keyframes: [
-            { scale: imgScale, opacity: 0.92, filter: 'blur(2px) saturate(100%)', duration: 1, ease: 'none' },
-            /* blurだけでは人物の黒い塊が「太いバンド」として残るため、
-               brightnessで明度を持ち上げcontrastを落として、暖白の面へ
-               色ごと拡散させる。opacityも合わせて下げる。 */
-            ...(deepBlur ? [{ opacity: 0.62, filter: 'blur(26px) saturate(45%) brightness(1.35) contrast(0.72)', duration: 2, ease: 'none' }] : []),
-          ],
-          scrollTrigger: Object.assign({}, heroScrollST, {
-            end: () => '+=' + window.innerHeight * (deepBlur ? 3 : 1),
-          }),
+          scale: imgScale,
+          ease: 'none',
+          scrollTrigger: Object.assign({}, heroScrollST),
         });
+        if (deepBlur) {
+          /* blurだけでは人物の黒い塊が「太いバンド」として残るため、
+             brightnessで明度を持ち上げcontrastを落として、暖白の面へ
+             色ごと拡散させる。opacityも同じカーブで下げる。
+             power2.in により、1画面スクロール時点ではblur約2px＝従来の
+             見え方に一致し、そこから先で滑らかに深くなる。 */
+          gsap.fromTo(heroImg,
+            { opacity: 1, filter: 'blur(0px) saturate(100%) brightness(1) contrast(1)' },
+            {
+              opacity: 0.62,
+              filter: 'blur(26px) saturate(45%) brightness(1.35) contrast(0.72)',
+              ease: 'power2.in',
+              scrollTrigger: Object.assign({}, blurST),
+            });
+        } else {
+          gsap.to(heroImg, {
+            opacity: 0.92,
+            filter: 'blur(2px)',
+            ease: 'none',
+            scrollTrigger: Object.assign({}, heroScrollST),
+          });
+        }
       }
       if (heroBgEl && !reduce) {
-        /* 背景も人物と同じ射程で軽くぼかす。人物だけを溶かすと背景の
-           光のエッジだけが残って層がちぐはぐになるため、量は控えめ。 */
         gsap.set(heroBgEl, { transformOrigin: '65% 30%' }); /* 右上の光源方向へ寄っていく */
         gsap.to(heroBgEl, {
-          keyframes: [
-            { scale: bgScale, duration: 1, ease: 'none' },
-            ...(isDesktop ? [{ filter: 'blur(6px)', duration: 2, ease: 'none' }] : []),
-          ],
-          scrollTrigger: Object.assign({}, heroScrollST, {
-            end: () => '+=' + window.innerHeight * (isDesktop ? 3 : 1),
-          }),
+          scale: bgScale,
+          ease: 'none',
+          scrollTrigger: Object.assign({}, heroScrollST),
         });
+        if (isDesktop) {
+          /* 背景も人物と同じカーブで軽くぼかす。人物だけを溶かすと背景の
+             光のエッジだけが残って層がちぐはぐになるため、量は控えめ。 */
+          gsap.fromTo(heroBgEl,
+            { filter: 'blur(0px)' },
+            { filter: 'blur(6px)', ease: 'power2.in', scrollTrigger: Object.assign({}, blurST) });
+        }
       }
       if (heroText && isDesktop && !reduce) {
         gsap.to(heroText, {
