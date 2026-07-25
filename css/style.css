@@ -409,30 +409,20 @@ img { max-width: 100%; display: block; }
      溶ける（＝Heroの余韻）。境界線を1本も引かないための仕組み。 */
   --surface-fade: 130px;
 
-  /* --surface-glass: 記事パネル本体の不透明度。1未満にすることで、背後に
-     固定されたHeroが「すりガラス越し」に薄く透けて見える（backdrop-filterの
-     blurがそれを霞ませる）。透け過ぎるとカード外の余白にHero人物の残像が
-     出るため、可読性とのバランスで調整する。パネルはこの値のまま記事一覧
-     全体を覆い、ランキング以降は各セクション側の不透明背景で透けを止める。 */
-  --surface-glass: 0.60;
+  /* --surface-glass: 記事パネル本体の不透明度。2026-07-25にユーザー指定で
+     「上端の透明度でパネル全体を統一する」方針へ変更したため0（＝完全透明）。
+     色レイヤーで塗らず、backdrop-filterのフロストだけでHeroを霞ませる。
+     可読性は記事カード自身の背景側で担保する。 */
+  --surface-glass: 0;
 
-  /* Surface背景 — 半透明グラスパネル。Heroが背後に薄く透けて見える。
-     カテゴリ上部の自然光グラデーションは削除（ユーザー指定）。
-     background-colorは使わず、linear-gradientで上端だけ透明にし、
-     --surface-fade以降を本来のSurface色(rgba0.98)で塗る。 */
+  /* Surface背景 — 上端の透明度で全面統一（グラデーション廃止）。
+     以前は上辺だけ透明→下へSurface色へ濃くなる多段グラデーションだったが、
+     ユーザー指定により帯を廃止し、パネル全体を上端と同じ透明度に揃える。
+     暖色のradialだけ残し、質感はbackdrop-filterのblurで作る。 */
   background-color: transparent;
   background-image:
     /* 全体の暖かさのみ残す */
-    radial-gradient(ellipse 70% 50% at 30% 40%, rgba(250,246,238,0.25) 0%, transparent 70%),
-    /* 上辺フェード帯: 透明 → Surface色。上側ほど透明を長く保つ緩やかな
-       カーブ（多段ストップ）にし、Heroが長い距離をかけてゆっくり溶ける。
-       直線ランプだと帯が短く見え安っぽくなるため、序盤をほぼ透明に寝かせる。 */
-    linear-gradient(to bottom,
-      rgba(248,246,242, 0)    0,
-      rgba(248,246,242, 0.05) calc(var(--surface-fade) * 0.32),
-      rgba(248,246,242, 0.22) calc(var(--surface-fade) * 0.60),
-      rgba(248,246,242, 0.52) calc(var(--surface-fade) * 0.84),
-      rgba(248,246,242, var(--surface-glass)) var(--surface-fade));
+    radial-gradient(ellipse 70% 50% at 30% 40%, rgba(250,246,238,0.25) 0%, transparent 70%);
 
   /* 上辺のみ大きめの角丸（展示パネル）。上端は透明フェードのため
      角丸のエッジ自体は視認されず、境界として立たない。 */
@@ -656,10 +646,11 @@ img { max-width: 100%; display: block; }
      記事パネル(--surface-glass)より少しだけ濃い半透明にして層として分離させ、
      backdrop-filterで背後（記事面→さらに奥のHero）を霞ませる。
      上辺には記事パネルと同じ持ち上げ影を落とし、板が浮いて見えるようにする。
-     下の x-section／footer は不透明フロアのため、透明感はこの板で終わる。 */
+     下の x-section も同じ作りの板（少しだけ濃い）で層を重ね、
+     不透明フロアは footer で受ける。 */
   background:
     radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,248,235,0.28) 0%, transparent 60%),
-    rgba(248,246,242, 0.48);
+    rgba(248,246,242, 0.16);
   backdrop-filter: blur(20px) saturate(120%);
   -webkit-backdrop-filter: blur(20px) saturate(120%);
   /* 記事背景と同じ上部角丸で、浮いたガラス板として見せる */
@@ -671,7 +662,7 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: rgba(248,246,242, 0.55);
+  background: rgba(248,246,242, 0.34);
   backdrop-filter: blur(16px) saturate(120%);
   -webkit-backdrop-filter: blur(16px) saturate(120%);
 }
@@ -702,9 +693,17 @@ img { max-width: 100%; display: block; }
 /* ===== X SECTION ===== */
 .x-section {
   padding: 72px 0;
-  border-top: 1px solid var(--border);
-  /* ランキング境界より下は不透明サーフェス（Heroの透けを止めるフロア）。 */
-  background: var(--bg);
+  /* ランキングと同じ「浮いたガラス板」の作り（2026-07-25 ユーザー指定）。
+     上辺の境界線は引かず、角丸＋上方向へ落とす影＋backdrop-filterで
+     もう一枚重なった板として見せる。不透明度はランキング(0.16)より
+     わずかに高くして、下へ行くほど面が締まっていく層順を作る。 */
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,248,235,0.24) 0%, transparent 60%),
+    rgba(248,246,242, 0.30);
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  border-radius: 44px 44px 0 0;
+  box-shadow: 0 -16px 50px -12px rgba(45,36,28,0.22);
 }
 .x-inner { max-width: 540px; margin: 0 auto; padding: 0 20px; text-align: center; }
 .x-eyebrow {

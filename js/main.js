@@ -423,22 +423,44 @@
       const imgScale = reduce ? 1 : (isDesktop ? 1.10 : 1.15);
       const bgScale  = reduce ? 1 : (isDesktop ? 1.07 : 1.09);
 
+      /* Progressive blur（2026-07-25 ユーザー指定）
+         記事パネルを上端の透明度で全面統一した結果、パネル越しに人物の
+         シルエットが下まで濃く残り、ランキング等の可読性を落としていた。
+         そこで「スクロールが深くなるほどHeroのブラーを上げ、色味を拡散
+         させる」演出へ変更する。第1段（0〜1画面）は従来どおりの
+         カメラ前進＋blur2pxで挙動を変えず、第2段でblurを深めながら
+         彩度とコントラストを落とし、人物を光の面へ溶かしていく。
+         Transform所有権: filterを書くScrollTriggerは引き続きこの1本だけ
+         （keyframesで1トゥイーンに統合し、二重更新を作らない）。
+         負荷を考慮し、深いブラー段はデスクトップかつ非reduced-motionのみ。 */
       if (heroImg) {
+        gsap.set(heroImg, { transformOrigin: '50% 100%' }); /* 足元基準で拡大し人物の見切れを防ぐ */
+        const deepBlur = isDesktop && !reduce;
         gsap.to(heroImg, {
-          scale: imgScale,
-          transformOrigin: '50% 100%',   /* 足元基準で拡大し人物の見切れを防ぐ */
-          opacity: 0.92,
-          filter: 'blur(2px)',
-          ease: 'none',
-          scrollTrigger: Object.assign({}, heroScrollST),
+          keyframes: [
+            { scale: imgScale, opacity: 0.92, filter: 'blur(2px) saturate(100%)', duration: 1, ease: 'none' },
+            /* blurだけでは人物の黒い塊が「太いバンド」として残るため、
+               brightnessで明度を持ち上げcontrastを落として、暖白の面へ
+               色ごと拡散させる。opacityも合わせて下げる。 */
+            ...(deepBlur ? [{ opacity: 0.62, filter: 'blur(26px) saturate(45%) brightness(1.35) contrast(0.72)', duration: 2, ease: 'none' }] : []),
+          ],
+          scrollTrigger: Object.assign({}, heroScrollST, {
+            end: () => '+=' + window.innerHeight * (deepBlur ? 3 : 1),
+          }),
         });
       }
       if (heroBgEl && !reduce) {
+        /* 背景も人物と同じ射程で軽くぼかす。人物だけを溶かすと背景の
+           光のエッジだけが残って層がちぐはぐになるため、量は控えめ。 */
+        gsap.set(heroBgEl, { transformOrigin: '65% 30%' }); /* 右上の光源方向へ寄っていく */
         gsap.to(heroBgEl, {
-          scale: bgScale,
-          transformOrigin: '65% 30%',    /* 右上の光源方向へ寄っていく */
-          ease: 'none',
-          scrollTrigger: Object.assign({}, heroScrollST),
+          keyframes: [
+            { scale: bgScale, duration: 1, ease: 'none' },
+            ...(isDesktop ? [{ filter: 'blur(6px)', duration: 2, ease: 'none' }] : []),
+          ],
+          scrollTrigger: Object.assign({}, heroScrollST, {
+            end: () => '+=' + window.innerHeight * (isDesktop ? 3 : 1),
+          }),
         });
       }
       if (heroText && isDesktop && !reduce) {
