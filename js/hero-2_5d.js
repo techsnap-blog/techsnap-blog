@@ -3,10 +3,31 @@
    ------------------------------------------------------------
    構成（1ファイル内で責務分離 / ビルド環境なしのため分割しない）
      HERO25D_CONFIG : 全定数（Magic Number禁止）
+     LayerLoader    : DOM外での画像取得と decode()
      MouseTracker   : pointermove → target値の更新のみ（DOM操作なし）
      ParallaxEngine : Depth/Lerp計算
      GlitchTimer    : 決定論的（固定Seed）なグリッチ微動
      AnimationLoop  : 唯一の requestAnimationFrame
+   ------------------------------------------------------------
+   起動タイミング（2026-07-27 設計変更 / 最重要）:
+     Heroタイトルの登場アニメーションが完全に終わるまで、このスクリプトは
+     何もしない。画像リクエスト・decode()・DOM追加・rAF・pointermove購読の
+     いずれも行わない。コールドキャッシュ時に透過WebPのデコードとレイヤー合成が
+     GSAPのタイトル移動と同一フレームを奪い合い、文字が一瞬停止して見えていた
+     ためである。
+     合図は hero-title-intro.js が発行する
+       CustomEvent 'techsnap:hero-intro-complete'（document）
+     と documentElement の data-hero-intro="complete"。
+     このファイルが後から読み込まれてイベントを取り逃した場合に備え、
+     読み込み時点で属性が既に complete なら即座に初期化する。
+
+   状態遷移（二重初期化・二重rAFの禁止）:
+     idle ──intro完了──> loading ──全必須画像decode完了──> ready
+                            │                                  │
+                            │失敗/タイムアウト                  │クロスフェード完了
+                            v                                  v
+                        fallback（静止Heroのまま）           active（rAF稼働）
+     idle 以外で初期化要求が来ても無視する。rAFは active 以降のみ、常に最大1本。
    ------------------------------------------------------------
    Transform所有権:
      GSAP        → .hero-image-wrap（親）の scale/opacity/filter
@@ -14,9 +35,10 @@
    互いに同じ要素へ触れないため競合しない。
    ------------------------------------------------------------
    フォールバック:
-     全レイヤー画像の読込に成功した時だけステージを有効化する。
-     失敗時・モバイル・prefers-reduced-motion 時は既存の静止Hero
-     （images/hero-main.png）がそのまま表示され続ける。
+     静止Hero（images/hero-main.webp / .png）は初期HTMLから常に表示され、
+     2.5Dが有効化されるまで隠されない。必須レイヤーが1枚でも読めなければ
+     状態は fallback となり、静止Heroがそのまま残る。
+     Heroが空になる経路は存在しない。
    ============================================================ */
 (function () {
   'use strict';
@@ -34,11 +56,13 @@
     DESKTOP_MIN: 1280,        // フル機能
     MOBILE_MAX: 768,          // 静止Hero（style.cssのモバイル境界に合わせる）
     TABLET_STRENGTH: 0.5,     // タブレットはパララックス50%
+    LOAD_TIMEOUT_MS: 10000,   // 低速回線の打ち切り（これを超えたら静止Heroを維持）
+    CROSSFADE_MS: 450,        // CSS .hero25d-stage の transition と一致させること
     GLITCH: {
       SEED: 20260710,         // 決定論的動作のための固定Seed
       MIN_INTERVAL_MS: 600,
       MAX_INTERVAL_MS: 1600,
-      MIN_SHIFT_PX: 2,        // ずれ幅 2〜5px（肉眼で分かる量に増量 2026-07-10）
+      MIN_SHIFT_PX: 2,        // ずれ幅 2〜5px（肉眼で分かる量）
       MAX_SHIFT_PX: 5,
       MIN_OPACITY: 0.88,
       EASE: 0.08              // ずれ・明滅の補間係数（瞬間ジャンプさせずぬるぬる遷移）
@@ -50,8 +74,13 @@
     }
   };
 
-  /* レイヤー定義: move=マウス最大移動量(px), scale=常時スケール,
-     breath=呼吸ドリフト振幅(px) — マウス静止時も常に揺れ続ける量 */
+  /* レイヤー定義
+       move    : マウス最大移動量(px)
+       scale   : 常時スケール
+       breath  : 呼吸ドリフト振幅(px) — マウス静止時も常に揺れ続ける量
+       optional: true の層は読み込みに失敗しても全体を中止しない（装飾のみ）
+     人物・グロー・グリッチは絵の構成要素のため必須。粒子(particles)は
+     タブレット以下で元々非表示の装飾なので任意扱いとする。 */
   var HERO25D_LAYERS = [
     { name: 'back-glow',     move: 4,  scale: 1.02, rotate: true, breath: 3 },
     { name: 'person',        move: 8,  scale: 1.0,  breath: 1.2 },
@@ -60,98 +89,135 @@
     { name: 'glitch-main',   move: 22, scale: 1.0,  glitch: true, baseOpacity: 0.6, breath: 3 },
     { name: 'glitch-detail', move: 30, scale: 1.0,  glitch: true, lagged: true, baseOpacity: 0.6, breath: 4 },
     /* wide: 画像カラム(overflow:hidden)ではなくHero全面に配置する層。
-       vdrift: 上下方向のランダム風ドリフト振幅(px)。3枚が別速度で漂い、
-       粒がバラバラに動いて見える */
-    { name: 'particles-a',   move: 34, scale: 1.0,  breath: 5, wide: true, vdrift: 9 },
-    { name: 'particles-b',   move: 30, scale: 1.0,  breath: 4, wide: true, vdrift: 12 },
-    { name: 'particles-c',   move: 38, scale: 1.0,  breath: 6, wide: true, vdrift: 7 },
+       vdrift: 上下方向のランダム風ドリフト振幅(px)。3枚が別速度で漂う */
+    { name: 'particles-a',   move: 34, scale: 1.0,  breath: 5, wide: true, vdrift: 9, optional: true },
+    { name: 'particles-b',   move: 30, scale: 1.0,  breath: 4, wide: true, vdrift: 12, optional: true },
+    { name: 'particles-c',   move: 38, scale: 1.0,  breath: 6, wide: true, vdrift: 7, optional: true },
     { name: 'front-glow',    move: 40, scale: 1.05, rotate: true, breath: 4 }
   ];
 
-  /* ---------------- 起動ガード ---------------- */
-  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  /* 動作検証用: ?hero25d=force でreduced-motionガードを無視できる（本番挙動に影響なし） */
-  var forceEnable = /[?&]hero25d=force/.test(window.location.search);
   var wrap = document.querySelector('.hero-image-wrap');
   var hero = document.querySelector('.hero');
   if (!wrap || !hero) return;
-  if (reducedMotion.matches && !forceEnable) return;       // 静止Heroのまま
-  if (window.innerWidth <= HERO25D_CONFIG.MOBILE_MAX) return; // モバイルは初期化しない
-  /* タッチ主体の端末（hover不可/粗ポインタ）では画面幅に関わらず
-     マウスパララックスを初期化しない（タブレット横持ち等の誤作動防止） */
-  if (window.matchMedia('(hover: none), (pointer: coarse)').matches && !forceEnable) return;
 
-  /* ---------------- ステージ構築 ---------------- */
-  function buildStage(onReady) {
-    var stage = document.createElement('div');
-    stage.className = 'hero25d-stage';
-    stage.setAttribute('aria-hidden', 'true');
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  /* 動作検証用: ?hero25d=force で対応環境ガードを緩められる（本番挙動に影響なし） */
+  var forceEnable = /[?&]hero25d=force/.test(window.location.search);
 
-    var pending = HERO25D_LAYERS.length;
-    var failed = false;
-    var elements = [];
-    var wideNodes = [];   // Hero全面配置の層（stage外・.hero直下へ入れる）
+  /* 対応環境判定。ここで false なら画像は1枚も取得しない。
+     判定は初期化時（＝タイトル演出後）に行うため、その時点の実寸で評価される。 */
+  function isCapableEnvironment() {
+    if (forceEnable) return true;
+    if (reducedMotion.matches) return false;
+    if (window.innerWidth <= HERO25D_CONFIG.MOBILE_MAX) return false;
+    /* タッチ主体の端末（hover不可/粗ポインタ）では画面幅に関わらず初期化しない */
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return false;
+    return true;
+  }
 
-    HERO25D_LAYERS.forEach(function (def) {
-      var img = document.createElement('img');
+  /* ---------------- 状態 ---------------- */
+  var STATE = { IDLE: 'idle', LOADING: 'loading', READY: 'ready', ACTIVE: 'active', FALLBACK: 'fallback' };
+  var state = STATE.IDLE;
+
+  /* ---------------- LayerLoader ----------------
+     画像は new Image() で生成し、DOMへは一切追加しない。
+     load と decode() を安全に処理し、decodeが完了した要素だけを後段へ渡す。
+     decode未対応・decode拒否・404・通信遅延をすべてここで吸収する。 */
+  function loadLayer(def) {
+    return new Promise(function (resolve, reject) {
+      var img = new Image();
       img.className = 'hero25d-layer hero25d-layer--' + def.name +
         (def.wide ? ' hero25d-wide' : '');
       img.alt = '';
       img.setAttribute('aria-hidden', 'true');
       img.decoding = 'async';
-      img.addEventListener('load', done, { once: true });
-      img.addEventListener('error', function () { failed = true; done(); }, { once: true });
+
+      var settled = false;
+      function fail(e) { if (settled) return; settled = true; reject(e); }
+      function ok() {
+        if (settled) return;
+        settled = true;
+        resolve({ def: def, el: img });
+      }
+
+      img.addEventListener('error', function () { fail(new Error('load failed: ' + def.name)); }, { once: true });
+      img.addEventListener('load', function () {
+        /* decode()未対応ブラウザではload完了をもって描画準備完了とみなす。
+           decodeが拒否された場合も同様（画像自体は取得できている）。 */
+        if (typeof img.decode !== 'function') { ok(); return; }
+        img.decode().then(ok, ok);
+      }, { once: true });
+
       img.src = HERO25D_CONFIG.ASSET_DIR + def.name + '.webp';
-      elements.push({ def: def, el: img });
-      if (def.wide) { wideNodes.push(img); } else { stage.appendChild(img); }
+    });
+  }
+
+  function withTimeout(promise, ms) {
+    return new Promise(function (resolve, reject) {
+      var timer = setTimeout(function () { reject(new Error('timeout')); }, ms);
+      promise.then(
+        function (v) { clearTimeout(timer); resolve(v); },
+        function (e) { clearTimeout(timer); reject(e); }
+      );
+    });
+  }
+
+  /* ---------------- ステージ構築 ----------------
+     全必須レイヤーのdecode完了後に、DocumentFragmentで一括DOM追加する。
+     decodeが済んでいない画像は決して画面へ入れない。 */
+  function buildStage(onReady, onFail) {
+    var loads = HERO25D_LAYERS.map(function (def) {
+      return withTimeout(loadLayer(def), HERO25D_CONFIG.LOAD_TIMEOUT_MS);
     });
 
-    function done() {
-      pending -= 1;
-      if (pending > 0) return;
-      if (failed) {
-        stage.remove();
-        /* 1枚でも失敗→静止Heroへ復帰。head側で静止画を隠している(hero25d-boot)ため、
-           fallbackクラスを付けて静止画を必ず見せる（Heroが空のまま残らない）。 */
-        document.documentElement.classList.add('hero25d-fallback');
-        return;
-      }
-      wrap.appendChild(stage);
-      wideNodes.forEach(function (n) { hero.appendChild(n); });
-      onReady(elements);
+    var settleAll = Promise.allSettled
+      ? Promise.allSettled(loads)
+      : Promise.all(loads.map(function (p) {
+          return p.then(
+            function (v) { return { status: 'fulfilled', value: v }; },
+            function (e) { return { status: 'rejected', reason: e }; }
+          );
+        }));
 
-      /* 静止画→2.5Dの差し替えは「隙間なし」で行う。
-         ------------------------------------------------------------
-         hero25d-on を付けると静止画が即 visibility:hidden になる。これを
-         2.5Dレイヤーが実際に画面へ描画され切る前に行うと、静止画だけが消えて
-         1フレーム人物が消え、背景の温白が露出する（＝白い明滅）。縦位置を
-         揃えてジャンプを消したことで、この隙間が動きに紛れず白フラッシュとして
-         露見した。レイヤー<img>は decoding:async のため、load 発火後も rAF
-         2回程度ではデコード（描画準備）が終わっておらず、二重rAFでは塞げない。
-         そこで img.decode() で全レイヤーの描画準備完了を待ってから静止画を隠す。
-         ステージは静止画の“上”に重なって描画されるため、隠す前に既に2.5Dが
-         見えており、静止画を消しても人物が欠ける瞬間は生じない。
-         decode 未対応・失敗時や、万一 decode が解決しない場合の保険として
-         短いタイマーでも必ず差し替える（静止画が残り続けない安全網）。 */
-      var swapDone = false;
-      function swapToStage() {
-        if (swapDone) return;
-        swapDone = true;
-        window.requestAnimationFrame(function () {
-          wrap.classList.add('hero25d-on');
-        });
-      }
-      var decodes = elements.map(function (it) {
-        return (it.el.decode ? it.el.decode() : Promise.reject())
-          .catch(function () {});
+    settleAll.then(function (results) {
+      var elements = [];
+      var requiredMissing = false;
+
+      results.forEach(function (r, i) {
+        if (r.status === 'fulfilled') { elements.push(r.value); return; }
+        if (!HERO25D_LAYERS[i].optional) requiredMissing = true;
       });
-      Promise.all(decodes).then(swapToStage);
-      setTimeout(swapToStage, 800);  // 安全網（decodeが返らない環境でも必ず切替）
-    }
+
+      /* 必須レイヤーが1枚でも欠けたら2.5Dを諦める。静止Heroが表示され続ける。 */
+      if (requiredMissing) { onFail(); return; }
+
+      var stage = document.createElement('div');
+      stage.className = 'hero25d-stage';
+      stage.setAttribute('aria-hidden', 'true');
+
+      var wideFrag = document.createDocumentFragment();
+      elements.forEach(function (item) {
+        /* rAF開始の瞬間に scale が突然掛かって“弾む”のを防ぐため、
+           静止時の基準transformを追加前に確定させておく。 */
+        item.el.style.transform = 'translate3d(0,0,0)' +
+          (item.def.scale !== 1 ? ' scale(' + item.def.scale + ')' : '');
+        item.lagX = 0;
+        item.lagY = 0;
+        if (item.def.wide) { wideFrag.appendChild(item.el); }
+        else { stage.appendChild(item.el); }
+      });
+
+      /* 一括追加（ここが初めてのDOM追加＝レイアウト/合成の発生点） */
+      wrap.appendChild(stage);
+      hero.appendChild(wideFrag);
+
+      onReady(elements);
+    });
   }
 
   /* ---------------- MouseTracker ----------------
-     pointermoveではtarget値の更新のみ行う（DOM書換え禁止） */
+     pointermoveではtarget値の更新のみ行う（DOM書換え禁止）。
+     購読開始は2.5D有効化後。タイトル演出中は一切の処理を持たない。 */
   var targetX = 0, targetY = 0;      // -1..1（Hero中心が0）
   var currentX = 0, currentY = 0;
 
@@ -164,8 +230,6 @@
     targetX = 0;                     // Hero外では中央へ戻る（Lerpで約0.6秒）
     targetY = 0;
   }
-  window.addEventListener('pointermove', onPointerMove, { passive: true });
-  document.documentElement.addEventListener('pointerleave', onPointerLeave, { passive: true });
 
   /* ---------------- GlitchTimer ----------------
      固定Seedの決定論的PRNG（mulberry32）。乱数生成はイベント時のみ */
@@ -207,7 +271,7 @@
 
   /* ---------------- AnimationLoop ---------------- */
   var strength = 1;                  // 画面幅に応じた減衰率
-  var running = false;
+  var running = false;               // rAFループが1本だけ動いているか
   var rafId = 0;
   var layerEls = null;
 
@@ -219,13 +283,15 @@
   }
 
   function heroIsActive() {
-    return !document.hidden &&
+    return state === STATE.ACTIVE &&
+      !document.hidden &&
       window.scrollY < window.innerHeight * HERO25D_CONFIG.ACTIVE_SCROLL_LIMIT &&
       strength > 0;
   }
 
   function frame(now) {
-    if (!heroIsActive()) { running = false; return; } // 画面外/非表示で停止
+    /* 画面外・非表示・非activeでは自らループを畳む（rAFは残さない） */
+    if (!heroIsActive()) { running = false; rafId = 0; return; }
     rafId = window.requestAnimationFrame(frame);
 
     currentX += (targetX - currentX) * HERO25D_CONFIG.LERP;
@@ -272,31 +338,90 @@
     }
   }
 
+  /* rAFの唯一の起動口。running フラグと既存rafIdの二重チェックにより、
+     scroll/resize/visibilitychange/pageshow/pointermove が同時に呼んでも
+     ループは常に最大1本しか存在しない。 */
   function ensureRunning() {
     if (running || !layerEls) return;
     if (!heroIsActive()) return;
+    if (rafId) { window.cancelAnimationFrame(rafId); rafId = 0; }
     running = true;
     rafId = window.requestAnimationFrame(frame);
   }
 
-  /* ---------------- イベント ---------------- */
+  function stopLoop() {
+    if (rafId) window.cancelAnimationFrame(rafId);
+    rafId = 0;
+    running = false;
+  }
+
+  /* ---------------- 静止画 → 2.5D クロスフェード ----------------
+     位置・サイズは静止画とレイヤーで一致させてある（hero-2_5d.css の
+     align-self / height:108% / object-position 参照）。ここで動かすのは
+     opacity だけで、位置・サイズ・色補正は一切触らない。
+     クロスフェードが終わってから静止画を visibility:hidden にし、
+     さらにその後で rAF を開始する（＝タイトルにもフェードにも競合させない）。 */
+  function activate() {
+    if (state !== STATE.READY) return;
+    window.requestAnimationFrame(function () {
+      wrap.classList.add('hero25d-on');   // stage 0→1 / 静止画 1→0（同尺）
+      setTimeout(function () {
+        wrap.classList.add('hero25d-swapped'); // 完了後に静止画を非表示
+        state = STATE.ACTIVE;
+
+        /* ここで初めてポインタ購読とrAFを開始する */
+        window.addEventListener('pointermove', onPointerMove, { passive: true });
+        document.documentElement.addEventListener('pointerleave', onPointerLeave, { passive: true });
+        strength = computeStrength();
+        ensureRunning();
+      }, HERO25D_CONFIG.CROSSFADE_MS);
+    });
+  }
+
+  /* ---------------- イベント（activeになってから意味を持つ） ---------------- */
   window.addEventListener('scroll', ensureRunning, { passive: true });
-  document.addEventListener('visibilitychange', ensureRunning);
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { stopLoop(); return; }
+    ensureRunning();
+  });
   window.addEventListener('resize', function () {
     strength = computeStrength();   // Resize時のみ再計算
     ensureRunning();
   }, { passive: true });
+  /* bfcache復帰: DOMは復元済みなので再初期化せず、ループだけ張り直す */
+  window.addEventListener('pageshow', function () { stopLoop(); ensureRunning(); });
+  window.addEventListener('pagehide', stopLoop);
   reducedMotion.addEventListener('change', function (e) {
-    if (e.matches && rafId) { window.cancelAnimationFrame(rafId); running = false; }
+    if (e.matches) stopLoop();
   });
 
-  /* ---------------- 初期化 ---------------- */
-  strength = computeStrength();
-  buildStage(function (elements) {
-    elements.forEach(function (item) {
-      item.lagX = 0; item.lagY = 0;
+  /* ---------------- 初期化（intro完了後にのみ呼ばれる） ---------------- */
+  function init() {
+    if (state !== STATE.IDLE) return;    // 二重初期化の禁止
+
+    if (!isCapableEnvironment()) {
+      state = STATE.FALLBACK;            // 画像リクエストを一切発生させない
+      return;
+    }
+
+    state = STATE.LOADING;
+    strength = computeStrength();
+
+    buildStage(function (elements) {
+      layerEls = elements;
+      state = STATE.READY;
+      activate();
+    }, function () {
+      state = STATE.FALLBACK;            // 静止Heroがそのまま残る
     });
-    layerEls = elements;
-    ensureRunning();
-  });
+  }
+
+  /* introの完了は「イベント」と「属性」の二本立てで受ける。
+     - このファイルが先に読まれた場合  … イベントで起動
+     - 後から読まれ取り逃した場合      … 属性が既にcompleteなので即起動 */
+  if (document.documentElement.getAttribute('data-hero-intro') === 'complete') {
+    init();
+  } else {
+    document.addEventListener('techsnap:hero-intro-complete', init, { once: true });
+  }
 })();

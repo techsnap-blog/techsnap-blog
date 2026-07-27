@@ -287,6 +287,10 @@ img { max-width: 100%; display: block; }
 .hero-image-wrap {
   /* grid右列 — 画像専用コンテナ */
   position: relative;           /* absolute独立から解放 */
+  /* Heroタイトルより背面に置く（2026-07-27）。
+     従来はDOM順（テキスト列が先）により人物画像がテキストの上に載っていたが、
+     見出し2行を静止Hero・2.5Dレイヤーより前面で横スライドさせる仕様へ変更した。 */
+  z-index: 1;
   display: flex;
   align-items: flex-end;        /* 人物をBottomに揃える */
   justify-content: center;
@@ -314,6 +318,7 @@ img { max-width: 100%; display: block; }
 .hero-text-overlay {
   /* grid左列 — テキスト専用コンテナ */
   position: relative;
+  z-index: 2;                   /* 人物画像(.hero-image-wrap z-index:1)より前面 */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -347,10 +352,7 @@ img { max-width: 100%; display: block; }
   color: rgba(60,50,40,0.45); letter-spacing: 0.22em;
   text-transform: uppercase; margin-bottom: 16px;
 }
-/* .hero-title-behind（背面通過用の複製2行目）は、フォント・サイズ・
-   ウェイト・字間・行間を必ずこのルールで共有する（二重管理禁止） */
-.hero-text-overlay h1,
-.hero-title-behind {
+.hero-text-overlay h1 {
   font-family: var(--font-sans);
   font-size: clamp(1.45rem, 3.2vw, 2.5rem);
   font-weight: 700; letter-spacing: -0.03em; line-height: 1.18;
@@ -803,8 +805,7 @@ img { max-width: 100%; display: block; }
      白い隙間が消える。 */
   .hero-image-wrap img { max-height: 74vh; transform: translateY(3vh); }
   .hero-sub { text-align: left; }
-  .hero-text-overlay h1,
-  .hero-title-behind { font-size: 1.3rem; }
+  .hero-text-overlay h1 { font-size: 1.3rem; }
 
   /* カテゴリボタン: 横スクロールではなく折り返して
      1画面に全て収まるようにする */
@@ -854,8 +855,7 @@ img { max-width: 100%; display: block; }
     align-items: flex-end;
     transform: none;
   }
-  .hero-text-overlay h1,
-  .hero-title-behind { font-size: 1.4rem; }
+  .hero-text-overlay h1 { font-size: 1.4rem; }
   .hero-sub { text-align: right; font-size: 0.78rem; }
   .hero-image-wrap {
     justify-content: center;
@@ -974,31 +974,17 @@ article h1, article h2, article h3, article p, article li, article td, article t
 
 /* ===================================================
    HERO TITLE INTRO — 見出しの横方向スライドイン
-   （2026-07-24追加 / js/hero-title-intro.js と対）
+   （2026-07-24追加 / 2026-07-27改定 / js/hero-title-intro.js と対）
    ---------------------------------------------------
-   1行目「いい暮らしは、」… 左から前面を通って着地
-   2行目「いい道具から。」… 右から人物の“背面”を通って着地
-   背面通過は複製要素 .hero-title-behind が担当する。
-   .hero-poster（stacking context）の子として z-index:-1 に置くことで、
-   兄弟である .hero-image-wrap（人物レイヤー）より背面へ回る。
-   既存の .hero-text-overlay / .hero-image-wrap の重なり順は変更しない。
+   1行目「いい暮らしは、」… 画面左から着地
+   2行目「いい道具から。」… 画面右から着地
+   どちらも静止Hero・2.5Dレイヤーより前面を通る通常の横スライド。
+   前面関係は .hero-text-overlay(z-index:2) > .hero-image-wrap(z-index:1) で担保する。
+   旧仕様の背面通過用複製 .hero-title-behind は廃止した。
    =================================================== */
 
 /* h1内の各行をブロック化（従来の<br>と同じ改行位置・行間を維持） */
 .hero-title-line { display: block; }
-
-/* 背面通過用の複製。既定は非表示 = JS無効時は出さない。
-   表示・座標同期・アニメーションはすべてJSが行う。 */
-.hero-title-behind {
-  display: none;
-  position: absolute;
-  left: 0; top: 0;
-  z-index: -1;                 /* .hero-poster内で人物より背面 */
-  margin: 0;
-  white-space: nowrap;
-  pointer-events: none;
-  user-select: none;
-}
 
 /* FOUC防止 — JS実行前に完成位置で一瞬見えるのを防ぐ。
    クラスはhead内インラインJSが付け、intro開始時／2.5秒の安全網で外れる。 */
@@ -1015,11 +1001,4 @@ article h1, article h2, article h3, article p, article li, article td, article t
   .hero-intro-pending .hero-eyebrow,
   .hero-intro-pending .hero-sub,
   .hero-intro-pending .hero-search { opacity: 1; }
-  .hero-title-behind { display: none !important; }
-}
-
-/* モバイルは2.5D人物レイヤー自体が無効（元画像はmix-blend-mode:multiplyで
-   遮蔽できない）ため、背面通過は行わず通常の右スライドへフォールバックする */
-@media (max-width: 768px) {
-  .hero-title-behind { display: none; }
 }

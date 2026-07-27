@@ -59,48 +59,79 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="css/style.css?v=17">
-  <link rel="stylesheet" href="css/hero-2_5d.css?v=11">
-  <!-- Hero見出し登場アニメーションのFOUC防止。
-       JS無効時はクラス自体が付かないため、h1は完成状態で表示される。
-       万一intro用JSが失敗しても2.5秒後に必ず解除され、見出しが
-       永久に非表示になることはない（安全側フォールバック）。 -->
+  <link rel="stylesheet" href="css/style.css?v=18">
+  <link rel="stylesheet" href="css/hero-2_5d.css?v=12">
+  <!-- Hero見出し登場アニメーションのFOUC防止 ＋ intro完了シグナルの定義。
+       ------------------------------------------------------------------
+       ・JS無効時はクラス自体が付かないため、h1は完成状態で表示される。
+       ・万一intro用JSが失敗しても2.5秒後に必ず解除され、見出しが
+         永久に非表示になることはない（安全側フォールバック）。
+       ・2.5D Heroは「タイトル演出が終わってから」初期化する。その合図が
+         techsnap:hero-intro-complete イベントと data-hero-intro="complete"。
+         イベント発行前に読み込まれた/後に読み込まれたのどちらでも取り逃さない
+         よう、属性とイベントの二本立てにする。
+       ・静止画を最初から隠す旧 hero25d-boot 仕様は廃止した。静止Heroは初期HTMLから
+         常に通常表示され、2.5Dはその上へopacityでクロスフェードする。 -->
   <script>
     (function () {
       var d = document.documentElement;
       d.classList.add('hero-intro-pending');
       setTimeout(function () { d.classList.remove('hero-intro-pending'); }, 2500);
 
-      /* 2.5D対応環境（デスクトップ幅・非タッチ・非reduced-motion）では、
-         静止画→2.5Dの差し替えで生じる色味/ブラーのモーフを無くすため、
-         静止画を最初から見せず 2.5D の登場だけを見せる（＝最初から2.5D）。
-         判定条件は hero-2_5d.js の起動ガードと一致させること。
-         安全網: 2.5Dが有効化されない（webp失敗・JS未実行・低速回線）場合は、
-         hero25d-fallback を付けて静止画へ復帰させ、Heroが空のまま残らないようにする。
-         hero-2_5d.js 側も読込失敗時に hero25d-fallback を付ける（二重の保険）。 */
-      try {
-        var mq = window.matchMedia;
-        var capable = window.innerWidth > 768 &&
-          !mq('(hover: none), (pointer: coarse)').matches &&
-          !mq('(prefers-reduced-motion: reduce)').matches;
-        if (capable) {
-          d.classList.add('hero25d-boot');
-          setTimeout(function () {
-            if (!document.querySelector('.hero-image-wrap.hero25d-on')) {
-              d.classList.add('hero25d-fallback');
-            }
-          }, 3000);
+      /* intro完了の唯一の発火口。何度呼ばれても1回しか発行しない。 */
+      window.__techsnapHeroIntroDone = function () {
+        if (d.getAttribute('data-hero-intro') === 'complete') return;
+        d.setAttribute('data-hero-intro', 'complete');
+        try {
+          document.dispatchEvent(new CustomEvent('techsnap:hero-intro-complete'));
+        } catch (e) {
+          var ev = document.createEvent('Event');
+          ev.initEvent('techsnap:hero-intro-complete', false, false);
+          document.dispatchEvent(ev);
         }
-      } catch (e) {}
+      };
+
+      /* 安全網: hero-title-intro.js 自体が読み込めなかった（404・構文エラー）
+         場合でも、2.5Dが永久に始まらない状態にはしない。
+         ------------------------------------------------------------------
+         armするタイミングが重要。単純な固定タイマーにすると、低速回線では
+         「スクリプトがまだ落ちてきていないだけ」の状態を「失敗」と誤判定し、
+         2.5Dの読み込みがタイトル移動と重なってしまう（Fast 3G + 4x CPU の
+         実測で、6秒固定タイマーだとintro完了の2.5秒“前”に画像取得が始まった）。
+         そこで load 後（＝全スクリプトの取得・実行が終わった後）に初めてarmする。
+         その時点で data-hero-intro が無ければ、本当にスクリプトが動いていない。
+         introが開始していれば "running" が立っているのでこのタイマーは何もしない。 */
+      var ARM_GRACE_MS = 1200;
+      function armIntroFallback() {
+        setTimeout(function () {
+          if (!d.hasAttribute('data-hero-intro')) window.__techsnapHeroIntroDone();
+        }, ARM_GRACE_MS);
+      }
+      if (document.readyState === 'complete') armIntroFallback();
+      else window.addEventListener('load', armIntroFallback, { once: true });
+      /* loadが永久に発火しない病的なケース用の絶対上限。タイトル演出より
+         はるかに長く取り、通常の低速回線では絶対に先に発火させない。 */
+      setTimeout(function () {
+        if (!d.hasAttribute('data-hero-intro')) window.__techsnapHeroIntroDone();
+      }, 20000);
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- GSAP + ScrollTrigger + Lenis -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.9/lenis.min.js" defer></script>
+
+  <!-- Hero関連スクリプトはheadでdefer読み込みする（2026-07-27）。
+       body末尾に置くと低速回線で取得が遅れ、head側の安全網タイマーが
+       「スクリプト失敗」と誤判定して2.5Dの読み込みがタイトル移動と重なる。
+       deferなので実行はDOM解析完了後・DOMContentLoadedの前。実行順は記述順で
+       固定されるため、必ずGSAPの後ろに置くこと（intro開始時にgsapが必要）。 -->
+  <script src="js/hero-title-intro.js?v=4" defer></script>
+  <script src="js/hero-2_5d.js?v=13" defer></script>
 </head>
 <body>
 
@@ -139,14 +170,9 @@
          テキストと人物を一つのレイアウトシステムで管理 -->
     <div class="hero-poster">
 
-      <!-- 2行目の「背面通過用」複製テキスト。
-           z-index:-1 で .hero-poster の子より背面へ回り、人物レイヤーの
-           アルファに正しく遮蔽される。位置はJSが前面用2行目の実測値へ
-           同期するため、固定値でのズレは起きない。
-           既定は display:none（JS無効時は表示しない）。 -->
-      <div class="hero-title-behind" aria-hidden="true"><span class="hero-title-line hero-title-line--second-behind">いい道具から。</span></div>
-
-      <!-- Left: Text column -->
+      <!-- Left: Text column
+           （2026-07-27: 2行目を人物の背面へ通す複製要素 .hero-title-behind は廃止。
+             1行目・2行目とも静止Heroより前面で通常の横スライドを行う） -->
       <div class="hero-text-overlay">
         <p class="hero-eyebrow">本音のガジェットレビュー</p>
         <h1 class="hero-title"><span class="hero-title-line hero-title-line--first">いい暮らしは、</span><span class="hero-title-line hero-title-line--second-front">いい道具から。</span></h1>
@@ -164,13 +190,26 @@
       <!-- Right: Image column
            .hero-image-wrap クラスはGSAP参照のため維持 -->
       <div class="hero-image-wrap">
-        <img
-          src="images/hero-main.png"
-          alt="TechSnap — 本音のガジェットレビュー"
-          width="560"
-          height="700"
-          fetchpriority="high"
-        >
+        <!-- LCP対象の静止Hero。WebP優先＋PNGフォールバック。
+             fetchpriority="high" はこの1枚だけに付ける（2.5Dレイヤーには付けない）。
+             width/height は実寸(1024x1536)を宣言し、CSSの height:108% と
+             併せてレイアウトを確定させる（CLSなし）。 -->
+        <picture class="hero-static-picture">
+          <source
+            type="image/webp"
+            srcset="images/hero-main-683.webp 683w, images/hero-main.webp 1024w"
+            sizes="(max-width: 768px) 100vw, 68vw">
+          <img
+            class="hero-static-img"
+            src="images/hero-main.png"
+            alt="TechSnap — 本音のガジェットレビュー"
+            width="1024"
+            height="1536"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+          >
+        </picture>
       </div>
 
     </div><!-- /hero-poster -->
@@ -1795,8 +1834,6 @@
   </div><!-- /content-section -->
 
   <script src="js/main.js?v=15"></script>
-  <script src="js/hero-2_5d.js?v=12"></script>
-  <script src="js/hero-title-intro.js?v=3"></script>
 </body>
 </html>
 <!-- deploy refresh 2026-07-06 -->
