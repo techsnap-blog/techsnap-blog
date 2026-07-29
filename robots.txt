@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# インスタ投稿カードの画像。Instagram Graph APIへ公開URLで渡すために配信しているが、
+# 検索結果に出す意図はないためクロールを禁止する（記事本文と競合させない）。
+Disallow: /insta-cards/
+
 Sitemap: https://techsnap-blog.github.io/techsnap-blog/sitemap.xml
