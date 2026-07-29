@@ -116,43 +116,102 @@
     });
   });
 
-  /* 「おすすめ」リンク: ランキングへ滑らかにスクロールしつつ、
-     項目をstaggerフェードでふわっと出し直す（「レビュー」リンクと同じ思想）。
-     アンカー即ジャンプ＋GSAP once再生済みだと表示がパッと切り替わって
-     見えるため、押すたびに再入場アニメーションを掛ける。 */
-  document.querySelectorAll('a[href="#ranking"]').forEach(link => {
+  /* 「比較記事」リンク: 新着比較記事セクションへ滑らかにスクロールする。
+     html{scroll-behavior:auto}かつLenis使用のため、smoothScrollTo経由で動かす。 */
+  const comparisonsSection = document.getElementById('comparisons');
+  document.querySelectorAll('a[href="#comparisons"]').forEach(link => {
     link.addEventListener('click', (e) => {
+      if (!comparisonsSection) return;   /* 比較記事0件でセクションが無い場合は既定動作 */
       e.preventDefault();
       if (mobileNav) mobileNav.classList.remove('open');
-      const ranking = document.getElementById('ranking');
-      if (!ranking) return;
-      const items = ranking.querySelectorAll('.rank-item');
-      items.forEach(item => {
-        /* GSAP側の入場トゥイーン（once）が未再生・進行中でも競合しないよう
-           トゥイーンと対応するScrollTriggerを止めてから引き継ぐ */
-        if (window.gsap) gsap.killTweensOf(item);
-        if (window.ScrollTrigger) {
-          ScrollTrigger.getAll().forEach(s => { if (s.trigger === item) s.kill(); });
-        }
-        item.style.transition = 'none';
-        item.style.opacity = '0';
-        item.style.transform = 'translateY(14px)';
-      });
-      void ranking.offsetWidth;  /* reflowで初期状態を確定させる */
-      items.forEach((item, i) => {
-        const delay = (0.15 + i * 0.07) + 's';
-        item.style.transition = 'opacity 0.5s ease ' + delay + ', transform 0.5s ease ' + delay;
-        item.style.opacity = '1';
-        item.style.transform = 'translateY(0px)';
-        item.addEventListener('transitionend', function clearTransition() {
-          item.style.transition = '';
-          item.removeEventListener('transitionend', clearTransition);
-        });
-      });
-      const margin = parseFloat(getComputedStyle(ranking).scrollMarginTop) || 0;
-      smoothScrollTo(window.scrollY + ranking.getBoundingClientRect().top - margin);
+      scrollToComparisons();
     });
   });
+
+  function scrollToComparisons() {
+    if (!comparisonsSection) return;
+    const margin = parseFloat(getComputedStyle(comparisonsSection).scrollMarginTop) || 0;
+    smoothScrollTo(window.scrollY + comparisonsSection.getBoundingClientRect().top - margin);
+  }
+
+  /* ------ 新着比較記事: 5件目以降の折りたたみ ------
+     リンクは全件が初期HTMLに存在する（SEO・JS無効時の閲覧性のため）。
+     JavaScriptが動いたこの時点で初めて5件目以降を隠し、「もっと見る」を出す
+     （Progressive Enhancement）。JS無効時は全件表示・ボタン非表示のまま。 */
+  const COMPARISON_INITIAL_VISIBLE = 4;   /* scripts/comparison-articles.mjs の INITIAL_VISIBLE と一致させる */
+  (function initComparisonToggle() {
+    const list = document.getElementById('comparison-list');
+    const btn = document.getElementById('comparison-more-btn');
+    if (!list || !btn) return;
+
+    const extras = Array.from(list.querySelectorAll('.cmp-card')).slice(COMPARISON_INITIAL_VISIBLE);
+    if (!extras.length) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let expanded = false;
+    let settleTimer = 0;
+
+    /* 入場演出用のクラスとインライン遅延を片付ける（片付け後は素の表示状態に戻る） */
+    const settle = (card) => {
+      card.style.transitionDelay = '';
+      card.classList.remove('is-entering', 'is-entering-active');
+    };
+
+    const collapse = () => {
+      clearTimeout(settleTimer);
+      extras.forEach(card => {
+        settle(card);
+        /* hidden属性で見た目・フォーカス順・支援技術上の状態をまとめて外す */
+        card.hidden = true;
+      });
+    };
+
+    const expand = () => {
+      extras.forEach(card => {
+        card.hidden = false;
+        if (!reduceMotion) card.classList.add('is-entering');
+      });
+      if (reduceMotion) return;
+      /* reflowで初期状態（opacity:0）を確定させてからactiveを付け、transitionを走らせる。
+         requestAnimationFrameに任せると、非表示タブなどrAFが止まる状況で
+         カードがopacity:0のまま残るため、同期的に確定させる。 */
+      void list.offsetWidth;
+      extras.forEach((card, i) => {
+        card.style.transitionDelay = Math.min(i, 6) * 0.04 + 's';
+        card.classList.add('is-entering-active');
+      });
+      /* 保険: バックグラウンドタブ等でtransitionが進まなくても、
+         入場演出用クラスを必ず外して素の表示状態へ戻す（opacity:0で取り残さない）。 */
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(() => extras.forEach(settle), 900);
+    };
+
+    /* 入場が終わったらインラインの遅延と状態クラスを片付ける */
+    list.addEventListener('transitionend', (e) => {
+      const card = e.target.closest?.('.cmp-card');
+      if (!card || !card.classList.contains('is-entering-active')) return;
+      settle(card);
+    });
+
+    collapse();
+    btn.hidden = false;
+
+    btn.addEventListener('click', () => {
+      expanded = !expanded;
+      btn.setAttribute('aria-expanded', String(expanded));
+      btn.textContent = expanded ? '閉じる' : 'もっと見る';
+      if (expanded) {
+        expand();
+        return;
+      }
+      /* 折りたたみでフォーカスが非表示要素内に残らないようにボタンへ戻す */
+      if (extras.some(card => card.contains(document.activeElement))) btn.focus();
+      collapse();
+      /* 閉じた結果ボタンが画面の外（上）へ出てしまった時だけ位置を戻す。
+         見えている場合は不要な自動スクロールを行わない。 */
+      if (btn.getBoundingClientRect().top < 60) scrollToComparisons();
+    });
+  })();
 
   /* ------ Header frosted on scroll ------ */
   const header = document.querySelector('.site-header');
@@ -722,17 +781,9 @@
       );
     });
 
-    /* === Ranking items === */
-    gsap.utils.toArray('.rank-item').forEach((item, i) => {
-      gsap.fromTo(item,
-        { opacity: 0, x: -18 },
-        {
-          opacity: 1, x: 0, duration: 0.5, ease: 'power2.out',
-          delay: i * 0.07,
-          scrollTrigger: { trigger: item, start: 'top 90%', once: true }
-        }
-      );
-    });
+    /* 新着比較記事のカードはGSAPで入場させない。
+       折りたたみ（hidden属性）と入場トゥイーンが同じopacityを奪い合わないようにするため
+       （see: CLAUDE.md 11.3 Animation Ownership）。展開時の演出はCSSの.is-entering側が持つ。 */
     }  /* /buildContentScrollTriggers */
 
     /* --- 起動条件の配線 --- */

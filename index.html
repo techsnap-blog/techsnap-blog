@@ -59,7 +59,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="css/style.css?v=20">
+  <link rel="stylesheet" href="css/style.css?v=21">
   <link rel="stylesheet" href="css/hero-tilt.css?v=1">
   <!-- Hero見出し登場アニメーションのFOUC防止 ＋ intro完了シグナルの定義。
        ------------------------------------------------------------------
@@ -144,7 +144,7 @@
       <a href="index.html" class="logo">Tech<span>Snap</span></a>
       <nav class="nav">
         <a href="#reviews">レビュー</a>
-        <a href="#ranking">おすすめ</a>
+        <a href="#comparisons">比較記事</a>
         <a href="#categories">カテゴリ</a>
       </nav>
       <button class="menu-toggle" aria-label="メニュー">
@@ -153,7 +153,7 @@
     </div>
     <nav class="mobile-nav">
       <a href="#reviews">レビュー</a>
-      <a href="#ranking">おすすめ</a>
+      <a href="#comparisons">比較記事</a>
       <a href="#categories">カテゴリ</a>
     </nav>
   </header>
@@ -1778,54 +1778,233 @@
       </div>
     </section>
 
-    <!-- Ranking -->
-    <section class="ranking" id="ranking">
+    <!-- comparisons:auto:begin -->
+    <!-- 新着比較記事（scripts/build-comparison-list.mjs が生成。手で編集しない） -->
+    <section class="comparisons" id="comparisons">
       <div class="container">
-        <h2 class="section-title">おすすめランキング</h2>
-        <ol class="rank-list">
-          <li class="rank-item">
-            <span class="rank-num">1</span>
-            <div class="rank-body">
-              <span class="tag sm">PC・周辺パーツ</span>
-              <a href="articles/apple-ipad-11-a16-review.html">iPad（第11世代・A16）レビュー｜動画も読書も、これ一台でいいと気づいた夜</a>
-            </div>
-            <span class="rank-score">9.9</span>
+        <h2 class="section-title">新着比較記事</h2>
+        <ul class="cmp-list" id="comparison-list">
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/meyer-mxs-p20-vs-tfal-g26502-review.html">
+              <span class="cmp-thumb"><img src="images/meyer-mxs-p20-vs-tfal-g26502-comparison.jpg" alt="マイヤー マキシムSS MXS-P20 ティファール IHハードチタニウム・アンリミテッド G26502 20cmフライパン比較" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">マイヤー MXS-P20 vs ティファール G26502｜20cmフライパン、長く使うならどっち？</h3>
+                <span class="cmp-versus">マキシムSS フライパン 20cm MXS-P20 と IHハードチタニウム・アンリミテッド フライパン 20cm G26502 を比較</span>
+                <span class="cmp-excerpt">同じ20cm・同じ価格帯でも設計思想は正反対。ステンレス本体と4.0mm厚のはり底で本体を守るマイヤーと、6倍長持ちのコーティングと食洗機対応で表面と手間を守るティファールを、公式スペックで比べた。</span>
+                <time class="cmp-date" datetime="2026-07-25">2026.07.25</time>
+              </span>
+            </a>
           </li>
-          <li class="rank-item">
-            <span class="rank-num">2</span>
-            <div class="rank-body">
-              <span class="tag sm">白物家電</span>
-              <a href="articles/zojirushi-nw-yb10am-vs-nw-vj10-review.html">象印 炊飯器比較｜圧力IH（NW-YB10AM）vs IH（NW-VJ10）、「同じご飯」が別物になる理由</a>
-            </div>
-            <span class="rank-score">9.9</span>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/soundpeats-air5pro-earfun-airpro4-nothing-ear-a-review.html">
+              <span class="cmp-thumb"><img src="images/anc-earbuds-comparison.jpg" alt="SOUNDPEATS Air5 Pro EarFun Air Pro 4 TW600 Nothing Ear (a) 完全ワイヤレスイヤホン比較" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">SOUNDPEATS Air5 Pro・EarFun Air Pro 4・Nothing Ear (a)を徹底比較｜音質・ANC・コスパで選ぶならどれ？</h3>
+                <span class="cmp-versus">Air5 Pro・Air Pro 4 TW600・Ear (a) を比較</span>
+                <span class="cmp-excerpt">1万円前後のANCイヤホン3機種を公表スペックで比較。aptX Lossless対応で最安のAir5 Pro、52時間とワイヤレス充電のAir Pro 4、11mmドライバーとIP54のEar (a)。iPhone／Androidの相性まで整理した。</span>
+                <time class="cmp-date" datetime="2026-07-25">2026.07.25</time>
+              </span>
+            </a>
           </li>
-          <li class="rank-item">
-            <span class="rank-num">3</span>
-            <div class="rank-body">
-              <span class="tag sm">PC・周辺パーツ</span>
-              <a href="articles/gamesir-nova2-lite-review.html">GameSir Nova 2 Lite｜背面ボタン付きコントローラーの「入門」は、もうここで完結する</a>
-            </div>
-            <span class="rank-score">9.9</span>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/ninja-blast-comparison-review.html">
+              <span class="cmp-thumb"><img src="images/ninja-blast-comparison.jpg" alt="Ninja Blast BC151JBKとNinja Blast Max BC251JIV コードレスポータブルブレンダー比較" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">Ninja BlastとBlast Maxの違いを比較｜氷・パワー・使いやすさを検証</h3>
+                <span class="cmp-versus">Ninja Blast BC151JBK と Ninja Blast Max BC251JIV を比較</span>
+                <span class="cmp-excerpt">名前が似ている無印Blastと上位モデルBlast Maxを比較。パワーや氷の粉砕性能、バッテリー、持ち運びやすさ、洗いやすさを整理し、どちらを選ぶべきかを検証した。</span>
+                <time class="cmp-date" datetime="2026-07-23">2026.07.23</time>
+              </span>
+            </a>
           </li>
-          <li class="rank-item">
-            <span class="rank-num">4</span>
-            <div class="rank-body">
-              <span class="tag sm">白物家電</span>
-              <a href="articles/aladdin-graphite-toaster-review.html">Aladdin グラファイトトースター｜「毎朝の食パン」が、別の食べ物になった話</a>
-            </div>
-            <span class="rank-score">9.9</span>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/epeios-chef-epao502-vs-cosori-turboblaze-review.html">
+              <span class="cmp-thumb"><img src="images/epeios-chef-vs-cosori-turboblaze-comparison.jpg" alt="EPEIOS Chef EPAO502とCOSORI TurboBlaze CAF-DC601S-WUSR" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">EPEIOS Chef vs COSORI TurboBlaze｜14Lオーブン型と6Lバスケット型、ノンフライ調理はどちらが向いているか</h3>
+                <span class="cmp-versus">FoElem Chef EPAO502 と TurboBlaze CAF-DC601S-WUSR を比較</span>
+                <span class="cmp-excerpt">14Lの庫内にスチーム・ロティサリーまで備えるEPEIOS Chefと、DCモーターで高速調理する6LのCOSORI TurboBlazeを比較。容量・温度・機能・価格で選び方を整理した。</span>
+                <time class="cmp-date" datetime="2026-07-23">2026.07.23</time>
+              </span>
+            </a>
           </li>
-          <li class="rank-item">
-            <span class="rank-num">5</span>
-            <div class="rank-body">
-              <span class="tag sm">オーディオ</span>
-              <a href="articles/elgato-wave-mic-arm-lp-review.html">Elgato Wave Mic Arm LP｜「マイクが視界に入る」ストレスを、ゼロにした話</a>
-            </div>
-            <span class="rank-score">9.9</span>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/switchbot-w3800510-vs-shark-flexbreeze-hydrogo-review.html">
+              <span class="cmp-thumb"><img src="images/switchbot-w3800510-vs-shark-flexbreeze-hydrogo-comparison.jpg" alt="Shark FlexBreeze HydroGo FA052JWHNCとSwitchBot スマートサーキュレーター W3800510" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">Shark FlexBreeze HydroGo vs SwitchBot スマートサーキュレーター W3800510｜ミスト冷却とアプリ制御、コードレスならどちらか</h3>
+                <span class="cmp-versus">スマートサーキュレーター W3800510 と FlexBreeze HydroGo FA052JWHNC を比較</span>
+                <span class="cmp-excerpt">コードレス駆動の2台を比較。ドライミスト・IPX5防水のShark FlexBreeze HydroGoと、静音28dB・アプリ制御100段階のSwitchBot、屋外向きか室内向きかで選び方を整理した。</span>
+                <time class="cmp-date" datetime="2026-07-23">2026.07.23</time>
+              </span>
+            </a>
           </li>
-        </ol>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/coffee-maker-comparison-review.html">
+              <span class="cmp-thumb"><img src="images/coffee-maker-comparison.jpg" alt="デロンギ ECAM22112B・象印 EC-RT40-BA・シロカ SC-A271 全自動コーヒーメーカー3機種" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">全自動コーヒーメーカー3機種比較｜デロンギ ECAM22112B vs 象印 EC-RT40 vs シロカ SC-A271をスペックで評価</h3>
+                <span class="cmp-versus">マグニフィカS ECAM22112B・珈琲通 EC-RT40-BA・全自動コーヒーメーカー SC-A271 を比較</span>
+                <span class="cmp-excerpt">¥13,980〜¥69,800の全自動3機種を公表スペックで比較。エスプレッソまでこなすデロンギ、まほうびんサーバーの象印、幅17.3cmで最安のシロカを、抽出方式・味の調節・保温・設置サイズで整理した。</span>
+                <time class="cmp-date" datetime="2026-07-23">2026.07.23</time>
+              </span>
+            </a>
+          </li>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/sharp-hotcook-kn-hw24h-vs-iris-ohyama-pmpc-ma4-review.html">
+              <span class="cmp-thumb"><img src="images/sharp-hotcook-vs-iris-pmpc-ma4-comparison.jpg" alt="SHARP ヘルシオ ホットクック KN-HW24H・アイリスオーヤマ 電気圧力鍋 PMPC-MA4" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">SHARP ヘルシオ ホットクック KN-HW24H vs アイリスオーヤマ 電気圧力鍋 PMPC-MA4｜「ほったらかし調理」はどちらが正解か</h3>
+                <span class="cmp-versus">ヘルシオ ホットクック KN-HW24H と 電気圧力鍋 PMPC-MA4 を比較</span>
+                <span class="cmp-excerpt">無水調理×自動かきまぜのホットクック（¥38,700）と、圧力調理で時短するPMPC-MA4（約1.5万円台）を比較。焦げ付きの心配・メニュー数・お手入れの違いを主婦目線で整理した。</span>
+                <time class="cmp-date" datetime="2026-07-22">2026.07.22</time>
+              </span>
+            </a>
+          </li>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/pet-feeder-comparison-review.html">
+              <span class="cmp-thumb"><img src="images/pet-feeder-comparison.jpg" alt="Surfola SP03・Wansview P1・Latuna L-25000 犬猫用自動給餌器3機種" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">犬・猫用自動給餌器3機種比較｜Surfola vs Wansview P1 vs Latuna、カメラ・給餌回数・価格で選ぶ</h3>
+                <span class="cmp-versus">自動給餌器 SP03・カメラ付き自動給餌器 P1・自動給餌器 L-25000 を比較</span>
+                <span class="cmp-excerpt">4L・暗視カメラ・最大8食で最も安いSurfola、2Kカメラとステンレス皿のWansview P1、カメラなし最安のLatuna。¥6,900〜¥10,280の自動給餌器3機種を、カメラ・給餌回数・電源・価格の4点で比較した。</span>
+                <time class="cmp-date" datetime="2026-07-17">2026.07.17</time>
+              </span>
+            </a>
+          </li>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/cordless-pressure-washer-comparison-review.html">
+              <span class="cmp-thumb"><img src="images/cordless-pressure-washer-comparison.jpg" alt="ケルヒャー OC Handy Compact CB・マキタ MHW180DZ・スパイサー SWU-201 コードレス高圧洗浄機3機種" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">コードレス高圧洗浄機3機種比較｜ケルヒャー vs マキタ vs スパイサー、水圧・軽さ・給水方法で選ぶ</h3>
+                <span class="cmp-versus">コードレス高圧洗浄機 OC Handy Compact CB 1.328-125.0・充電式洗浄機 MHW180DZ・ポケッタブル高圧洗浄機 SWU-201 を比較</span>
+                <span class="cmp-excerpt">780gで1.5MPaのケルヒャー、水道直結2.4MPaのマキタ、折りたためるスパイサー。¥12,980〜¥19,817のコードレス高圧洗浄機3機種を、水圧・軽さ・駆動時間・給水方法の4点で比較して選び方を整理した。</span>
+                <time class="cmp-date" datetime="2026-07-17">2026.07.17</time>
+              </span>
+            </a>
+          </li>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/pcm-ice-cap-comparison-review.html">
+              <span class="cmp-thumb"><img src="images/pcm-ice-cap-comparison.jpg" alt="cocostar PCMアイスキャップマット・PRo° ICEキャップ・Qoosea PC-Mキャップ 帽子用冷却パッド3種" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">帽子用冷却PCMキャップ比較｜cocostar vs PRo° vs Qoosea、28℃自然凍結か22℃の冷たさか</h3>
+                <span class="cmp-versus">PCMアイスキャップマット cocostar・ICEキャップ 22℃ レギュラーサイズ ICEHEAD-25-new・PC-Mキャップ cool-cap を比較</span>
+                <span class="cmp-excerpt">見た目はそっくりな帽子用PCM冷却キャップ3種を比較したら、凝固温度が28℃と22℃で分かれていた。エアコンの部屋で勝手に凍る28℃型と、冷蔵庫でしっかり冷やす22℃型。¥1,280〜¥1,620、選び方の分岐点を整理した。</span>
+                <time class="cmp-date" datetime="2026-07-17">2026.07.17</time>
+              </span>
+            </a>
+          </li>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/gaming-chair-comparison-review.html">
+              <span class="cmp-thumb"><img src="images/akracing-wolf-red.jpg" alt="AKRacing Wolf ゲーミングチェア レッド DXRacer Pシリーズ Bauhutte G-551-BK 比較" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">ゲーミングチェア3脚比較｜DXRacer・AKRacing・Bauhutte、決め手は座り心地ではなかった</h3>
+                <span class="cmp-excerpt">定価45,248円のAKRacing Wolfが36,164円、3脚が3万円台で横並びに。リクライニング180°と135°、耐荷重150kgと100kg、保証5年と1年——価格が並んだ今こそ効いてくる「中身の差」を正直に比較した。</span>
+                <time class="cmp-date" datetime="2026-07-09">2026.07.09</time>
+              </span>
+            </a>
+          </li>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/portable-power-solar-comparison-review.html">
+              <span class="cmp-thumb"><img src="images/anker-solix-c2000-gen2-200w-set.jpg" alt="Anker Solix C2000 Gen2 Jackery Solar Generator 3000 New EcoFlow DELTA 3 Max ポータブル電源比較" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">ポータブル電源セット比較｜Anker・EcoFlowがプライムデーで僅差の129,800円、その1,150円差で選ぶべき理由</h3>
+                <span class="cmp-excerpt">2048〜3072Wh、満充電99分〜2.5時間、200W前後のソーラーパネル付きセットをプライムデー先行セール価格で比較。AnkerとEcoFlowが1,150円差まで接近した今、何で選ぶべきかを正直に検証した。</span>
+                <time class="cmp-date" datetime="2026-07-08">2026.07.08</time>
+              </span>
+            </a>
+          </li>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/lamdash-palmin-5vs3-review.html">
+              <span class="cmp-thumb"><img src="images/lamdash-palmin-5vs3.jpg" alt="パナソニック ラムダッシュ パームイン 5枚刃 ES-PV3A-K マットブラック本体" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">パナソニック ラムダッシュ パームイン｜5枚刃ES-PV3Aと3枚刃LITE、どっちが買いか</h3>
+                <span class="cmp-versus">ラムダッシュ パームイン ES-PV3A と ラムダッシュ パームイン LITE を比較</span>
+                <span class="cmp-excerpt">手のひらサイズの人気シェーバー、5枚刃のES-PV3Aと3枚刃で1万円安いLITE（ES-P330U）。土台は共通で、違いは刃数・駆動速度・AIの3点。約1万円の差が「ヒゲの濃さ」でどう元を取れるか、剃り味・携帯性・注意点まで正直に比較した。</span>
+                <time class="cmp-date" datetime="2026-07-04">2026.07.04</time>
+              </span>
+            </a>
+          </li>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/apple-watch-se3-vs-series11-review.html">
+              <span class="cmp-thumb"><img src="images/apple-watch-se3.jpg" alt="Apple Watch SE 3とSeries 11の比較" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">Apple Watch SE 3 vs Series 11｜2万2000円の差、学生はどこまで払うべきか</h3>
+                <span class="cmp-versus">Apple Watch SE 3 と Apple Watch Series 11 を比較</span>
+                <span class="cmp-excerpt">SE 3（GPSモデル）42,800円 vs Series 11（GPSモデル）64,800円。心電図・血中酸素・高血圧通知の有無、バッテリー18時間vs24時間。学生の生活に照らして正直に比較した。</span>
+                <time class="cmp-date" datetime="2026-07-03">2026.07.03</time>
+              </span>
+            </a>
+          </li>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/xreal-1s-vs-rayneo-x3pro-review.html">
+              <span class="cmp-thumb"><img src="images/xreal.jpg" alt="XREAL 1S ARグラス ミッドナイトブルー vs RayNeo X3 Pro" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">ARグラス比較｜XREAL 1S vs RayNeo Air 4 Pro、2万円の差に何が入っているか</h3>
+                <span class="cmp-versus">XREAL 1S と RayNeo Air 4 Pro を比較</span>
+                <span class="cmp-excerpt">¥67,980 vs ¥45,980・1920×1200 vs 1920×1080・700nit vs 1200nit・Sound by Bose vs B&O・82g vs 76g。「重量6g差が長時間でどう効いてくるか」も正直に書く。</span>
+                <time class="cmp-date" datetime="2026-06-29">2026年6月29日</time>
+              </span>
+            </a>
+          </li>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/zojirushi-nw-yb10am-vs-nw-vj10-review.html">
+              <span class="cmp-thumb"><img src="images/NW-YB10AM-BZ.jpg" alt="象印 圧力IH炊飯ジャー NW-YB10AM 豪熱大火力" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">象印 炊飯器比較｜圧力IH（NW-YB10AM）vs IH（NW-VJ10）、「同じご飯」が別物になる理由</h3>
+                <span class="cmp-versus">NW-YB10AM と NW-VJ10 を比較</span>
+                <span class="cmp-excerpt">豪熱大火力×炊き分け圧力で甘み成分約2.3倍の圧力IH vs 豪熱沸とうIHの実力派IH。1万円の差が「炊き上がり」の次元を変えるかどうか、正直に比べる。</span>
+                <time class="cmp-date" datetime="2026-06-29">2026年6月29日</time>
+              </span>
+            </a>
+          </li>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/hotplate-bruno-vs-iris-review.html">
+              <span class="cmp-thumb"><img src="images/bruno.jpg" alt="BRUNO コンパクトホットプレート vs アイリスオーヤマ 比較" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">ホットプレート比較｜BRUNO vs アイリスオーヤマ、どちらを買うべきか正直に書く</h3>
+                <span class="cmp-versus">BOE021 と IHA-A30 を比較</span>
+                <span class="cmp-excerpt">「かわいいは正義」のBRUNO BOE021 vs 実用性全振りのアイリスオーヤマ IHA-A30。価格差2倍の意味と、推しの理由を正直に語る。</span>
+                <time class="cmp-date" datetime="2026-06-29">2026年6月29日</time>
+              </span>
+            </a>
+          </li>
+          <li class="cmp-card">
+            <a class="cmp-link" href="articles/sd-card-comparison-review.html">
+              <span class="cmp-thumb"><img src="images/lexarsd.jpg" alt="SDカード比較 Lexar Gigastone SanDisk ELECOM" loading="lazy" decoding="async"></span>
+              <span class="cmp-body">
+                <span class="cmp-label">比較</span>
+                <h3 class="cmp-title">SDカード比較2026｜Gigastone・SanDisk・Lexar・ELECOM、4枚を正直に比べた</h3>
+                <span class="cmp-excerpt">UHS-IとUHS-IIの違いから選び方まで初心者にも分かりやすく解説。個人的に実際に使い続けているカードも公開。</span>
+                <time class="cmp-date" datetime="2026-06-29">2026年6月29日</time>
+              </span>
+            </a>
+          </li>
+        </ul>
+        <div class="cmp-more-wrap">
+          <button class="btn-show-more cmp-more-btn" id="comparison-more-btn" type="button"
+                  aria-expanded="false" aria-controls="comparison-list" hidden>もっと見る</button>
+        </div>
       </div>
     </section>
+    <!-- comparisons:auto:end -->
 
     <!-- X Timeline -->
     <section class="x-section" id="x-feed">
@@ -1849,7 +2028,7 @@
 
   </div><!-- /content-section -->
 
-  <script src="js/main.js?v=17"></script>
+  <script src="js/main.js?v=18"></script>
 </body>
 </html>
 <!-- deploy refresh 2026-07-06 -->
