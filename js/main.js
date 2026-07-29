@@ -567,6 +567,35 @@
       );
     }
 
+    /* ===================================================
+       ここから下（記事カード101件＋セクション見出し＋ランキング）の
+       ScrollTrigger生成は、Heroタイトル演出と分離して実行する。
+       ---------------------------------------------------
+       理由（2026-07-27）: initScrollAnimations は window load で走るが、
+       その大半を占めるのがカード1件ごとのScrollTrigger生成であり、
+       long taskとして計測された（実測: 通常319ms / 4x CPUスロットル時1023ms）。
+       これがちょうどHeroタイトルの横スライド開始点と重なり、
+       2.5D画像の読み込みを分離した後も残る唯一の停止要因になっていた。
+
+       上のHero用ScrollTrigger（camera前進・scrollヒント・content-section）は
+       数個しかなく安価なので、従来どおりload時に作る。start/endの計算前提
+       （scrollY=0で作り終える）も変えない。
+
+       起動条件は「イベント」と「ユーザー操作」のどちらか早い方:
+         - techsnap:hero-intro-complete … 何もしなければこちら
+         - scroll / wheel / touchmove / keydown … intro中でも読者が
+           スクロールしたら即座に生成する（.article-card はCSS既定が
+           opacity:0 のため、生成を待たせるとカードが消えて見えるため）
+       introの仕組みが無いページ（記事ページ等）は即実行する。
+       =================================================== */
+    let contentScrollDone = false;
+    function initContentScrollAnimations() {
+      if (contentScrollDone) return;
+      contentScrollDone = true;
+      buildContentScrollTriggers();
+    }
+
+    function buildContentScrollTriggers() {
     /* === Article cards stagger === */
     const cards = gsap.utils.toArray('.article-card');
     cards.forEach((card, i) => {
@@ -609,6 +638,26 @@
         }
       );
     });
+    }  /* /buildContentScrollTriggers */
+
+    /* --- 起動条件の配線 --- */
+    const introState = document.documentElement.getAttribute('data-hero-intro');
+    if (introState === 'running') {
+      const kick = () => initContentScrollAnimations();
+      document.addEventListener('techsnap:hero-intro-complete', kick, { once: true });
+      /* 読者が先にスクロール等をしたら待たずに生成する（カードを消さない） */
+      const opts = { passive: true, once: true };
+      window.addEventListener('scroll', kick, opts);
+      window.addEventListener('wheel', kick, opts);
+      window.addEventListener('touchmove', kick, opts);
+      window.addEventListener('keydown', kick, { once: true });
+      /* 万一イベントもスクロールも来ない場合の保険（Heroが空にならない設計と
+         同じ考え方で、カードが永久に不可視のまま残る経路を作らない） */
+      setTimeout(kick, 5000);
+    } else {
+      /* intro未実行・完了済み・introの仕組みが無いページ → 即実行 */
+      initContentScrollAnimations();
+    }
 
     /* 冒頭で無効化した#hash遷移のスクロールをここで復元する。
        すべてのScrollTrigger（Hero含む）をscrollY=0の状態で作り終えた
@@ -622,6 +671,11 @@
     if (location.hash) {
       const hashTarget = document.querySelector(location.hash);
       if (hashTarget) {
+        /* ハッシュ遷移では着地点のカードが即座に見えている必要があるため、
+           コンテンツ側ScrollTriggerの生成を遅らせずここで確定させる
+           （scrollY=0のうちに全トリガーを作り終えてからrefreshする、という
+             下記の前提を崩さないよう、refreshより前に呼ぶ）。 */
+        initContentScrollAnimations();
         ScrollTrigger.refresh();
         if (lenis) {
           lenis.scrollTo(hashTarget, { immediate: true });
