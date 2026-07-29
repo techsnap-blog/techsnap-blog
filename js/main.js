@@ -262,6 +262,9 @@
     { id: '1m3m',  label: '1～3万円',          min: 10000, max: 30000 },
     { id: '3m5m',  label: '3～5万円',          min: 30000, max: 50000 },
     { id: 'o5m',   label: '5万円以上',         min: 50000, max: Infinity },
+    /* 価格未登録（data-price無し）の記事を明示的に見るための軸。
+       価格帯ではないので min/max を持たず、unpriced: true で判定する。 */
+    { id: 'none',  label: '価格未記載',        unpriced: true },
   ];
 
   /* ================= フィルタ共通基盤 =================
@@ -276,12 +279,15 @@
     cat: (card, value) =>
       value === 'all' || (card.dataset.cat || '').split(' ').includes(value),
 
-    /* 価格未登録（data-price無し）の記事は「すべて」のときだけ表示する。
-       推測の価格で価格帯に入れてしまわないための意図的な仕様。 */
+    /* 価格未登録（data-price無し）の記事は、価格帯を選んでいる間は表示しない。
+       推測の価格で価格帯に入れてしまわないための意図的な仕様。
+       代わりに「価格未記載」を選ぶと、それらの記事だけを見られる。 */
     budget: (card, value) => {
       if (value === 'all') return true;
       const range = PRICE_RANGES.find(r => r.id === value);
-      if (!range || range.min === undefined) return true;
+      if (!range) return true;
+      if (range.unpriced) return cardPrices(card).length === 0;
+      if (range.min === undefined) return true;
       return cardPrices(card).some(p => p > range.min && p <= range.max);
     },
 
