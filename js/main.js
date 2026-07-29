@@ -185,16 +185,82 @@
   const MAX_VISIBLE_ARTICLES = 15;
   const allCards = Array.from(document.querySelectorAll('.article-card'));
   const showMoreBtn = document.getElementById('show-more-btn');
-  let currentCat = 'all';
+  const noResultsEl = document.getElementById('no-results');
   let articlesExpanded = false;
-  let searchQuery = '';
 
-  function cardMatchesSearch(card) {
-    if (!searchQuery) return true;
-    if (!card.dataset.searchText) {
-      card.dataset.searchText = card.textContent.toLowerCase();
+  /* ================= 予算フィルタの価格帯設定 =================
+     価格帯を増減・変更するときはこの配列だけを編集する（ボタンも
+     この配列からDOM生成される）。
+     - min は「より大きい」、max は「以下」で判定する（境界の二重所属を防ぐ）。
+     - 記事側の価格は index.html の data-price（半角スペース区切り・円）。
+       正は scripts/articles-meta.json の price（定価ベース）で、
+       scripts/build-price-data.mjs が data-price へ機械転記する。
+     - 比較記事など複数商品の記事は、いずれかの商品が価格帯に入れば該当扱い。 */
+  const PRICE_RANGES = [
+    { id: 'all',   label: 'すべて' },
+    { id: 'u5k',   label: '～5,000円',        min: 0,     max: 5000 },
+    { id: '5k10k', label: '5,000～10,000円',  min: 5000,  max: 10000 },
+    { id: '1m3m',  label: '1～3万円',          min: 10000, max: 30000 },
+    { id: '3m5m',  label: '3～5万円',          min: 30000, max: 50000 },
+    { id: 'o5m',   label: '5万円以上',         min: 50000, max: Infinity },
+  ];
+
+  /* ================= フィルタ共通基盤 =================
+     フィルタ軸ごとに { state初期値, test(card) } を1件登録する。
+     ブランド・評価・新着順などを足すときは FILTERS に1件追加し、
+     対応するUIから setFilter(key, value) を呼ぶだけでよい。 */
+  const filterState = { cat: 'all', budget: 'all', q: '' };
+
+  const FILTERS = {
+    /* data-catはスペース区切りで複数カテゴリ指定可
+       （例: data-cat="撮影機材 PC・周辺パーツ"）。単一値の既存カードもそのまま動く。 */
+    cat: (card, value) =>
+      value === 'all' || (card.dataset.cat || '').split(' ').includes(value),
+
+    /* 価格未登録（data-price無し）の記事は「すべて」のときだけ表示する。
+       推測の価格で価格帯に入れてしまわないための意図的な仕様。 */
+    budget: (card, value) => {
+      if (value === 'all') return true;
+      const range = PRICE_RANGES.find(r => r.id === value);
+      if (!range || range.min === undefined) return true;
+      return cardPrices(card).some(p => p > range.min && p <= range.max);
+    },
+
+    q: (card, value) => {
+      if (!value) return true;
+      if (!card.dataset.searchText) card.dataset.searchText = card.textContent.toLowerCase();
+      return card.dataset.searchText.includes(value);
+    },
+  };
+
+  /* data-price のパース結果はカードごとに1度だけ計算して使い回す
+     （フィルタ切替のたびに全カードを再パースしない）。 */
+  const priceCache = new WeakMap();
+  function cardPrices(card) {
+    let v = priceCache.get(card);
+    if (!v) {
+      v = (card.dataset.price || '')
+        .split(/\s+/)
+        .map(Number)
+        .filter(n => Number.isFinite(n) && n > 0);
+      priceCache.set(card, v);
     }
-    return card.dataset.searchText.includes(searchQuery);
+    return v;
+  }
+
+  /* 全フィルタのAND条件を満たすカードだけを返す */
+  function cardMatchesFilters(card) {
+    return Object.keys(FILTERS).every(key => FILTERS[key](card, filterState[key]));
+  }
+
+  /* フィルタ値を1つ変更して再描画する。値が変わらない場合は何もしない
+     （同じボタンの連打で不要な再描画・再アニメーションを起こさない）。 */
+  function setFilter(key, value, opts) {
+    if (filterState[key] === value && !(opts && opts.force)) return false;
+    filterState[key] = value;
+    articlesExpanded = false;  /* 条件が変わったら毎回15件制限から再スタート */
+    updateArticleVisibility({ forceReveal: true, animate: true, animateAll: true });
+    return true;
   }
 
   function updateArticleVisibility(opts) {
@@ -211,18 +277,16 @@
       ? new Set(allCards.filter(c => c.style.display !== 'none' && !c.classList.contains('more-hidden')))
       : null;
     let animIdx = 0;
-    /* カテゴリと検索キーワードの両方を満たす記事だけを表示する。
+    /* 全フィルタ（カテゴリ・予算・検索）をAND条件で満たす記事だけを表示する。
        検索中は15件制限のみ無視して該当記事を全件表示する。 */
-    /* data-catはスペース区切りで複数カテゴリ指定可（例: data-cat="撮影機材 PC・周辺パーツ"）。
-       単一値の既存カードもそのまま動く（後方互換）。 */
-    const matches = allCards.filter(card =>
-      (currentCat === 'all' || (card.dataset.cat || '').split(' ').includes(currentCat)) && cardMatchesSearch(card)
-    );
-    const limitActive = !searchQuery;
+    const matches = allCards.filter(cardMatchesFilters);
+    const limitActive = !filterState.q;
 
+    /* 表示/非表示の判定に matches.includes(card) を使うとカード数×件数の
+       線形探索になるためSetで引く（100件超でも切替が重くならない）。 */
+    const matchSet = new Set(matches);
     allCards.forEach(card => {
-      const isMatch = matches.includes(card);
-      card.style.display = isMatch ? '' : 'none';
+      card.style.display = matchSet.has(card) ? '' : 'none';
     });
 
     matches.forEach((card, i) => {
@@ -270,6 +334,7 @@
     if (showMoreBtn) {
       showMoreBtn.style.display = (limitActive && !articlesExpanded && matches.length > MAX_VISIBLE_ARTICLES) ? '' : 'none';
     }
+    if (noResultsEl) noResultsEl.hidden = matches.length > 0;
 
     if (forceReveal && window.ScrollTrigger) {
       ScrollTrigger.refresh();
@@ -285,22 +350,48 @@
   }
 
   /* ------ Category filter ------ */
-  const catBtns = document.querySelectorAll('.cat-btn');
+  const catBtns = document.querySelectorAll('.cat-list:not(.budget-list) .cat-btn');
   catBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       catBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      currentCat = btn.dataset.cat;
-      articlesExpanded = false;  /* カテゴリ切替時は毎回15件制限から再スタート */
       /* 検索キーワードが残ったままだと「カテゴリ×検索」のAND条件で
          該当0件になり、ボタンが反応していないように見えるため、
-         カテゴリ切替時は検索をクリアしてそのカテゴリ全体を表示する */
-      searchQuery = '';
+         カテゴリ切替時は検索をクリアしてそのカテゴリ全体を表示する。
+         予算フィルタは仕様どおりカテゴリと併用（AND）するため維持する。 */
+      filterState.q = '';
       const searchInputEl = document.getElementById('site-search');
       if (searchInputEl) searchInputEl.value = '';
-      updateArticleVisibility({ forceReveal: true, animate: true, animateAll: true });
+      setFilter('cat', btn.dataset.cat, { force: true });
     });
   });
+
+  /* ------ Budget filter ------
+     ボタンは PRICE_RANGES から生成する。価格帯の変更が
+     「配列1箇所の編集」で完結し、HTML側の書き換えが不要になる。 */
+  const budgetList = document.getElementById('budget-list');
+  if (budgetList) {
+    const frag = document.createDocumentFragment();
+    PRICE_RANGES.forEach(range => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cat-btn' + (range.id === filterState.budget ? ' active' : '');
+      btn.dataset.budget = range.id;
+      btn.textContent = range.label;
+      frag.appendChild(btn);
+    });
+    budgetList.appendChild(frag);
+
+    /* ボタン個別ではなく列に1つだけリスナーを置く（委譲） */
+    budgetList.addEventListener('click', (e) => {
+      const btn = e.target.closest('.cat-btn');
+      if (!btn || !budgetList.contains(btn)) return;
+      const changed = setFilter('budget', btn.dataset.budget);
+      if (!changed) return;
+      budgetList.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  }
 
   /* ヘッダー「カテゴリ」用: 現在activeなボタンの右隣を選択する。
      一番右の次は先頭（すべて）に戻る。ボタンのclick()を呼ぶことで
@@ -319,8 +410,12 @@
     searchInput.addEventListener('input', () => {
       clearTimeout(searchDebounce);
       searchDebounce = setTimeout(() => {
-        searchQuery = searchInput.value.trim().toLowerCase();
+        const q = searchInput.value.trim().toLowerCase();
+        if (q === filterState.q) return;
+        filterState.q = q;
         articlesExpanded = false;
+        /* 検索は入力のたびに走るため、既に表示済みのカードは
+           再フェードさせない（animateAll指定なし）。 */
         updateArticleVisibility({ forceReveal: true, animate: true });
       }, 120);
     });

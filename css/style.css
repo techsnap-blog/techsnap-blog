@@ -385,7 +385,7 @@ img { max-width: 100%; display: block; }
      ゆっくり変化する。パネル自身のbackdrop-filterはこの帯にも効くため、
      帯の内側ではHeroがフロスト越しに透けて見え、Hero → 記事一覧の境界が
      溶ける（＝Heroの余韻）。境界線を1本も引かないための仕組み。 */
-  --surface-fade: 130px;
+  --surface-fade: 169px; /* 予算フィルタ行の追加でフィルタバーが39px高くなった分を加算（2026-07-29） */
 
   /* --surface-glass: 記事パネル本体の不透明度。2026-07-25にユーザー指定で
      「上端の透明度でパネル全体を統一する」方針へ変更したため0（＝完全透明）。
@@ -478,6 +478,23 @@ img { max-width: 100%; display: block; }
 .cat-btn:hover { border-color: var(--border-light); color: var(--text); }
 .cat-btn.active { background: var(--accent); border-color: var(--accent); color: #F7F5F1; }
 
+/* ===== FILTER GROUPS（カテゴリ／予算） =====
+   フィルタ軸が増えても同じ見た目で並べられるよう、ラベル＋ボタン列を
+   .filter-group という1つの型に揃えている。ボタン自体は .cat-btn を
+   そのまま使い、デザイン言語（サイズ・余白・角丸・トランジション）を
+   カテゴリと完全に共通化する。 */
+.filter-group { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.filter-group + .filter-group { margin-top: 10px; }
+.filter-label {
+  flex-shrink: 0;
+  /* 2行のボタン列の左端を揃えるため固定幅にする */
+  width: 84px;
+  font-family: var(--font-sans); font-size: 0.58rem; font-weight: 700;
+  color: var(--text-sub); letter-spacing: 0.16em;
+  line-height: 1.4;
+}
+.filter-group .cat-list { flex: 1; min-width: 0; }
+
 /* ===== SECTION TITLE ===== */
 .section-title {
   font-family: var(--font-sans); font-size: 0.65rem; font-weight: 700;
@@ -491,7 +508,11 @@ img { max-width: 100%; display: block; }
 }
 
 /* ===== ARTICLES ===== */
-.articles { padding: 0 0 88px; scroll-margin-top: 190px; /* 固定ヘッダー＋固定カテゴリバー分の余白を確保 */ }
+.articles { padding: 0 0 88px; scroll-margin-top: 230px; /* 固定ヘッダー(60)＋固定フィルタバー(カテゴリ＋予算 118)＋従来と同じ余裕分 */ }
+.no-results {
+  font-family: var(--font-sans); font-size: 0.82rem; color: var(--text-muted);
+  text-align: center; padding: 56px 0 24px; letter-spacing: 0.02em;
+}
 
 .article-grid {
   display: grid;
@@ -784,12 +805,25 @@ img { max-width: 100%; display: block; }
     font-size: 0.66rem;
   }
 
+  /* モバイルはラベルをボタン列の上へ回し、横幅をボタンに使い切る。
+     sticky バーが高くなりすぎないよう余白は最小限に抑える。 */
+  .filter-group { display: block; }
+  .filter-group + .filter-group { margin-top: 8px; }
+  .filter-label { width: auto; display: block; margin-bottom: 5px; font-size: 0.55rem; }
+
+  /* 予算は上の .cat-list 共通指定（折り返し）を打ち消して1行の横スクロールに戻す。
+     カテゴリと予算の両方を折り返すと sticky バーが画面の1/3を占めてしまい、
+     記事一覧が読めなくなるため。カテゴリ側の折り返しは従来どおり維持する。 */
+  .budget-list { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  /* バーが高くなった分、下余白を詰めて増分を抑える */
+  .categories { padding-bottom: 22px; }
+
   /* モバイルはフェード帯を控えめにして上部余白の増加を最小限に抑える
      （padding-topは--surface-fadeに追従。溶け込みは残しつつ従来の
      詰まったレイアウトを大きく崩さない）。 */
   /* モバイルも同様にコンテンツをHero直下まで引き上げ、光の空白帯を消す。
      終点は最初のカード上ライン（padding 40 + カテゴリ2段 ≒ 190px）。 */
-  .content-section { border-radius: 18px 18px 0 0; --surface-fade: 190px; padding-top: 40px; }
+  .content-section { border-radius: 18px 18px 0 0; --surface-fade: 222px; padding-top: 40px; }
 
   .article-grid { grid-template-columns: 1fr; gap: 12px; }
   .article-card { display: grid; grid-template-columns: 96px 1fr; }

@@ -15,6 +15,11 @@
       "tower 奥行伸縮排気口カバー 60cmコンロ用 4563",
       "tower ブレッドケース 4353",
       "tower 隠せる調味料ラック 2段 4334"
+    ],
+    "price": [
+      3300,
+      9908,
+      12662
     ]
   },
   {
@@ -33,6 +38,10 @@
     "product": [
       "マキシムSS フライパン 20cm MXS-P20",
       "IHハードチタニウム・アンリミテッド フライパン 20cm G26502"
+    ],
+    "price": [
+      4450,
+      3614
     ]
   },
   {
@@ -53,6 +62,11 @@
       "Air5 Pro",
       "Air Pro 4 TW600",
       "Ear (a)"
+    ],
+    "price": [
+      9980,
+      9990,
+      12671
     ]
   },
   {
@@ -69,6 +83,9 @@
     ],
     "product": [
       "Prime Charger (250W, 6 Ports, GaN) A2345"
+    ],
+    "price": [
+      19990
     ]
   },
   {
@@ -85,6 +102,9 @@
     ],
     "product": [
       "ランドリン ボタニカル 柔軟剤 ベルガモット＆シダー 詰め替え 3倍サイズ 1290mL 4582469507734"
+    ],
+    "price": [
+      1482
     ]
   },
   {
@@ -101,7 +121,8 @@
     ],
     "product": [
       "Vacuumer BNQ-32B"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "boniq-3-bnq-29w",
@@ -117,7 +138,8 @@
     ],
     "product": [
       "3.0 BNQ-29W"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "ninja-blast-comparison",
@@ -134,6 +156,10 @@
     "product": [
       "Ninja Blast BC151JBK",
       "Ninja Blast Max BC251JIV"
+    ],
+    "price": [
+      13860,
+      11385
     ]
   },
   {
@@ -152,6 +178,10 @@
     "product": [
       "FoElem Chef EPAO502",
       "TurboBlaze CAF-DC601S-WUSR"
+    ],
+    "price": [
+      44000,
+      27164
     ]
   },
   {
@@ -170,6 +200,10 @@
     "product": [
       "スマートサーキュレーター W3800510",
       "FlexBreeze HydroGo FA052JWHNC"
+    ],
+    "price": [
+      19800,
+      13980
     ]
   },
   {
@@ -190,6 +224,11 @@
       "マグニフィカS ECAM22112B",
       "珈琲通 EC-RT40-BA",
       "全自動コーヒーメーカー SC-A271"
+    ],
+    "price": [
+      69800,
+      21000,
+      13980
     ]
   },
   {
@@ -206,6 +245,9 @@
     ],
     "product": [
       "自動調理ポットラージ RSY-3"
+    ],
+    "price": [
+      19800
     ]
   },
   {
@@ -224,6 +266,10 @@
     "product": [
       "ヘルシオ ホットクック KN-HW24H",
       "電気圧力鍋 PMPC-MA4"
+    ],
+    "price": [
+      38700,
+      15000
     ]
   },
   {
@@ -240,6 +286,9 @@
     ],
     "product": [
       "電動昇降デスク YJJF-SD0001-120DWA-02"
+    ],
+    "price": [
+      15999
     ]
   },
   {
@@ -256,6 +305,9 @@
     ],
     "product": [
       "Headphone Pro B175"
+    ],
+    "price": [
+      15800
     ]
   },
   {
@@ -272,7 +324,8 @@
     ],
     "product": [
       "REON POCKET 6 RNPK-6"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "anker-nano-power-strip-a9196",
@@ -288,7 +341,8 @@
     ],
     "product": [
       "Nano Power Strip A9196"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "heat-pen-fz125",
@@ -302,7 +356,8 @@
     "brand": [],
     "product": [
       "加熱ペン FZ125"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "keeptime-p156a06-monitor",
@@ -318,7 +373,8 @@
     ],
     "product": [
       "モバイルモニター 15.6インチ P156A06"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "bruno-blender-boe073",
@@ -334,7 +390,8 @@
     ],
     "product": [
       "ミニボトルブレンダー BOE073"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "pet-feeder-comparison",
@@ -354,6 +411,11 @@
       "自動給餌器 SP03",
       "カメラ付き自動給餌器 P1",
       "自動給餌器 L-25000"
+    ],
+    "price": [
+      7880,
+      10280,
+      6900
     ]
   },
   {
@@ -374,6 +436,11 @@
       "コードレス高圧洗浄機 OC Handy Compact CB 1.328-125.0",
       "充電式洗浄機 MHW180DZ",
       "ポケッタブル高圧洗浄機 SWU-201"
+    ],
+    "price": [
+      14980,
+      19817,
+      12980
     ]
   },
   {
@@ -394,6 +461,11 @@
       "PCMアイスキャップマット cocostar",
       "ICEキャップ 22℃ レギュラーサイズ ICEHEAD-25-new",
       "PC-Mキャップ cool-cap"
+    ],
+    "price": [
+      1280,
+      1390,
+      1620
     ]
   },
   {
@@ -412,6 +484,9 @@
     "product": [
       "SPIRIT スターターキット SSM1068",
       "柚子シロップ 600ml 4954768881448"
+    ],
+    "price": [
+      9900
     ]
   },
   {
@@ -428,6 +503,9 @@
     ],
     "product": [
       "ルイボスティー 2.0g×101個 98078"
+    ],
+    "price": [
+      1000
     ]
   },
   {
@@ -444,6 +522,9 @@
     ],
     "product": [
       "薬用リステリン トータルケアプラス 1500ml 4901730200189"
+    ],
+    "price": [
+      1420
     ]
   },
   {
@@ -460,6 +541,9 @@
     ],
     "product": [
       "AirPods Pro 3 MFHP4J/A"
+    ],
+    "price": [
+      39800
     ]
   },
   {
@@ -476,6 +560,9 @@
     ],
     "product": [
       "全自動洗濯機 HW-KD75L"
+    ],
+    "price": [
+      39800
     ]
   },
   {
@@ -492,6 +579,9 @@
     ],
     "product": [
       "Air 4 Pro XRGF39"
+    ],
+    "price": [
+      45980
     ]
   },
   {
@@ -508,6 +598,9 @@
     ],
     "product": [
       "スムースシャインドライヤー SAL23209BK"
+    ],
+    "price": [
+      13200
     ]
   },
   {
@@ -524,6 +617,9 @@
     ],
     "product": [
       "810s ET040 CAMPI"
+    ],
+    "price": [
+      7700
     ]
   },
   {
@@ -540,6 +636,9 @@
     ],
     "product": [
       "Osmo 360 アドベンチャーコンボ OQ001"
+    ],
+    "price": [
+      91300
     ]
   },
   {
@@ -556,6 +655,9 @@
     ],
     "product": [
       "TourBox NEO TBG_H_L_N"
+    ],
+    "price": [
+      19980
     ]
   },
   {
@@ -572,6 +674,9 @@
     ],
     "product": [
       "810s ET038 BELTEDU"
+    ],
+    "price": [
+      7150
     ]
   },
   {
@@ -588,6 +693,9 @@
     ],
     "product": [
       "生ゴミ処理機 SLW01"
+    ],
+    "price": [
+      78980
     ]
   },
   {
@@ -604,6 +712,9 @@
     ],
     "product": [
       "ヒツジのいらない枕 HT"
+    ],
+    "price": [
+      15800
     ]
   },
   {
@@ -620,6 +731,9 @@
     ],
     "product": [
       "シュレッダー FBA-PS210D"
+    ],
+    "price": [
+      15499
     ]
   },
   {
@@ -636,6 +750,9 @@
     ],
     "product": [
       "電動空気入れ 8016"
+    ],
+    "price": [
+      4460
     ]
   },
   {
@@ -654,6 +771,11 @@
     ],
     "product": [
       "ゲーミングチェア"
+    ],
+    "price": [
+      36164,
+      33120,
+      36860
     ]
   },
   {
@@ -671,6 +793,11 @@
     ],
     "product": [
       "ポータブル電源セット"
+    ],
+    "price": [
+      130950,
+      208400,
+      129800
     ]
   },
   {
@@ -687,6 +814,9 @@
     ],
     "product": [
       "DS223j"
+    ],
+    "price": [
+      36970
     ]
   },
   {
@@ -703,6 +833,9 @@
     ],
     "product": [
       "Nano Power Bank A1665"
+    ],
+    "price": [
+      6990
     ]
   },
   {
@@ -719,6 +852,9 @@
     ],
     "product": [
       "Solix C1000 Gen 2"
+    ],
+    "price": [
+      99990
     ]
   },
   {
@@ -735,6 +871,9 @@
     ],
     "product": [
       "筋膜リリースガン J2"
+    ],
+    "price": [
+      8999
     ]
   },
   {
@@ -751,6 +890,9 @@
     ],
     "product": [
       "iO2S"
+    ],
+    "price": [
+      11800
     ]
   },
   {
@@ -768,6 +910,10 @@
     "product": [
       "ラムダッシュ パームイン ES-PV3A",
       "ラムダッシュ パームイン LITE"
+    ],
+    "price": [
+      28710,
+      18740
     ]
   },
   {
@@ -784,6 +930,9 @@
     ],
     "product": [
       "冷風扇 FK2508Y"
+    ],
+    "price": [
+      19999
     ]
   },
   {
@@ -800,6 +949,9 @@
     ],
     "product": [
       "ルンバ Plus 575 Combo"
+    ],
+    "price": [
+      169800
     ]
   },
   {
@@ -816,6 +968,9 @@
     ],
     "product": [
       "InstaChord+ IC-31"
+    ],
+    "price": [
+      42900
     ]
   },
   {
@@ -832,6 +987,9 @@
     ],
     "product": [
       "スマートロック Ultra"
+    ],
+    "price": [
+      37980
     ]
   },
   {
@@ -849,6 +1007,10 @@
     "product": [
       "Apple Watch SE 3",
       "Apple Watch Series 11"
+    ],
+    "price": [
+      42800,
+      64800
     ]
   },
   {
@@ -865,6 +1027,9 @@
     ],
     "product": [
       "モニターA24i 2026"
+    ],
+    "price": [
+      9980
     ]
   },
   {
@@ -881,6 +1046,9 @@
     ],
     "product": [
       "カワクーナL 衣類乾燥機"
+    ],
+    "price": [
+      15980
     ]
   },
   {
@@ -897,6 +1065,9 @@
     ],
     "product": [
       "ミラブルzero"
+    ],
+    "price": [
+      49390
     ]
   },
   {
@@ -913,6 +1084,9 @@
     ],
     "product": [
       "タワー式電源タップ AC8+USB6"
+    ],
+    "price": [
+      4800
     ]
   },
   {
@@ -929,6 +1103,9 @@
     ],
     "product": [
       "CV-SH150"
+    ],
+    "price": [
+      46000
     ]
   },
   {
@@ -945,6 +1122,9 @@
     ],
     "product": [
       "ATH-M20x"
+    ],
+    "price": [
+      7700
     ]
   },
   {
@@ -961,7 +1141,8 @@
     ],
     "product": [
       "Pixel 10a"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "manhattan-portage-pixel-aperture",
@@ -977,6 +1158,9 @@
     ],
     "product": [
       "Pixel Apertureカメラバッグ"
+    ],
+    "price": [
+      16720
     ]
   },
   {
@@ -993,7 +1177,8 @@
     ],
     "product": [
       "iPad 第11世代（A16）"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "canon-eos-r50",
@@ -1009,7 +1194,8 @@
     ],
     "product": [
       "EOS R50"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "jbl-wave-beam2",
@@ -1025,6 +1211,9 @@
     ],
     "product": [
       "WAVE BEAM 2"
+    ],
+    "price": [
+      8030
     ]
   },
   {
@@ -1041,7 +1230,8 @@
     ],
     "product": [
       "BasicPlus モニターライト"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "xreal-1s-vs-rayneo-x3pro",
@@ -1059,6 +1249,10 @@
     "product": [
       "XREAL 1S",
       "RayNeo Air 4 Pro"
+    ],
+    "price": [
+      45980,
+      67980
     ]
   },
   {
@@ -1075,7 +1269,8 @@
     ],
     "product": [
       "RX 9070 XT"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "tplink-archer-be220",
@@ -1091,6 +1286,9 @@
     ],
     "product": [
       "Archer BE220"
+    ],
+    "price": [
+      9800
     ]
   },
   {
@@ -1107,7 +1305,8 @@
     ],
     "product": [
       "Nano II 65W"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "plaud-note",
@@ -1123,7 +1322,8 @@
     ],
     "product": [
       "NOTE"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "zojirushi-nw-yb10am-vs-nw-vj10",
@@ -1140,6 +1340,10 @@
     "product": [
       "NW-YB10AM",
       "NW-VJ10"
+    ],
+    "price": [
+      30000,
+      18000
     ]
   },
   {
@@ -1156,7 +1360,8 @@
     ],
     "product": [
       "G29"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "gamesir-nova2-lite",
@@ -1172,7 +1377,8 @@
     ],
     "product": [
       "Nova 2 Lite"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "epson-ew-056a",
@@ -1188,7 +1394,8 @@
     ],
     "product": [
       "EW-056A"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "levoit-core-mini",
@@ -1204,7 +1411,8 @@
     ],
     "product": [
       "Core Mini"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "dyson-v8-origin",
@@ -1220,7 +1428,8 @@
     ],
     "product": [
       "V8 Origin"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "comfee-rcc100wh",
@@ -1236,7 +1445,8 @@
     ],
     "product": [
       "冷凍庫 RCC100WH"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "jbl-bar-300mk2",
@@ -1252,6 +1462,9 @@
     ],
     "product": [
       "BAR 300MK2"
+    ],
+    "price": [
+      49500
     ]
   },
   {
@@ -1268,7 +1481,8 @@
     ],
     "product": [
       "TERRA"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "hotplate-bruno-vs-iris",
@@ -1286,6 +1500,10 @@
     "product": [
       "BOE021",
       "IHA-A30"
+    ],
+    "price": [
+      12100,
+      9000
     ]
   },
   {
@@ -1302,7 +1520,8 @@
     ],
     "product": [
       "YHX-FGD304"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "aladdin-graphite-toaster",
@@ -1318,7 +1537,8 @@
     ],
     "product": [
       "グラファイトトースター"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "iris-ohyama-iym-016",
@@ -1334,7 +1554,8 @@
     ],
     "product": [
       "ヨーグルトメーカー IYM-016"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "iris-ohyama-pmpc-ma4",
@@ -1350,7 +1571,8 @@
     ],
     "product": [
       "電気圧力鍋 PMPC-MA4"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "logicool-ergo-m575s",
@@ -1366,7 +1588,8 @@
     ],
     "product": [
       "ERGO M575S"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "elgato-wave-mic-arm-lp",
@@ -1382,7 +1605,8 @@
     ],
     "product": [
       "Wave Mic Arm LP"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "blue-yeti-nano",
@@ -1398,7 +1622,8 @@
     ],
     "product": [
       "Yeti Nano"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "velbon-ultrek-ut53ii",
@@ -1414,7 +1639,8 @@
     ],
     "product": [
       "ULTREK UT-53II"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "shure-sm7b",
@@ -1430,7 +1656,8 @@
     ],
     "product": [
       "SM7B"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "dji-mic-mini",
@@ -1446,7 +1673,8 @@
     ],
     "product": [
       "Mic Mini"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "sd-card-comparison",
@@ -1465,7 +1693,8 @@
     ],
     "product": [
       "SDカード"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "canon-eos-r6-mark3",
@@ -1481,7 +1710,8 @@
     ],
     "product": [
       "EOS R6 Mark III"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "audio-technica-at-umx3",
@@ -1497,6 +1727,9 @@
     ],
     "product": [
       "AT-UMX3"
+    ],
+    "price": [
+      19800
     ]
   },
   {
@@ -1513,7 +1746,8 @@
     ],
     "product": [
       "Osmo Pocket 4"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "canon-rf35mm-f18-macro",
@@ -1529,7 +1763,8 @@
     ],
     "product": [
       "RF35mm F1.8 MACRO IS STM"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "eizo-coloredge-cs2400s",
@@ -1545,7 +1780,8 @@
     ],
     "product": [
       "ColorEdge CS2400S"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "diagnl-ninja-strap",
@@ -1561,7 +1797,8 @@
     ],
     "product": [
       "ニンジャストラップ"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "jetech-magsafe-slim-case",
@@ -1577,7 +1814,8 @@
     ],
     "product": [
       "マグネットスリムケース（MagSafe対応）"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "canon-control-ring-adapter",
@@ -1593,7 +1831,8 @@
     ],
     "product": [
       "コントロールリングマウントアダプター EF-EOS R"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "manfrotto-410",
@@ -1609,7 +1848,8 @@
     ],
     "product": [
       "410 ギア付き雲台"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "lowepro-pro-trekker-bp450",
@@ -1625,7 +1865,8 @@
     ],
     "product": [
       "プロトレッカー BP450 AW II"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "slik-tube-light",
@@ -1641,7 +1882,8 @@
     ],
     "product": [
       "チューブ型撮影用ライト"
-    ]
+    ],
+    "price": []
   },
   {
     "id": "canon-eos-6d-mark2",
@@ -1657,6 +1899,7 @@
     ],
     "product": [
       "EOS 6D Mark II レンズキット"
-    ]
+    ],
+    "price": []
   }
 ]

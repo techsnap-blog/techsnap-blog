@@ -59,7 +59,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="css/style.css?v=19">
+  <link rel="stylesheet" href="css/style.css?v=20">
   <link rel="stylesheet" href="css/hero-tilt.css?v=1">
   <!-- Hero見出し登場アニメーションのFOUC防止 ＋ intro完了シグナルの定義。
        ------------------------------------------------------------------
@@ -237,14 +237,23 @@
     <!-- Categories -->
     <section class="categories" id="categories">
       <div class="container">
-        <div class="cat-list">
-          <button class="cat-btn active" data-cat="all">すべて</button>
-          <button class="cat-btn" data-cat="撮影機材">撮影機材</button>
-          <button class="cat-btn" data-cat="PC・周辺パーツ">PC・周辺パーツ</button>
-          <button class="cat-btn" data-cat="スマホ・アクセサリー">スマホ・アクセサリー</button>
-          <button class="cat-btn" data-cat="オーディオ">オーディオ</button>
-          <button class="cat-btn" data-cat="白物家電">白物家電</button>
-          <button class="cat-btn" data-cat="その他">その他</button>
+        <div class="filter-group">
+          <span class="filter-label">カテゴリ</span>
+          <div class="cat-list">
+            <button class="cat-btn active" data-cat="all">すべて</button>
+            <button class="cat-btn" data-cat="撮影機材">撮影機材</button>
+            <button class="cat-btn" data-cat="PC・周辺パーツ">PC・周辺パーツ</button>
+            <button class="cat-btn" data-cat="スマホ・アクセサリー">スマホ・アクセサリー</button>
+            <button class="cat-btn" data-cat="オーディオ">オーディオ</button>
+            <button class="cat-btn" data-cat="白物家電">白物家電</button>
+            <button class="cat-btn" data-cat="その他">その他</button>
+          </div>
+        </div>
+        <!-- 予算フィルタ: ボタンは js/main.js の PRICE_RANGES から生成する
+             （価格帯を変えるときは同配列の1箇所だけ編集する）。 -->
+        <div class="filter-group">
+          <span class="filter-label">予算で探す</span>
+          <div class="cat-list budget-list" id="budget-list"></div>
         </div>
       </div>
     </section>
@@ -253,7 +262,7 @@
     <section class="articles" id="reviews">
       <div class="container">
         <div class="article-grid">
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="3300 9908 12662">
             <div class="card-img">
               <a href="articles/yamazaki-tower-kitchen-3select-review.html"><img src="images/tower-kitchen-3select.jpg" alt="山崎実業 tower 奥行伸縮排気口カバー 4563 ブレッドケース 4353 隠せる調味料ラック 4334" loading="lazy"></a>
             </div>
@@ -267,7 +276,7 @@
               <p class="card-score">総合スコア 9.0 / 10</p>
             </div>
           </article>
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="4450 3614">
             <div class="card-img">
               <a href="articles/meyer-mxs-p20-vs-tfal-g26502-review.html"><img src="images/meyer-mxs-p20-vs-tfal-g26502-comparison.jpg" alt="マイヤー マキシムSS MXS-P20 ティファール IHハードチタニウム・アンリミテッド G26502 20cmフライパン比較" loading="lazy"></a>
             </div>
@@ -281,7 +290,7 @@
               <p class="card-score">総合スコア 9.4 / 10</p>
             </div>
           </article>
-          <article class="article-card" data-cat="オーディオ">
+          <article class="article-card" data-cat="オーディオ" data-price="9980 9990 12671">
             <div class="card-img">
               <a href="articles/soundpeats-air5pro-earfun-airpro4-nothing-ear-a-review.html"><img src="images/anc-earbuds-comparison.jpg" alt="SOUNDPEATS Air5 Pro EarFun Air Pro 4 TW600 Nothing Ear (a) 完全ワイヤレスイヤホン比較" loading="lazy"></a>
             </div>
@@ -295,7 +304,7 @@
               <p class="card-score">総合スコア 9.0 / 10</p>
             </div>
           </article>
-          <article class="article-card" data-cat="PC・周辺パーツ">
+          <article class="article-card" data-cat="PC・周辺パーツ" data-price="19990">
             <div class="card-img">
               <a href="articles/anker-prime-charger-250w-a2345-review.html"><img src="images/anker-prime-charger-250w-a2345.jpg" alt="Anker Prime Charger (250W, 6 Ports, GaN) A2345" loading="lazy"></a>
             </div>
@@ -310,7 +319,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="1482">
             <div class="card-img">
               <a href="articles/laundrin-botanical-bergamot-cedar-review.html"><img src="images/laundrin-botanical-4582469507734.jpg" alt="ランドリン ボタニカル 柔軟剤 ベルガモット＆シダー 詰め替え 3倍サイズ 1290mL" loading="lazy"></a>
             </div>
@@ -353,7 +362,7 @@
               <p class="card-score">総合スコア 8.6 / 10</p>
             </div>
           </article>
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="13860 11385">
             <div class="card-img">
               <a href="articles/ninja-blast-comparison-review.html"><img src="images/ninja-blast-comparison.jpg" alt="Ninja Blast BC151JBKとNinja Blast Max BC251JIV コードレスポータブルブレンダー比較" loading="lazy"></a>
             </div>
@@ -367,7 +376,7 @@
               <p class="card-score">総合スコア 8.7 / 10</p>
             </div>
           </article>
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="44000 27164">
             <div class="card-img">
               <a href="articles/epeios-chef-epao502-vs-cosori-turboblaze-review.html"><img src="images/epeios-chef-vs-cosori-turboblaze-comparison.jpg" alt="EPEIOS Chef EPAO502とCOSORI TurboBlaze CAF-DC601S-WUSR" loading="lazy"></a>
             </div>
@@ -381,7 +390,7 @@
               <p class="card-score">総合スコア 8.7 / 10</p>
             </div>
           </article>
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="19800 13980">
             <div class="card-img">
               <a href="articles/switchbot-w3800510-vs-shark-flexbreeze-hydrogo-review.html"><img src="images/switchbot-w3800510-vs-shark-flexbreeze-hydrogo-comparison.jpg" alt="Shark FlexBreeze HydroGo FA052JWHNCとSwitchBot スマートサーキュレーター W3800510" loading="lazy"></a>
             </div>
@@ -395,7 +404,7 @@
               <p class="card-score">総合スコア 8.8 / 10</p>
             </div>
           </article>
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="69800 21000 13980">
             <div class="card-img">
               <a href="articles/coffee-maker-comparison-review.html"><img src="images/coffee-maker-comparison.jpg" alt="デロンギ ECAM22112B・象印 EC-RT40-BA・シロカ SC-A271 全自動コーヒーメーカー3機種" loading="lazy"></a>
             </div>
@@ -410,7 +419,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="19800">
             <div class="card-img">
               <a href="articles/recolte-rsy-3-review.html"><img src="images/recolte-rsy-3.jpg" alt="récolte 自動調理ポットラージ RSY-3 ナチュラルブラック" loading="lazy"></a>
             </div>
@@ -425,7 +434,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="38700 15000">
             <div class="card-img">
               <a href="articles/sharp-hotcook-kn-hw24h-vs-iris-ohyama-pmpc-ma4-review.html"><img src="images/sharp-hotcook-vs-iris-pmpc-ma4-comparison.jpg" alt="SHARP ヘルシオ ホットクック KN-HW24H・アイリスオーヤマ 電気圧力鍋 PMPC-MA4" loading="lazy"></a>
             </div>
@@ -440,7 +449,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="PC・周辺パーツ">
+          <article class="article-card" data-cat="PC・周辺パーツ" data-price="15999">
             <div class="card-img">
               <a href="articles/fezibo-standing-desk-120dwa-02-review.html"><img src="images/fezibo-standing-desk-120dwa-02.jpg" alt="FEZIBO 電動昇降デスク YJJF-SD0001-120DWA-02 ブラックフレーム ウォールナット天板" loading="lazy"></a>
             </div>
@@ -455,7 +464,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="オーディオ">
+          <article class="article-card" data-cat="オーディオ" data-price="15800">
             <div class="card-img">
               <a href="articles/cmf-nothing-headphone-pro-b175-review.html"><img src="images/cmf-nothing-headphone-pro-b175.jpg" alt="CMF by Nothing Headphone Pro B175 ライトグレー ヘッドホン" loading="lazy"></a>
             </div>
@@ -545,7 +554,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="7880 10280 6900">
             <div class="card-img">
               <a href="articles/pet-feeder-comparison-review.html"><img src="images/pet-feeder-comparison.jpg" alt="Surfola SP03・Wansview P1・Latuna L-25000 犬猫用自動給餌器3機種" loading="lazy"></a>
             </div>
@@ -560,7 +569,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="14980 19817 12980">
             <div class="card-img">
               <a href="articles/cordless-pressure-washer-comparison-review.html"><img src="images/cordless-pressure-washer-comparison.jpg" alt="ケルヒャー OC Handy Compact CB・マキタ MHW180DZ・スパイサー SWU-201 コードレス高圧洗浄機3機種" loading="lazy"></a>
             </div>
@@ -575,7 +584,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="1280 1390 1620">
             <div class="card-img">
               <a href="articles/pcm-ice-cap-comparison-review.html"><img src="images/pcm-ice-cap-comparison.jpg" alt="cocostar PCMアイスキャップマット・PRo° ICEキャップ・Qoosea PC-Mキャップ 帽子用冷却パッド3種" loading="lazy"></a>
             </div>
@@ -590,7 +599,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="9900">
             <div class="card-img">
               <a href="articles/sodastream-spirit-ssm1068-review.html"><img src="images/sodastream-spirit-yuzu.jpg" alt="ソーダストリーム スピリット SSM1068 と Captain 柚子シロップ 600ml" loading="lazy"></a>
             </div>
@@ -605,7 +614,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="1000">
             <div class="card-img">
               <a href="articles/tealife-rooibos-tea-98078-review.html"><img src="images/tealife-rooibos-tea-98078.jpg" alt="ティーライフ ルイボスティー 2.0g×101個 ノンカフェイン ティーバッグ" loading="lazy"></a>
             </div>
@@ -620,7 +629,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="1420">
             <div class="card-img">
               <a href="articles/listerine-total-care-plus-review.html"><img src="images/listerine-total-care-plus-4901730200189.jpg" alt="薬用リステリン トータルケアプラス 1500ml クリーンミント味" loading="lazy"></a>
             </div>
@@ -635,7 +644,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="オーディオ">
+          <article class="article-card" data-cat="オーディオ" data-price="39800">
             <div class="card-img">
               <a href="articles/apple-airpods-pro-3-review.html"><img src="images/airpods-pro-3.jpg" alt="Apple AirPods Pro 3 MFHP4J/A 本体 左右イヤホン ホワイト" loading="lazy"></a>
             </div>
@@ -650,7 +659,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="39800">
             <div class="card-img">
               <a href="articles/hisense-hw-kd75l-review.html"><img src="images/hisense-hw-kd75l.jpg" alt="ハイセンス 全自動洗濯機 HW-KD75L 本体 操作パネル" loading="lazy"></a>
             </div>
@@ -665,7 +674,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="PC・周辺パーツ">
+          <article class="article-card" data-cat="PC・周辺パーツ" data-price="45980">
             <div class="card-img">
               <a href="articles/rayneo-air-4-pro-xrgf39-review.html"><img src="images/rayneo-air-4-pro-xrgf39.jpg" alt="RayNeo Air 4 Pro XRGF39 ARグラス 本体構造" loading="lazy"></a>
             </div>
@@ -680,7 +689,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="13200">
             <div class="card-img">
               <a href="articles/salonia-smoothshine-sal23209bk-review.html"><img src="images/salonia-smoothshine-sal23209bk.jpg" alt="SALONIA スムースシャインドライヤー SAL23209BK ブラック 本体とパッケージ" loading="lazy"></a>
             </div>
@@ -695,7 +704,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="7700">
             <div class="card-img">
               <a href="articles/moonstar-810s-et040-campi-review.html"><img src="images/moonstar-810s-et040-campi.jpg" alt="MOONSTAR 810s ET040 CAMPI アイスグレー スリッポンスニーカー" loading="lazy"></a>
             </div>
@@ -710,7 +719,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="撮影機材">
+          <article class="article-card" data-cat="撮影機材" data-price="91300">
             <div class="card-img">
               <a href="articles/dji-osmo-360-adventure-combo-review.html"><img src="images/dji-osmo-360-adventure-combo-oq001.jpg" alt="DJI Osmo 360 アドベンチャーコンボ OQ001 360度アクションカメラ" loading="lazy"></a>
             </div>
@@ -725,7 +734,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="PC・周辺パーツ">
+          <article class="article-card" data-cat="PC・周辺パーツ" data-price="19980">
             <div class="card-img">
               <a href="articles/tourbox-neo-review.html"><img src="images/tourbox-neo.jpg" alt="TourBox NEO TBG_H_L_N 編集コントローラー" loading="lazy"></a>
             </div>
@@ -740,7 +749,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="7150">
             <div class="card-img">
               <a href="articles/moonstar-810s-et038-review.html"><img src="images/moonstar-810s-et038.jpg" alt="MOONSTAR 810s ET038 BELTEDU ワンストラップシューズ" loading="lazy"></a>
             </div>
@@ -755,7 +764,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="78980">
             <div class="card-img">
               <a href="articles/loofen-slw01-review.html"><img src="images/loofen-slw01.jpg" alt="loofen（ルーフェン）生ゴミ処理機 SLW01 本体とパッケージ" loading="lazy"></a>
             </div>
@@ -770,7 +779,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="15800">
             <div class="card-img">
               <a href="articles/hitsuji-no-iranai-makura-ht-review.html"><img src="images/hitsuji-no-iranai-makura-ht.jpg" alt="ヒツジのいらない枕 HT 黒いギフトボックスと本体・白いカバー" loading="lazy"></a>
             </div>
@@ -785,7 +794,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="15499">
             <div class="card-img">
               <a href="articles/krt-shredder-fba-ps210d-review.html"><img src="images/krt-shredder-fba-ps210d.jpg" alt="KRT シュレッダー FBA-PS210D-White 18L大容量 マイクロカット ホワイト" loading="lazy"></a>
             </div>
@@ -800,7 +809,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="4460">
             <div class="card-img">
               <a href="articles/aal-8016-review.html"><img src="images/aal-8016.jpg" alt="AAL コードレス電動空気入れ 8016 本体と付属ノズル・USB-Cケーブル" loading="lazy"></a>
             </div>
@@ -815,7 +824,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="PC・周辺パーツ">
+          <article class="article-card" data-cat="PC・周辺パーツ" data-price="36164 33120 36860">
             <div class="card-img">
               <a href="articles/gaming-chair-comparison-review.html"><img src="images/akracing-wolf-red.jpg" alt="AKRacing Wolf ゲーミングチェア レッド DXRacer Pシリーズ Bauhutte G-551-BK 比較" loading="lazy"></a>
             </div>
@@ -830,7 +839,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="130950 208400 129800">
             <div class="card-img">
               <a href="articles/portable-power-solar-comparison-review.html"><img src="images/anker-solix-c2000-gen2-200w-set.jpg" alt="Anker Solix C2000 Gen2 Jackery Solar Generator 3000 New EcoFlow DELTA 3 Max ポータブル電源比較" loading="lazy"></a>
             </div>
@@ -845,7 +854,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="PC・周辺パーツ">
+          <article class="article-card" data-cat="PC・周辺パーツ" data-price="36970">
             <div class="card-img">
               <a href="articles/synology-ds223j-review.html"><img src="images/synology-ds223j.jpg" alt="Synology NASキット DS223j 2ベイ クアッドコアCPU搭載" loading="lazy"></a>
             </div>
@@ -860,7 +869,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="スマホ・アクセサリー">
+          <article class="article-card" data-cat="スマホ・アクセサリー" data-price="6990">
             <div class="card-img">
               <a href="articles/anker-nano-power-bank-a1665-review.html"><img src="images/anker-nano-power-bank-a1665.jpg" alt="Anker Nano Power Bank 5000mAh MagGo Slim A1665 ブラック 本体" loading="lazy"></a>
             </div>
@@ -875,7 +884,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="99990">
             <div class="card-img">
               <a href="articles/anker-solix-c1000-gen2-review.html"><img src="images/anker-solix-c1000-gen2-a1763.jpg" alt="Anker Solix C1000 Gen 2 Portable Power Station ダークグレー 本体" loading="lazy"></a>
             </div>
@@ -890,7 +899,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="8999">
             <div class="card-img">
               <a href="articles/arboleaf-j2-review.html"><img src="images/arboleaf-j2.jpg" alt="arboleaf 筋膜リリースガン MINI J2 本体とシリコンヘッド4種" loading="lazy"></a>
             </div>
@@ -905,7 +914,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="11800">
             <div class="card-img">
               <a href="articles/oralb-io2s-review.html"><img src="images/oralb-io2s.jpg" alt="ブラウン オーラルB iO2S iOS21D90BK ブラック 本体と充電器" loading="lazy"></a>
             </div>
@@ -920,7 +929,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="28710 18740">
             <div class="card-img">
               <a href="articles/lamdash-palmin-5vs3-review.html"><img src="images/lamdash-palmin-5vs3.jpg" alt="パナソニック ラムダッシュ パームイン 5枚刃 ES-PV3A-K マットブラック本体" loading="lazy"></a>
             </div>
@@ -935,7 +944,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="19999">
             <div class="card-img">
               <a href="articles/blozey-fk2508y-review.html"><img src="images/blozey-fk2508y.jpg" alt="BLOZEY 冷風扇 FK2508Y 本体と付属の保冷剤・リモコン" loading="lazy"></a>
             </div>
@@ -950,7 +959,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="169800">
             <div class="card-img">
               <a href="articles/roomba-plus-575-combo-review.html"><img src="images/roomba-plus-575-combo.jpg" alt="ルンバ Plus 575 Combo（R285060）本体とAutoWash充電ステーション" loading="lazy"></a>
             </div>
@@ -965,7 +974,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="42900">
             <div class="card-img">
               <a href="articles/instachord-plus-ic31-review.html"><img src="images/instachord-plus-ic31.jpg" alt="InstaChord+ IC-31（インスタコードプラス）本体" loading="lazy"></a>
             </div>
@@ -980,7 +989,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="37980">
             <div class="card-img">
               <a href="articles/switchbot-lock-ultra-review.html"><img src="images/switchbot-lock-ultra.jpg" alt="SwitchBot スマートロック Ultra 顔認証パッドPro（W5600009）" loading="lazy"></a>
             </div>
@@ -995,7 +1004,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="スマホ・アクセサリー">
+          <article class="article-card" data-cat="スマホ・アクセサリー" data-price="42800 64800">
             <div class="card-img">
               <a href="articles/apple-watch-se3-vs-series11-review.html"><img src="images/apple-watch-se3.jpg" alt="Apple Watch SE 3とSeries 11の比較" loading="lazy"></a>
             </div>
@@ -1010,7 +1019,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="PC・周辺パーツ">
+          <article class="article-card" data-cat="PC・周辺パーツ" data-price="9980">
             <div class="card-img">
               <a href="articles/xiaomi-a24i-2026-review.html"><img src="images/xiaomi-a24i-2026.jpg" alt="Xiaomi モニターA24i 2026 23.8インチ 144Hz FHD IPSディスプレイ" loading="lazy"></a>
             </div>
@@ -1025,7 +1034,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="15980">
             <div class="card-img">
               <a href="articles/kawaquna-l-review.html"><img src="images/kawaquna-l.jpg" alt="カワクーナL 衣類乾燥機 KQ-003BLW 5kg ハンガーラック型" loading="lazy"></a>
             </div>
@@ -1040,7 +1049,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="その他">
+          <article class="article-card" data-cat="その他" data-price="49390">
             <div class="card-img">
               <a href="articles/mirable-zero-review.html"><img src="images/mirable-zero.jpg" alt="Mirable zero（ミラブルゼロ）シャワーヘッド ウルトラファインバブル 本体と化粧箱" loading="lazy"></a>
             </div>
@@ -1055,7 +1064,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="PC・周辺パーツ">
+          <article class="article-card" data-cat="PC・周辺パーツ" data-price="4800">
             <div class="card-img">
               <a href="articles/powerjc-tower-tap-review.html"><img src="images/powerjc-tower-tap.jpg" alt="Powerjc タワー式電源タップ AC8口+USB6口 2層 ブラック" loading="lazy"></a>
             </div>
@@ -1070,7 +1079,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="46000">
             <div class="card-img">
               <a href="articles/sharp-cv-sh150-review.html"><img src="images/sharp-cv-sh150.jpg" alt="SHARP CV-SH150（CVSH150W）ハイブリッド方式衣類乾燥除湿機 ホワイト" loading="lazy"></a>
             </div>
@@ -1085,7 +1094,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="オーディオ">
+          <article class="article-card" data-cat="オーディオ" data-price="7700">
             <div class="card-img">
               <a href="articles/audio-technica-ath-m20x-review.html"><img src="images/audio-technica-ath-m20x.jpg" alt="audio-technica ATH-M20x プロフェッショナルモニターヘッドホン ブラック" loading="lazy"></a>
             </div>
@@ -1115,7 +1124,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="撮影機材">
+          <article class="article-card" data-cat="撮影機材" data-price="16720">
             <div class="card-img">
               <a href="articles/manhattan-portage-pixel-aperture-review.html"><img src="images/manhattan-portage-pixel-aperture.jpg" alt="マンハッタンポーテージ Pixel Aperture Camera Bag ブラック" loading="lazy"></a>
             </div>
@@ -1160,7 +1169,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="オーディオ">
+          <article class="article-card" data-cat="オーディオ" data-price="8030">
             <div class="card-img">
               <a href="articles/jbl-wave-beam2-review.html"><img src="images/jbl-wave-beam2.jpg" alt="JBL WAVE BEAM 2 完全ワイヤレスイヤホン ブラック 充電ケース" loading="lazy"></a>
             </div>
@@ -1190,7 +1199,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="PC・周辺パーツ">
+          <article class="article-card" data-cat="PC・周辺パーツ" data-price="45980 67980">
             <div class="card-img">
               <a href="articles/xreal-1s-vs-rayneo-x3pro-review.html"><img src="images/xreal.jpg" alt="XREAL 1S ARグラス ミッドナイトブルー vs RayNeo X3 Pro" loading="lazy"></a>
             </div>
@@ -1220,7 +1229,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="PC・周辺パーツ">
+          <article class="article-card" data-cat="PC・周辺パーツ" data-price="9800">
             <div class="card-img">
               <a href="articles/tplink-archer-be220-review.html"><img src="images/wifi.jpg" alt="TP-Link Archer BE220 Wi-Fi 7 BE3600 ルーター" loading="lazy"></a>
             </div>
@@ -1265,7 +1274,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="30000 18000">
             <div class="card-img">
               <a href="articles/zojirushi-nw-yb10am-vs-nw-vj10-review.html"><img src="images/NW-YB10AM-BZ.jpg" alt="象印 圧力IH炊飯ジャー NW-YB10AM 豪熱大火力" loading="lazy"></a>
             </div>
@@ -1370,7 +1379,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="オーディオ">
+          <article class="article-card" data-cat="オーディオ" data-price="49500">
             <div class="card-img">
               <a href="articles/jbl-bar-300mk2-review.html"><img src="images/サウンドバー.jpg" alt="JBL BAR 300MK2 サウンドバー 5ch" loading="lazy"></a>
             </div>
@@ -1400,7 +1409,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="白物家電">
+          <article class="article-card" data-cat="白物家電" data-price="12100 9000">
             <div class="card-img">
               <a href="articles/hotplate-bruno-vs-iris-review.html"><img src="images/bruno.jpg" alt="BRUNO コンパクトホットプレート vs アイリスオーヤマ 比較" loading="lazy"></a>
             </div>
@@ -1595,7 +1604,7 @@
             </div>
           </article>
 
-          <article class="article-card" data-cat="オーディオ">
+          <article class="article-card" data-cat="オーディオ" data-price="19800">
             <div class="card-img">
               <a href="articles/audio-technica-at-umx3-review.html"><img src="images/audio-technica-at-umx3.jpg" alt="audio-technica AT-UMX3" loading="lazy"></a>
             </div>
@@ -1761,6 +1770,8 @@
           </article>
 
         </div>
+        <!-- 絞り込み結果が0件のときだけ js/main.js が表示する -->
+        <p class="no-results" id="no-results" hidden>条件に合う記事が見つかりませんでした。カテゴリまたは予算を変えてお試しください。</p>
         <div class="show-more-wrap">
           <button class="btn-show-more" id="show-more-btn" type="button">もっと見る</button>
         </div>
@@ -1838,7 +1849,7 @@
 
   </div><!-- /content-section -->
 
-  <script src="js/main.js?v=16"></script>
+  <script src="js/main.js?v=17"></script>
 </body>
 </html>
 <!-- deploy refresh 2026-07-06 -->
