@@ -266,6 +266,7 @@
           <li class="lh-item" data-cat="撮影機材" data-budget="" data-text="canon eos 6d mark ii レンズキット｜ミラーレス全盛の今、あえてこれを選ぶ理由 canon eos 6d mark ii レンズキット"><a href="../articles/canon-eos-6d-mark2-review.html?utm_source=instagram&amp;utm_medium=linkhub&amp;utm_campaign=canon-eos-6d-mark2"><span class="lh-item-title">Canon EOS 6D Mark II レンズキット｜ミラーレス全盛の今、あえてこれを選ぶ理由</span><span class="lh-item-meta">撮影機材・2026年6月25日</span></a></li>
         </ul>
         <p class="lh-empty" id="lh-empty" hidden>該当する記事がありません。条件を変えてお試しください。</p>
+        <p class="lh-note"><button type="button" class="lh-more" id="lh-all-more" aria-expanded="false" aria-controls="lh-all" hidden>もっと見る</button></p>
       </section>
 
       <section class="lh-block lh-sns">
@@ -285,7 +286,9 @@
     var result = document.getElementById('lh-result');
     var empty = document.getElementById('lh-empty');
     var search = document.getElementById('lh-search');
-    var state = { cat: 'all', budget: 'all', q: '' };
+    var allMore = document.getElementById('lh-all-more');
+    var LIST_VISIBLE = 5;
+    var state = { cat: 'all', budget: 'all', q: '', expanded: false };
 
     var FILTERS = {
       cat: function (el, v) { return v === 'all' || el.dataset.cat === v; },
@@ -297,11 +300,27 @@
       var shown = 0;
       items.forEach(function (el) {
         var ok = Object.keys(FILTERS).every(function (k) { return FILTERS[k](el, state[k]); });
-        el.hidden = !ok;
+        // フィルタ通過分のうち、未展開時は先頭 LIST_VISIBLE 件だけ表示する。
+        var visible = ok && (state.expanded || shown < LIST_VISIBLE);
+        el.hidden = !visible;
         if (ok) shown++;
       });
       result.textContent = shown + '件を表示中';
       empty.hidden = shown !== 0;
+      if (allMore) {
+        var hasMore = shown > LIST_VISIBLE;
+        allMore.hidden = !hasMore;
+        if (!hasMore) state.expanded = false;
+        allMore.setAttribute('aria-expanded', String(state.expanded));
+        allMore.textContent = state.expanded ? '閉じる' : 'もっと見る（残り' + (shown - LIST_VISIBLE) + '件）';
+      }
+    }
+
+    if (allMore) {
+      allMore.addEventListener('click', function () {
+        state.expanded = !state.expanded;
+        apply();
+      });
     }
 
     function bind(containerId, key, attr) {
@@ -311,6 +330,7 @@
         var btn = e.target.closest('.lh-filter');
         if (!btn || !box.contains(btn)) return;
         state[key] = btn.dataset[attr];
+        state.expanded = false;
         [].forEach.call(box.querySelectorAll('.lh-filter'), function (b) { b.classList.toggle('is-on', b === btn); });
         apply();
       });
@@ -336,6 +356,7 @@
     if (search) {
       search.addEventListener('input', function () {
         state.q = search.value.trim().toLowerCase();
+        state.expanded = false;
         apply();
       });
     }
