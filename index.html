@@ -59,8 +59,8 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="css/style.css?v=18">
-  <link rel="stylesheet" href="css/hero-2_5d.css?v=12">
+  <link rel="stylesheet" href="css/style.css?v=19">
+  <link rel="stylesheet" href="css/hero-tilt.css?v=1">
   <!-- Hero見出し登場アニメーションのFOUC防止 ＋ intro完了シグナルの定義。
        ------------------------------------------------------------------
        ・JS無効時はクラス自体が付かないため、h1は完成状態で表示される。
@@ -70,8 +70,9 @@
          techsnap:hero-intro-complete イベントと data-hero-intro="complete"。
          イベント発行前に読み込まれた/後に読み込まれたのどちらでも取り逃さない
          よう、属性とイベントの二本立てにする。
-       ・静止画を最初から隠す旧 hero25d-boot 仕様は廃止した。静止Heroは初期HTMLから
-         常に通常表示され、2.5Dはその上へopacityでクロスフェードする。 -->
+       ・Heroは静止画1枚のみで、初期HTMLから常に通常表示される
+         （2026-07-29: レイヤー合成の2.5D演出は廃止し、カーソル連動の
+           控えめな傾斜=js/hero-tilt.js に置き換えた）。 -->
   <script>
     (function () {
       var d = document.documentElement;
@@ -130,8 +131,8 @@
        「スクリプト失敗」と誤判定して2.5Dの読み込みがタイトル移動と重なる。
        deferなので実行はDOM解析完了後・DOMContentLoadedの前。実行順は記述順で
        固定されるため、必ずGSAPの後ろに置くこと（intro開始時にgsapが必要）。 -->
-  <script src="js/hero-title-intro.js?v=4" defer></script>
-  <script src="js/hero-2_5d.js?v=13" defer></script>
+  <script src="js/hero-title-intro.js?v=5" defer></script>
+  <script src="js/hero-tilt.js?v=3" defer></script>
 </head>
 <body>
 
@@ -194,22 +195,26 @@
              fetchpriority="high" はこの1枚だけに付ける（2.5Dレイヤーには付けない）。
              width/height は実寸(1024x1536)を宣言し、CSSの height:108% と
              併せてレイアウトを確定させる（CLSなし）。 -->
-        <picture class="hero-static-picture">
-          <source
-            type="image/webp"
-            srcset="images/hero-main-683.webp 683w, images/hero-main.webp 1024w"
-            sizes="(max-width: 768px) 100vw, 68vw">
-          <img
-            class="hero-static-img"
-            src="images/hero-main.png"
-            alt="TechSnap — 本音のガジェットレビュー"
-            width="1024"
-            height="1536"
-            loading="eager"
-            decoding="async"
-            fetchpriority="high"
-          >
-        </picture>
+        <!-- .hero-image-tilt = カーソル連動の傾斜専用ラッパー（js/hero-tilt.js）。
+             スクロール連動のtransformは従来どおり親 .hero-image-wrap をGSAPが所有する。 -->
+        <div class="hero-image-tilt">
+          <picture class="hero-static-picture">
+            <source
+              type="image/webp"
+              srcset="images/hero-main-683.webp 683w, images/hero-main.webp 1024w"
+              sizes="(max-width: 768px) 100vw, 68vw">
+            <img
+              class="hero-static-img"
+              src="images/hero-main.png"
+              alt="TechSnap — 本音のガジェットレビュー"
+              width="1024"
+              height="1536"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+            >
+          </picture>
+        </div>
       </div>
 
     </div><!-- /hero-poster -->

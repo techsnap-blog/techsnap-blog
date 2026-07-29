@@ -12,20 +12,19 @@
      複製の座標同期(getBoundingClientRect)・blur・背面用scale・swap処理は
      すべて不要になったため削除した。
 
-   処理順の契約（最重要）:
-     このスクリプトのタイムラインが完全に終わるまで、2.5D Heroは
-     画像取得・decode・DOM追加・rAFのいずれも行わない。終了時に
+   処理順の契約:
+     終了時に
        document → CustomEvent 'techsnap:hero-intro-complete'
        documentElement → data-hero-intro="complete"
-     を1回だけ発行し、hero-2_5d.js はこれを受けてから初期化する。
-     イベントの取り逃し（2.5D側が後から読み込まれた場合）に備えて
-     属性も併せて立てる。発行口は head 側の
-     window.__techsnapHeroIntroDone() に一本化されている。
+     を1回だけ発行する（発行口は head 側の
+     window.__techsnapHeroIntroDone() に一本化されている）。
+     2026-07-29に2.5D Heroを廃止したため、現在この合図を待つ処理はないが、
+     Hero関連の初期化フックとして属性・イベントは維持する。
 
    Transform所有権:
-     GSAP(main.js) → .hero-image-wrap / .hero-bg / CSS変数
-     hero-2_5d.js  → .hero25d-layer（人物レイヤー等の子）
-     このファイル  → h1内の行span と eyebrow/sub/search のみ
+     GSAP(main.js)  → .hero-image-wrap / .hero-bg / CSS変数
+     hero-tilt.js   → .hero-image-tilt（カーソル連動の傾斜のみ）
+     このファイル   → h1内の行span と eyebrow/sub/search のみ
      いずれも対象要素が重複しないため競合しない。
 
    フォールバック（いずれの経路でも完了イベントは必ず発行する）:
@@ -39,7 +38,7 @@
   'use strict';
 
   var CONFIG = {
-    MOBILE_MAX: 768,         // スラント量の切替（hero-2_5d.js の MOBILE_MAX と対）
+    MOBILE_MAX: 768,         // スラント量の切替（style.cssのモバイル境界と対）
     OFFSCREEN_MARGIN: 48,    // 画面外へ完全に逃がす余白(px)
     DUR_LINE1: 1.0,
     DUR_LINE2: 1.2,

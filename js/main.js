@@ -400,7 +400,7 @@
          translateX(8vw)配置とresize挙動を壊さない。
        - 検索ボックス(CTA位置)はテキストよりわずかに速く動かす。
        Transform所有権: GSAPは .hero-bg / .hero-image-wrap（親）と
-       CSS変数のみを扱い、hero-2_5d.jsの子レイヤーとは競合しない。 */
+       CSS変数のみを扱い、hero-tilt.jsが所有する .hero-image-tilt（子）とは競合しない。 */
     /* trigger: document.body は content-section の margin-top:100vh が
        bodyへ margin collapse して start が約100vhにずれるため使わない。
        fixed配置の .hero をトリガーにすると start は常にスクロール0になる。

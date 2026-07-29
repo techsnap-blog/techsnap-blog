@@ -175,45 +175,10 @@ img { max-width: 100%; display: block; }
    content-sectionが半透明になった今は、このグラデーションが
    そのまま帯として透けて見えてしまうため。 */
 
-/* ---------------------------------------------------
-   HERO LIGHT FLOW — 右上から左下へゆっくり流れる暖色光。
-   CSSのみで動作（JS無効・GSAP読込失敗時も表示に影響なし）。
-   transform/opacityのみをアニメーションし、レイアウトに影響しない。
-   親の.hero-bgがaria-hidden="true"のため装飾として扱われる。 */
-.hero-bg::after {
-  content: '';
-  position: absolute;
-  /* 移動してもHero外周が露出しないよう外側へ大きく張り出す */
-  top: -30%; left: -20%;
-  width: 140%; height: 160%;
-  background:
-    radial-gradient(ellipse 32% 26% at 74% 22%, rgba(255,244,224,0.55) 0%, transparent 70%),
-    radial-gradient(ellipse 24% 20% at 60% 42%, rgba(255,238,214,0.30) 0%, transparent 70%);
-  mix-blend-mode: soft-light;
-  opacity: 0.85;
-  pointer-events: none;
-  will-change: transform, opacity;
-  animation: heroLightFlow 14s ease-in-out infinite alternate;
-}
-@keyframes heroLightFlow {
-  0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0.85; }
-  100% { transform: translate3d(-6%, 7%, 0) scale(1.06); opacity: 0.65; }
-}
-/* モバイル: 移動量と透明度を削減（負荷とチラつき防止） */
-@media (max-width: 768px) {
-  .hero-bg::after {
-    opacity: 0.5;
-    animation-duration: 18s;
-  }
-  @keyframes heroLightFlow {
-    0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0.5; }
-    100% { transform: translate3d(-3%, 3.5%, 0) scale(1.02); opacity: 0.38; }
-  }
-}
-/* Reduced Motion: 光の流れを完全停止（静的な光として残す） */
-@media (prefers-reduced-motion: reduce) {
-  .hero-bg::after { animation: none; }
-}
+/* 旧 HERO LIGHT FLOW（.hero-bg::after / @keyframes heroLightFlow）は
+   2026-07-29に削除した。Heroから光源演出を排し、カーソル連動の
+   控えめな傾斜（js/hero-tilt.js）のみをHeroの動きとする方針による。
+   .hero-bg 本体の静的な暖色グラデーション（Warm Whiteのベース背景）は維持する。 */
 /* ===================================================
    HERO SEARCH — 「最新レビューを読む」ボタンがあった位置に配置。
    余計な見出し文言は置かず、入力欄のみ

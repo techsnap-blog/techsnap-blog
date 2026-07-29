@@ -1,0 +1,58 @@
+/* ============================================================
+   TechSnap Hero Tilt — カーソル連動の控えめな3D傾斜
+   ------------------------------------------------------------
+   2026-07-29: 旧 hero-2_5d.css（レイヤー合成・グロー・グリッチ・
+   パーティクル）を廃止し、Hero画像1枚だけを静かに傾ける構成へ置換。
+
+   Transform所有権（競合禁止）:
+     GSAP(main.js) → .hero-image-wrap   … scroll連動の scale/opacity/filter
+     hero-tilt.js  → .hero-image-tilt   … pointer連動の rotateX/rotateY
+   互いに別要素のため競合しない。
+
+   .hero-image-wrap … 既存のステージ（perspectiveを持つが自身は傾かない）
+   .hero-image-tilt … 傾斜専用ラッパー。flexの振る舞いは親と同じにして
+                      既存レイアウト（height:108% / bottom center）を維持する。
+   ============================================================ */
+
+.hero-image-wrap {
+  perspective: 1300px;
+  perspective-origin: center center;
+}
+
+.hero-image-tilt {
+  /* 親(.hero-image-wrap: display:flex; align-items:flex-end)の
+     フレックスアイテムとして、従来<img>が占めていた領域をそのまま引き継ぐ。
+     height:100% を与えることで、子<img>の height:108% が
+     従来と同じ基準（画像カラムの高さ）で解決される。 */
+  align-self: stretch;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;        /* 従来の .hero-image-wrap と同一 */
+  justify-content: center;
+  transform-origin: center center;
+  transform: rotateX(0deg) rotateY(0deg);
+  will-change: transform;       /* 傾斜ラッパーのみに限定する */
+  backface-visibility: hidden;
+  pointer-events: none;         /* 画像はクリック対象にしない */
+}
+
+/* <picture> はレイアウトから外し、<img> を従来どおりフレックスアイテムに保つ */
+.hero-image-tilt > .hero-static-picture { display: contents; }
+
+.hero-image-tilt .hero-static-img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* デスクトップは上端揃え（従来の見え方を維持する。
+   モバイル(<=768px)は親のflex-endにより従来どおり下端揃え） */
+@media (min-width: 769px) {
+  .hero-image-tilt .hero-static-img { align-self: flex-start; }
+}
+
+/* 傾斜を行わない環境では正面固定（JSも初期化しないが二重に保護する） */
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .hero-image-tilt { transform: none; will-change: auto; }
+}
