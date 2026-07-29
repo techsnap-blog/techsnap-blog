@@ -820,6 +820,17 @@ img { max-width: 100%; display: block; }
   padding: 11px 22px; border-radius: 999px; transition: opacity 0.18s;
 }
 .x-follow-btn:hover { opacity: 0.82; color: var(--bg); }
+/* インスタの下に置く従の導線（X）。主役のフォローボタンと競合しないよう小さく落とすが、
+   a { color: inherit; text-decoration: none } のせいで地の文と同化するため、
+   下線でリンクだと分かるようにする（記事本文の .inline-review-link と同じ考え方）。 */
+.x-alt { margin-top: 18px; font-size: 0.74rem; }
+.x-alt a {
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 1px;
+  transition: color 0.18s, border-color 0.18s;
+}
+.x-alt a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
 /* ===== FOOTER ===== */
 .site-footer {
