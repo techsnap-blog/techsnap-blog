@@ -465,8 +465,10 @@ img { max-width: 100%; display: block; }
   backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
 }
-.cat-list { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
-.cat-list::-webkit-scrollbar { display: none; }
+/* ボタン列は横スクロールさせず必ず折り返す（2026-07-29確定）。
+   予算フィルタ追加でボタンが増え、スマホ・PC縮小時に横スクロールしないと
+   全部見えない状態になったため、全幅で折り返し方式に統一した。 */
+.cat-list { display: flex; flex-wrap: wrap; gap: 8px; }
 .cat-btn {
   flex-shrink: 0;
   background: var(--surface); border: 1px solid var(--border);
@@ -494,6 +496,16 @@ img { max-width: 100%; display: block; }
   line-height: 1.4;
 }
 .filter-group .cat-list { flex: 1; min-width: 0; }
+/* 予算ボタンの表記切替: 広い画面は通常表記、狭い画面は短縮表記。
+   横スクロールを出さずに全ボタンを見せるための仕組み（下の狭幅用メディアクエリで反転）。 */
+.f-short { display: none; }
+/* 狭い画面では短縮表記に切り替え、折り返し行数を抑える
+   （「5,000～10,000円」→「5千～1万」等。読み上げ用の正式名称は
+   ボタンの aria-label 側に残してある）。 */
+@media (max-width: 900px) {
+  .f-full { display: none; }
+  .f-short { display: inline; }
+}
 
 /* ===== SECTION TITLE ===== */
 .section-title {
@@ -508,7 +520,12 @@ img { max-width: 100%; display: block; }
 }
 
 /* ===== ARTICLES ===== */
-.articles { padding: 0 0 88px; scroll-margin-top: 230px; /* 固定ヘッダー(60)＋固定フィルタバー(カテゴリ＋予算 118)＋従来と同じ余裕分 */ }
+/* scroll-margin-top: 固定ヘッダー(60)＋固定フィルタバー＋従来と同じ余裕分。
+   フィルタバーはボタンの折り返し行数で高さが変わるため、幅ごとに合わせる
+   （js/main.js の scrollToListTop はこの値を読んで着地点を決める）。 */
+.articles { padding: 0 0 88px; scroll-margin-top: 230px; }
+@media (max-width: 900px) { .articles { scroll-margin-top: 260px; } }
+@media (max-width: 768px) { .articles { scroll-margin-top: 290px; } }
 .no-results {
   font-family: var(--font-sans); font-size: 0.82rem; color: var(--text-muted);
   text-align: center; padding: 56px 0 24px; letter-spacing: 0.02em;
@@ -872,33 +889,28 @@ img { max-width: 100%; display: block; }
      1画面に全て収まるようにする */
   .cat-list {
     flex-wrap: wrap;
-    overflow-x: visible;
     gap: 6px;
   }
   .cat-btn {
-    padding: 6px 12px;
-    font-size: 0.66rem;
+    padding: 5px 10px;
+    font-size: 0.63rem;
+    letter-spacing: 0.04em;
   }
 
   /* モバイルはラベルをボタン列の上へ回し、横幅をボタンに使い切る。
-     sticky バーが高くなりすぎないよう余白は最小限に抑える。 */
+     ボタンは折り返しで全件見せる方針（横スクロール禁止）なので、
+     sticky バーが記事一覧を圧迫しないよう余白・文字を最小限に詰める。 */
   .filter-group { display: block; }
-  .filter-group + .filter-group { margin-top: 8px; }
-  .filter-label { width: auto; display: block; margin-bottom: 5px; font-size: 0.55rem; }
-
-  /* 予算は上の .cat-list 共通指定（折り返し）を打ち消して1行の横スクロールに戻す。
-     カテゴリと予算の両方を折り返すと sticky バーが画面の1/3を占めてしまい、
-     記事一覧が読めなくなるため。カテゴリ側の折り返しは従来どおり維持する。 */
-  .budget-list { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  /* バーが高くなった分、下余白を詰めて増分を抑える */
-  .categories { padding-bottom: 22px; }
+  .filter-group + .filter-group { margin-top: 7px; }
+  .filter-label { width: auto; display: block; margin-bottom: 4px; font-size: 0.52rem; letter-spacing: 0.12em; }
+  .categories { padding: 10px 0 18px; }
 
   /* モバイルはフェード帯を控えめにして上部余白の増加を最小限に抑える
      （padding-topは--surface-fadeに追従。溶け込みは残しつつ従来の
      詰まったレイアウトを大きく崩さない）。 */
   /* モバイルも同様にコンテンツをHero直下まで引き上げ、光の空白帯を消す。
      終点は最初のカード上ライン（padding 40 + カテゴリ2段 ≒ 190px）。 */
-  .content-section { border-radius: 18px 18px 0 0; --surface-fade: 222px; padding-top: 40px; }
+  .content-section { border-radius: 18px 18px 0 0; --surface-fade: 206px; padding-top: 40px; }
 
   .article-grid { grid-template-columns: 1fr; gap: 12px; }
   .article-card { display: grid; grid-template-columns: 96px 1fr; }

@@ -255,16 +255,18 @@
        正は scripts/articles-meta.json の price（定価ベース）で、
        scripts/build-price-data.mjs が data-price へ機械転記する。
      - 比較記事など複数商品の記事は、いずれかの商品が価格帯に入れば該当扱い。 */
+  /* short: 画面が狭いときに使う短縮表記。横スクロールさせずに全ボタンを
+     見せるため、CSS（.f-full / .f-short）で切り替える。 */
   const PRICE_RANGES = [
-    { id: 'all',   label: 'すべて' },
-    { id: 'u5k',   label: '～5,000円',        min: 0,     max: 5000 },
-    { id: '5k10k', label: '5,000～10,000円',  min: 5000,  max: 10000 },
-    { id: '1m3m',  label: '1～3万円',          min: 10000, max: 30000 },
-    { id: '3m5m',  label: '3～5万円',          min: 30000, max: 50000 },
-    { id: 'o5m',   label: '5万円以上',         min: 50000, max: Infinity },
+    { id: 'all',   label: 'すべて',            short: 'すべて' },
+    { id: 'u5k',   label: '～5,000円',        short: '～5千',   min: 0,     max: 5000 },
+    { id: '5k10k', label: '5,000～10,000円',  short: '5千～1万', min: 5000,  max: 10000 },
+    { id: '1m3m',  label: '1～3万円',          short: '1～3万',  min: 10000, max: 30000 },
+    { id: '3m5m',  label: '3～5万円',          short: '3～5万',  min: 30000, max: 50000 },
+    { id: 'o5m',   label: '5万円以上',         short: '5万～',   min: 50000, max: Infinity },
     /* 価格未登録（data-price無し）の記事を明示的に見るための軸。
        価格帯ではないので min/max を持たず、unpriced: true で判定する。 */
-    { id: 'none',  label: '価格未記載',        unpriced: true },
+    { id: 'none',  label: '価格未記載',        short: '未記載',  unpriced: true },
   ];
 
   /* ================= フィルタ共通基盤 =================
@@ -442,7 +444,18 @@
       btn.type = 'button';
       btn.className = 'cat-btn' + (range.id === filterState.budget ? ' active' : '');
       btn.dataset.budget = range.id;
-      btn.textContent = range.label;
+      /* 通常表記と短縮表記の両方を出力し、表示切替はCSSに任せる
+         （リサイズのたびにJSで書き換えない）。読み上げの重複を避けるため
+         非表示側は aria-hidden にする。 */
+      const full = document.createElement('span');
+      full.className = 'f-full';
+      full.textContent = range.label;
+      const short = document.createElement('span');
+      short.className = 'f-short';
+      short.textContent = range.short || range.label;
+      short.setAttribute('aria-hidden', 'true');
+      btn.append(full, short);
+      btn.setAttribute('aria-label', range.label);
       frag.appendChild(btn);
     });
     budgetList.appendChild(frag);
