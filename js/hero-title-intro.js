@@ -45,7 +45,10 @@
     DELAY_LINE2: 0.14,       // 1行目から遅らせて開始
     DELAY_EYEBROW: 0.05,
     DUR_FADE: 0.8,
-    FONT_WAIT_MS: 600,       // フォント確定待ちの上限（長時間の非表示を防ぐ）
+    FONT_WAIT_MS: 300,       // フォント確定待ちの上限（長時間の非表示を防ぐ）
+                             // 2026-07-31: 見出し専用サブセット(index.headのtext=)で
+                             // 700が即確定するため600→300へ短縮。万一未確定でも
+                             // 300msでフォールバック表示し、確定後にswapされる。
     EASE_MAIN: 'power3.out'  // バウンド系(bounce/elastic/大きなback)は使わない
   };
 
