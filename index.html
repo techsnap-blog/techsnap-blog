@@ -128,20 +128,30 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- ScrollTrigger / Lenis はcdnjsのままなので接続を先行確立する（初回表示短縮）。 -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <!-- GSAP + ScrollTrigger + Lenis -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.9/lenis.min.js" defer></script>
+  <!-- GSAP本体は自サイトに同梱する（2026-07-31）。
+       ------------------------------------------------------------------
+       見出し登場アニメ(hero-title-intro.js)が唯一必要とするのはGSAP本体だけ。
+       初回(未キャッシュ)にcdnjsから取得していたため、見出しが伏せられたまま
+       ダウンロードを待って表示が数秒遅れていた。同一オリジン化＋サイト資産と
+       同時キャッシュで初回表示を短縮する。ScrollTrigger/Lenisは記事一覧の
+       スクロール演出専用で見出し表示の律速ではないためCDNのまま。 -->
+  <script src="js/vendor/gsap.min.js?v=1" defer></script>
 
-  <!-- Hero関連スクリプトはheadでdefer読み込みする（2026-07-27）。
-       body末尾に置くと低速回線で取得が遅れ、head側の安全網タイマーが
-       「スクリプト失敗」と誤判定して2.5Dの読み込みがタイトル移動と重なる。
-       deferなので実行はDOM解析完了後・DOMContentLoadedの前。実行順は記述順で
-       固定されるため、必ずGSAPの後ろに置くこと（intro開始時にgsapが必要）。 -->
+  <!-- 見出し登場アニメはGSAP本体の直後・ScrollTrigger/Lenisより前で実行する
+       （2026-07-31）。deferは記述順に実行されるため、ここに置くと見出しの表示が
+       「GSAP本体1本の取得」だけを待つようになり、ScrollTrigger/Lenisの取得完了を
+       待たなくなる（＝初回のもたつき解消）。GSAPの後・intro開始時にgsapが必要という
+       契約は維持している。 -->
   <script src="js/hero-title-intro.js?v=5" defer></script>
   <script src="js/hero-tilt.js?v=3" defer></script>
+
+  <!-- スクロール演出用（見出し表示の律速ではない）。 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.9/lenis.min.js" defer></script>
 </head>
 <body>
 
