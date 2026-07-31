@@ -1,0 +1,112 @@
+# TechSnap 既出商品リスト（自動生成・手で編集しない）
+# 生成: node scripts/build-covered-products.mjs
+# 正データは articles-index.json。ここに載っている商品は「記事化済み」＝新規提案の対象外。
+# 形式: ブランド | 商品名（型番）  ／複数商品の記事は / 区切り
+# 件数: 106（商品名なしの記事 0 件を除く）
+
+AAL | 電動空気入れ 8016
+Aladdin | グラファイトトースター
+Anker / EcoFlow | ポータブル電源セット
+Anker | Nano II 65W
+Anker | Nano Power Bank A1665
+Anker | Nano Power Strip A9196
+Anker | Prime Charger (250W, 6 Ports, GaN) A2345
+Anker | Solix C1000 Gen 2
+Apple | AirPods Pro 3 MFHP4J/A
+Apple | Apple Watch SE 3 / Apple Watch Series 11
+Apple | iPad 第11世代（A16）
+arboleaf | 筋膜リリースガン J2
+audio-technica | AT-UMX3
+audio-technica | ATH-M20x
+BLOZEY | 冷風扇 FK2508Y
+Blue | Yeti Nano
+BONIQ | 3.0 BNQ-29W
+BONIQ | Vacuumer BNQ-32B
+BRUNO / アイリスオーヤマ | BOE021 / IHA-A30
+BRUNO | ミニボトルブレンダー BOE073
+Canon | EOS 6D Mark II レンズキット
+Canon | EOS R50
+Canon | EOS R6 Mark III
+Canon | RF35mm F1.8 MACRO IS STM
+Canon | コントロールリングマウントアダプター EF-EOS R
+CMF by Nothing | Headphone Pro B175
+cocostar / PRo° / Qoosea | PCMアイスキャップマット cocostar / ICEキャップ 22℃ レギュラーサイズ ICEHEAD-25-new / PC-Mキャップ cool-cap
+COMFEE' | 冷凍庫 RCC100WH
+diagnl | ニンジャストラップ
+DJI | Mic Mini
+DJI | Osmo 360 アドベンチャーコンボ OQ001
+DJI | Osmo Pocket 4
+DXRacer / AKRacing / Bauhutte | ゲーミングチェア
+Dyson | V8 Origin
+EIZO | ColorEdge CS2400S
+Elgato | Wave Mic Arm LP
+EPEIOS / COSORI | FoElem Chef EPAO502 / TurboBlaze CAF-DC601S-WUSR
+EPSON | EW-056A
+FEZIBO | 電動昇降デスク YJJF-SD0001-120DWA-02
+GameSir | Nova 2 Lite
+Gigastone / SanDisk / Lexar / ELECOM | SDカード
+GLOBAL | 三徳 18cm G-46
+Google | Pixel 10a
+InstaChord | InstaChord+ IC-31
+iRobot | ルンバ Plus 575 Combo
+JBL | BAR 300MK2
+JBL | WAVE BEAM 2
+JETech | マグネットスリムケース（MagSafe対応）
+KawaQuna | カワクーナL 衣類乾燥機
+KEEPTIME | モバイルモニター 15.6インチ P156A06
+KRT | シュレッダー FBA-PS210D
+Laundrin' | ランドリン ボタニカル 柔軟剤 ベルガモット＆シダー 詰め替え 3倍サイズ 1290mL 4582469507734
+Levoit | Core Mini
+LISTERINE | 薬用リステリン トータルケアプラス 1500ml 4901730200189
+Logicool | ERGO M575S
+Logicool | G29
+loofen | 生ゴミ処理機 SLW01
+Lowepro | プロトレッカー BP450 AW II
+Manfrotto | 410 ギア付き雲台
+Manhattan Portage | Pixel Apertureカメラバッグ
+Meyer / T-fal | マキシムSS フライパン 20cm MXS-P20 / IHハードチタニウム・アンリミテッド フライパン 20cm G26502
+Mitea Lab | ハンディクリーナー MyStick Neo JK-1700R3
+MOONSTAR | 810s ET038 BELTEDU
+MOONSTAR | 810s ET040 CAMPI
+Ninja | Ninja Blast BC151JBK / Ninja Blast Max BC251JIV
+OXO | クリアサラダスピナー 小 11230500
+PLAUD | NOTE
+Powerjc | タワー式電源タップ AC8+USB6
+Quntis | BasicPlus モニターライト
+RayNeo | Air 4 Pro XRGF39
+récolte | 自動調理ポットラージ RSY-3
+SALONIA | スムースシャインドライヤー SAL23209BK
+SHARP / アイリスオーヤマ | ヘルシオ ホットクック KN-HW24H / 電気圧力鍋 PMPC-MA4
+SHARP | CV-SH150
+Shure | SM7B
+SLIK | チューブ型撮影用ライト
+SodaStream | TERRA
+SOUNDPEATS / EarFun / Nothing | Air5 Pro / Air Pro 4 TW600 / Ear (a)
+Surfola / Wansview / Latuna | 自動給餌器 SP03 / カメラ付き自動給餌器 P1 / 自動給餌器 L-25000
+SwitchBot / Shark | スマートサーキュレーター W3800510 / FlexBreeze HydroGo FA052JWHNC
+SwitchBot | スマートロック Ultra
+Synology | DS223j
+TourBox | TourBox NEO TBG_H_L_N
+TP-Link | Archer BE220
+Velbon | ULTREK UT-53II
+Xiaomi | モニターA24i 2026
+XREAL / RayNeo | XREAL 1S / RayNeo Air 4 Pro
+アイリスオーヤマ | ヨーグルトメーカー IYM-016
+アイリスオーヤマ | 電気圧力鍋 PMPC-MA4
+ケルヒャー / マキタ / SPICERR | コードレス高圧洗浄機 OC Handy Compact CB 1.328-125.0 / 充電式洗浄機 MHW180DZ / ポケッタブル高圧洗浄機 SWU-201
+ソーダストリーム / Captain | SPIRIT スターターキット SSM1068 / 柚子シロップ 600ml 4954768881448
+ソニー | REON POCKET 6 RNPK-6
+ティーライフ | ルイボスティー 2.0g×101個 98078
+デロンギ / 象印マホービン / シロカ | マグニフィカS ECAM22112B / 珈琲通 EC-RT40-BA / 全自動コーヒーメーカー SC-A271
+ハイセンス | 全自動洗濯機 HW-KD75L
+パナソニック | ラムダッシュ パームイン ES-PV3A / ラムダッシュ パームイン LITE
+ヒツジのいらない枕 | ヒツジのいらない枕 HT
+ブラウン オーラルB | iO2S
+ミラブル | ミラブルzero
+加熱ペン FZ125
+玄人志向 | RX 9070 XT
+三菱ケミカル・クリンスイ / 東レ / ブリタ | クリンスイ CP504-BL / トレビーノ PT306SV-AZ / リクエリ
+山崎実業 | tower 奥行伸縮排気口カバー 60cmコンロ用 4563 / tower ブレッドケース 4353 / tower 隠せる調味料ラック 2段 4334
+山崎実業 | tower 折り畳み室内物干し 6619
+山善 | YHX-FGD304
+象印 | NW-YB10AM / NW-VJ10
