@@ -1,5 +1,27 @@
 [
   {
+    "id": "aqara-g5-pro-vs-reolink-argus-pt",
+    "title": "Aqara Camera Hub G5 Pro vs REOLINK Argus PT+SP｜屋外防犯カメラはどちらを選ぶか",
+    "category": "その他",
+    "date": "2026.07.31",
+    "score": null,
+    "image": "images/aqara-g5-pro-vs-reolink-argus-pt-comparison.jpg",
+    "url": "articles/aqara-g5-pro-vs-reolink-argus-pt-review.html",
+    "excerpt": "HomeKit対応でハブも兼ねるAqaraと、ソーラー同梱で配線不要のREOLINKを比較。画質・夜間撮影・AI検知・HomeKit対応・ソーラー充電・録画方法・設置性・価格の違いを整理し、スマートホーム統合重視か設置自由・コスパ重視かで選び方を提案する。",
+    "brand": [
+      "Aqara",
+      "REOLINK"
+    ],
+    "product": [
+      "Camera Hub G5 Pro",
+      "Argus PT+SP"
+    ],
+    "price": [
+      31680,
+      18999
+    ]
+  },
+  {
     "id": "global-g-46-santoku",
     "title": "GLOBAL G-46 レビュー｜オールステンレスの実力",
     "category": "その他",
