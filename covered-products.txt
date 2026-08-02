@@ -2,7 +2,7 @@
 # 生成: node scripts/build-covered-products.mjs
 # 正データは articles-index.json。ここに載っている商品は「記事化済み」＝新規提案の対象外。
 # 形式: ブランド | 商品名（型番）  ／複数商品の記事は / 区切り
-# 件数: 107（商品名なしの記事 0 件を除く）
+# 件数: 108（商品名なしの記事 0 件を除く）
 
 AAL | 電動空気入れ 8016
 Aladdin | グラファイトトースター
@@ -60,6 +60,7 @@ Laundrin' | ランドリン ボタニカル 柔軟剤 ベルガモット＆シ�
 Levoit | Core Mini
 LISTERINE | 薬用リステリン トータルケアプラス 1500ml 4901730200189
 Logicool | ERGO M575S
+Logicool | ERGO M575SP M575SPGR
 Logicool | G29
 loofen | 生ゴミ処理機 SLW01
 Lowepro | プロトレッカー BP450 AW II

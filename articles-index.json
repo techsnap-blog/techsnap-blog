@@ -1,5 +1,24 @@
 [
   {
+    "id": "logicool-ergo-m575sp",
+    "title": "ロジクール M575SPGR レビュー｜静音化した定番トラックボール",
+    "category": "PC・周辺パーツ",
+    "date": "2026.08.02",
+    "score": "8.7",
+    "image": "images/logicool-m575spgr.jpg",
+    "url": "articles/logicool-ergo-m575sp-review.html",
+    "excerpt": "親指操作で省スペースな定番トラックボールM575の現行モデル。静音クリック・Logi Bolt対応・5ボタン・単三1本で最長18ヶ月の電池持ちを公式スペックで整理。旧M575やMX ERGOとの違い、接続方法、Logi Options+、ボールの外し方まで解説する。",
+    "brand": [
+      "Logicool"
+    ],
+    "product": [
+      "ERGO M575SP M575SPGR"
+    ],
+    "price": [
+      8470
+    ]
+  },
+  {
     "id": "aqara-g5-pro-vs-reolink-argus-pt",
     "title": "Aqara Camera Hub G5 Pro vs REOLINK Argus PT+SP｜屋外防犯カメラはどちらを選ぶか",
     "category": "その他",
