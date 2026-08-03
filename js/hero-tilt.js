@@ -6,8 +6,14 @@
    カーソル位置に応じて静かに傾ける最小実装へ置換した。
 
    責務:
-     PointerTracker … pointerenter/move/leave で目標角度のみ更新
+     PointerTracker … window の pointermove で目標角度のみ更新
      TiltLoop       … requestAnimationFrame 1本で線形補間しtransform適用
+
+   入力範囲（2026-08-03変更）:
+     以前は .hero-image-wrap（画像カラム＝画面右側）だけを入力範囲にしていたため、
+     カーソルが人物に近づいた瞬間に傾きが付き「カクッ」と見えた。
+     現在は viewport 全体を入力範囲とし、画面左端→右端の移動が
+     そのまま -1..1 に対応する。境界での不連続が原理的に発生しない。
 
    Transform所有権:
      GSAP(main.js) → .hero-image-wrap（親）
@@ -30,9 +36,9 @@
     SETTLE_DEG: 0.01        // これ未満の差でループを畳む
   };
 
-  var stage = document.querySelector('.hero-image-wrap');   // ポインター入力範囲
+  var hero  = document.querySelector('.hero');              // 可視判定に使う
   var tilt  = document.querySelector('.hero-image-tilt');   // 傾斜対象
-  if (!stage || !tilt) return;
+  if (!tilt) return;
 
   var mqEnable = window.matchMedia(
     '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)'
@@ -40,13 +46,23 @@
 
   var targetX = 0, targetY = 0;   // -1..1
   var currentX = 0, currentY = 0;
-  var rect = null;
+  var vw = 0, vh = 0;
   var rafId = 0;
   var bound = false;
 
-  function measure() { rect = stage.getBoundingClientRect(); }
+  function measure() {
+    vw = window.innerWidth || document.documentElement.clientWidth || 0;
+    vh = window.innerHeight || document.documentElement.clientHeight || 0;
+  }
 
   function clamp1(v) { return v < -1 ? -1 : (v > 1 ? 1 : v); }
+
+  /* Heroが画面外へ出たら追従を止める（見えない要素を描き続けない） */
+  function heroVisible() {
+    if (!hero) return true;
+    var r = hero.getBoundingClientRect();
+    return r.bottom > 0 && r.top < vh;
+  }
 
   function render() {
     /* 向きの根拠（CSS座標系）:
@@ -81,20 +97,18 @@
     rafId = window.requestAnimationFrame(frame);
   }
 
-  function onPointerEnter(e) {
-    measure();                // rectの更新はenter/resize時のみ
-    onPointerMove(e);
-  }
-
   function onPointerMove(e) {
-    if (!rect || !rect.width || !rect.height) measure();
-    targetX = clamp1(((e.clientX - rect.left) / rect.width) * 2 - 1);
-    targetY = clamp1(((e.clientY - rect.top) / rect.height) * 2 - 1);
+    if (!vw || !vh) measure();
+    if (!heroVisible()) return;
+    targetX = clamp1((e.clientX / vw) * 2 - 1);
+    targetY = clamp1((e.clientY / vh) * 2 - 1);
     ensureRunning();
   }
 
-  function onPointerLeave() {
-    targetX = 0;              // 同じ補間で正面へ戻す（体感 約0.6秒）
+  /* ウィンドウ外へ出たときだけ正面へ戻す（同じ補間で 体感 約0.6秒） */
+  function onPointerLeave(e) {
+    if (e && e.relatedTarget) return;   // ページ内の要素間移動は無視
+    targetX = 0;
     targetY = 0;
     ensureRunning();
   }
@@ -105,18 +119,18 @@
     if (bound) return;
     bound = true;
     measure();
-    stage.addEventListener('pointerenter', onPointerEnter, { passive: true });
-    stage.addEventListener('pointermove', onPointerMove, { passive: true });
-    stage.addEventListener('pointerleave', onPointerLeave, { passive: true });
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    document.addEventListener('pointerout', onPointerLeave, { passive: true });
+    window.addEventListener('blur', onPointerLeave, { passive: true });
     window.addEventListener('resize', onResize, { passive: true });
   }
 
   function unbind() {
     if (!bound) return;
     bound = false;
-    stage.removeEventListener('pointerenter', onPointerEnter);
-    stage.removeEventListener('pointermove', onPointerMove);
-    stage.removeEventListener('pointerleave', onPointerLeave);
+    window.removeEventListener('pointermove', onPointerMove);
+    document.removeEventListener('pointerout', onPointerLeave);
+    window.removeEventListener('blur', onPointerLeave);
     window.removeEventListener('resize', onResize);
     if (rafId) window.cancelAnimationFrame(rafId);
     rafId = 0;
