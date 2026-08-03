@@ -2,7 +2,7 @@
 # 生成: node scripts/build-covered-products.mjs
 # 正データは articles-index.json。ここに載っている商品は「記事化済み」＝新規提案の対象外。
 # 形式: ブランド | 商品名（型番）  ／複数商品の記事は / 区切り
-# 件数: 108（商品名なしの記事 0 件を除く）
+# 件数: 109（商品名なしの記事 0 件を除く）
 
 AAL | 電動空気入れ 8016
 Aladdin | グラファイトトースター
@@ -48,6 +48,7 @@ GameSir | Nova 2 Lite
 Gigastone / SanDisk / Lexar / ELECOM | SDカード
 GLOBAL | 三徳 18cm G-46
 Google | Pixel 10a
+Helinox | チェアツー 1822284
 InstaChord | InstaChord+ IC-31
 iRobot | ルンバ Plus 575 Combo
 JBL | BAR 300MK2
