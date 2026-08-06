@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "code-review-graph": {
+      "command": "C:\\Users\\raaaa\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+      "args": [
+        "-m",
+        "code_review_graph",
+        "serve"
+      ],
+      "cwd": "D:\\youtube\u7d20\u6750\\AI\\\u30a2\u30d5\u30a3\u30d6\u30ed\u30b0\\ai-work\\techsnap-blog-main",
+      "type": "stdio"
+    }
+  }
+}
