@@ -2,7 +2,7 @@
 # 生成: node scripts/build-covered-products.mjs
 # 正データは articles-index.json。ここに載っている商品は「記事化済み」＝新規提案の対象外。
 # 形式: ブランド | 商品名（型番）  ／複数商品の記事は / 区切り
-# 件数: 112（商品名なしの記事 0 件を除く）
+# 件数: 113（商品名なしの記事 0 件を除く）
 
 AAL | 電動空気入れ 8016
 Aladdin | グラファイトトースター
@@ -97,6 +97,7 @@ Xiaomi | モニターA24i 2026
 XREAL / RayNeo | XREAL 1S / RayNeo Air 4 Pro
 アイリスオーヤマ | ヨーグルトメーカー IYM-016
 アイリスオーヤマ | 電気圧力鍋 PMPC-MA4
+オカモト | ピチット レギュラー
 ケルヒャー / マキタ / SPICERR | コードレス高圧洗浄機 OC Handy Compact CB 1.328-125.0 / 充電式洗浄機 MHW180DZ / ポケッタブル高圧洗浄機 SWU-201
 スノーピーク | HOME&CAMP バーナー GS-600KH
 ソーダストリーム / Captain | SPIRIT スターターキット SSM1068 / 柚子シロップ 600ml 4954768881448
