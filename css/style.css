@@ -860,6 +860,15 @@ img { max-width: 100%; display: block; }
 .footer-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
 .footer-links a { font-family: var(--font-sans); font-size: 0.72rem; color: var(--text-sub); transition: color 0.18s; }
 .footer-links a:hover { color: var(--text); }
+.footer-cross {
+  display: inline-flex; flex-direction: column; gap: 3px;
+  padding: 12px 22px; margin-top: 4px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface); transition: border-color 0.18s;
+}
+.footer-cross:hover { border-color: var(--accent-warm); }
+.footer-cross-title { font-family: var(--font-sans); font-size: 0.86rem; font-weight: 700; color: var(--text); }
+.footer-cross-sub { font-size: 0.72rem; color: var(--text-sub); }
 .footer-copy { font-family: var(--font-sans); font-size: 0.68rem; color: #B0A898; margin-top: 8px; }
 
 /* ===== RESPONSIVE ===== */
