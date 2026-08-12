@@ -1,0 +1,87 @@
+/* TechSnap 比較記事「専用」スタイル（2026-08-12。旧・比較記事インライン<style>の比較固有分の外出し）
+   共通ベース（.article-wrap / .article-header / .article-body / .sidebar / .score-* / .fit-list /
+   .related-list / .breadcrumb / .amazon-btn）は css/article-base.css 側にある。
+   比較記事テンプレは article-base.css と本ファイルの2枚をlinkする。ここには比較固有クラスだけを置く。 */
+
+.article-wrap.has-sidebar > article { min-width: 0; }
+.article-body h2[id] { scroll-margin-top: 84px; }
+.h2-no { font-family: var(--font-sans); font-weight: 300; color: var(--text-sub); margin-right: 10px; letter-spacing: 0.05em; }
+
+/* ===== 冒頭2枚並び ===== */
+.hero-strip { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 40px; }
+.hero-strip figure { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.hero-strip img { width: 100%; height: 220px; object-fit: contain; display: block; padding: 10px; }
+@media(max-width:700px){ .hero-strip { gap: 8px; margin-bottom: 32px; } .hero-strip img { height: 140px; padding: 6px; } }
+
+/* ===== 結論ファースト ===== */
+.verdict-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px 26px; margin: 28px 0 8px; box-shadow: var(--shadow-card); }
+.verdict-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; color: var(--text-sub); margin: 0 0 6px; }
+.verdict-list { list-style: none; margin: 0; padding: 0; }
+.verdict-list li { display: grid; grid-template-columns: 12em 1fr; gap: 2px 18px; padding: 13px 0; border-bottom: 1px solid var(--border); align-items: baseline; }
+.verdict-list li:last-child { border-bottom: none; padding-bottom: 2px; }
+.v-for { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+.v-name { font-weight: 700; font-size: 0.95rem; color: var(--text); }
+.v-name a { color: inherit; border-bottom: 1px solid var(--border-light); padding-bottom: 1px; }
+.v-name a:hover { color: var(--accent); border-color: var(--accent-warm); }
+.v-best { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; color: var(--gold); border: 1px solid currentColor; border-radius: 3px; padding: 1px 7px; margin-left: 8px; vertical-align: 2px; }
+.v-spec { display: block; font-size: 0.78rem; color: var(--text-sub); margin-top: 2px; line-height: 1.6; }
+@media(max-width:700px){ .verdict-box { padding: 20px 18px; } .verdict-list li { grid-template-columns: 1fr; padding: 11px 0; } }
+
+/* ===== 比較サマリーカード ===== */
+.compare-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 28px 0; }
+.compare-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 16px 16px; text-align: center; display: flex; flex-direction: column; }
+.compare-card.pick { border-color: rgba(154,122,74,0.45); box-shadow: var(--shadow-card); }
+.compare-card .role { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; color: var(--text-sub); margin: 0 0 10px; }
+.compare-card.pick .role { color: var(--gold); }
+.compare-card img { width: 100%; border-radius: 8px; margin-bottom: 12px; }
+.compare-card p.name { font-size: 0.85rem; font-weight: 700; margin: 0 0 2px; }
+.compare-card p.price { font-size: 1rem; font-weight: 700; margin: 0 0 10px; }
+.compare-card .mini-specs { list-style: none; margin: 0 0 12px; padding: 10px 0 0; border-top: 1px solid var(--border); text-align: left; flex: 1; }
+.compare-card .mini-specs li { font-size: 0.75rem; color: var(--text-muted); line-height: 1.7; padding-left: 12px; position: relative; }
+.compare-card .mini-specs li::before { content: "·"; position: absolute; left: 2px; color: var(--text-sub); }
+.compare-card .jump { font-size: 0.75rem; color: var(--accent); letter-spacing: 0.04em; }
+.compare-card .jump:hover { color: var(--accent-warm); }
+@media(max-width:700px){
+  .compare-grid { grid-template-columns: 1fr; }
+  .compare-card { display: grid; grid-template-columns: 104px 1fr; grid-template-areas: "img role" "img name" "img price" "img specs" "img jump"; gap: 2px 14px; text-align: left; align-items: start; }
+  .compare-card .role { grid-area: role; margin-bottom: 4px; }
+  .compare-card img { grid-area: img; margin: 0; align-self: center; }
+  .compare-card p.name { grid-area: name; }
+  .compare-card p.price { grid-area: price; margin-bottom: 6px; }
+  .compare-card .mini-specs { grid-area: specs; padding-top: 6px; margin-bottom: 8px; }
+  .compare-card .jump { grid-area: jump; }
+}
+
+/* ===== 統合比較表 ===== */
+.compare-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 28px 0 10px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.compare-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.85rem; min-width: 620px; }
+.compare-table th, .compare-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; line-height: 1.6; }
+.compare-table tbody tr:last-child th, .compare-table tbody tr:last-child td { border-bottom: none; }
+.compare-table thead th { background: var(--bg2); font-weight: 700; font-size: 0.8rem; white-space: nowrap; }
+.compare-table tbody th { font-weight: 600; color: var(--text-muted); font-size: 0.78rem; white-space: nowrap; background: var(--surface); }
+.compare-table th:first-child, .compare-table td:first-child { position: sticky; left: 0; z-index: 1; }
+.compare-table th:nth-child(2), .compare-table td:nth-child(2) { background: rgba(154,122,74,0.05); }
+.compare-table thead th:nth-child(2) { background: #EFE9DF; }
+.compare-table .best { font-weight: 700; color: var(--accent); }
+.th-best { display: inline-block; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em; color: var(--gold); border: 1px solid currentColor; border-radius: 3px; padding: 0 5px; margin-left: 6px; vertical-align: 1px; }
+.table-note { font-size: 0.75rem; color: var(--text-sub); line-height: 1.8; margin: 0 0 28px; }
+
+/* ===== 製品別セクション：良い点/注意点 ===== */
+.pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0 20px; }
+@media(max-width:700px){ .pros-cons { grid-template-columns: 1fr; } }
+.pc-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+.pc-title { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 10px; }
+.pc-box.pros .pc-title { color: var(--green); }
+.pc-box.cons .pc-title { color: var(--gold); }
+.pc-box ul { list-style: none; margin: 0; padding: 0; }
+.pc-box li { font-size: 0.85rem; line-height: 1.75; padding-left: 20px; position: relative; margin-bottom: 8px; }
+.pc-box li:last-child { margin-bottom: 0; }
+.pc-box.pros li::before { content: "○"; position: absolute; left: 0; top: 2px; color: var(--green); font-size: 0.8em; }
+.pc-box.cons li::before { content: "△"; position: absolute; left: 0; top: 2px; color: var(--gold); font-size: 0.8em; }
+.fit-line { font-size: 0.83rem; color: var(--text-muted); margin: 0 0 16px; }
+.fit-line strong { color: var(--text); font-weight: 600; }
+.product-cta { margin: 0 0 8px; }
+.btn-product { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; padding: 10px 22px; border-radius: 8px; border: 1px solid var(--border-light); color: var(--text); background: var(--surface); transition: all 0.15s; text-decoration: none; }
+.btn-product:hover { border-color: var(--accent-warm); color: var(--accent); }
+.btn-product.primary { background: #FF9900; border-color: #FF9900; color: #111; font-weight: 700; }
+.btn-product.primary:hover { opacity: 0.85; color: #111; }
