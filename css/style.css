@@ -4,6 +4,28 @@
    Palette: Leica / Apple — warm white, soft grey, gentle black
    ============================================================ */
 
+/* ===== LINE Seed JP (self-hosted subset / 2026-08-20) =====
+   トップのタイトル・見出し・右上ナビに使用。サブセット済みで各~130KB。
+   font-display:swap＋fallbackで初回表示を止めない（§17.0.2契約と両立）。
+   利用可ウェイト: Thin100 / Regular400 / Bold700 / ExtraBold800 */
+@font-face {
+  font-family: 'LINE Seed JP'; font-style: normal; font-weight: 100;
+  font-display: swap; src: url('../fonts/LINESeedJP_Th.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'LINE Seed JP'; font-style: normal; font-weight: 400;
+  font-display: swap; src: url('../fonts/LINESeedJP_Rg.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'LINE Seed JP'; font-style: normal; font-weight: 700;
+  font-display: swap; src: url('../fonts/LINESeedJP_Bd.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'LINE Seed JP'; font-style: normal; font-weight: 800;
+  font-display: swap; src: url('../fonts/LINESeedJP_Eb.woff2') format('woff2');
+}
+:root { --font-seed: 'LINE Seed JP', 'Noto Sans JP', sans-serif; }
+
 /* ===== RESET ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html {
@@ -105,7 +127,7 @@ img { max-width: 100%; display: block; }
 .logo span { color: var(--accent-warm); }
 .nav { display: flex; gap: 28px; margin-left: auto; }
 .nav a {
-  font-family: var(--font-sans); font-size: 0.75rem; font-weight: 500;
+  font-family: var(--font-seed); font-size: 0.75rem; font-weight: 400;
   color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase;
   transition: color 0.2s;
 }
@@ -318,7 +340,7 @@ img { max-width: 100%; display: block; }
   text-transform: uppercase; margin-bottom: 16px;
 }
 .hero-text-overlay h1 {
-  font-family: var(--font-sans);
+  font-family: var(--font-seed);
   font-size: clamp(1.45rem, 3.2vw, 2.5rem);
   font-weight: 700; letter-spacing: -0.03em; line-height: 1.18;
   color: var(--text); margin-bottom: 11px;  /* 18px → 11px: 39%縮小 */
@@ -509,7 +531,7 @@ img { max-width: 100%; display: block; }
 
 /* ===== SECTION TITLE ===== */
 .section-title {
-  font-family: var(--font-sans); font-size: 0.65rem; font-weight: 700;
+  font-family: var(--font-seed); font-size: 0.65rem; font-weight: 700;
   color: var(--text-sub); letter-spacing: 0.2em; text-transform: uppercase;
   margin-bottom: 36px;
   display: flex; align-items: center; gap: 14px;
