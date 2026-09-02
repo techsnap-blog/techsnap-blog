@@ -2,7 +2,7 @@
 # 生成: node scripts/build-covered-products.mjs
 # 正データは articles-index.json。ここに載っている商品は「記事化済み」＝新規提案の対象外。
 # 形式: ブランド | 商品名（型番）  ／複数商品の記事は / 区切り
-# 件数: 114（商品名なしの記事 0 件を除く）
+# 件数: 115（商品名なしの記事 0 件を除く）
 
 AAL | 電動空気入れ 8016
 Aladdin | グラファイトトースター
@@ -84,6 +84,7 @@ SALONIA | スムースシャインドライヤー SAL23209BK
 SHARP / アイリスオーヤマ | ヘルシオ ホットクック KN-HW24H / 電気圧力鍋 PMPC-MA4
 SHARP | CV-SH150
 Shure | SM7B
+SIMPS | ミートプレス S-197
 SLIK | チューブ型撮影用ライト
 SodaStream | TERRA
 SOUNDPEATS / EarFun / Nothing | Air5 Pro / Air Pro 4 TW600 / Ear (a)
